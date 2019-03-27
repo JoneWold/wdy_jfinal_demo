@@ -1,4 +1,4 @@
-package com.wdy.config.log;
+package com.wdy.common.log;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.LogManager;

@@ -1,4 +1,4 @@
-package com.wdy.config.log;
+package com.wdy.common.log;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

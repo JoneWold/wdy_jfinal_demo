@@ -29,6 +29,10 @@
         <fastjson.version>1.2.56</fastjson.version>
         <lombok.version>1.16.20</lombok.version>
         <javax.ws.rs.api.version>2.1.1</javax.ws.rs.api.version>
+        <poi.version>3.9</poi.version>
+        <poi-ooxml.version>3.9</poi-ooxml.version>
+        <commons-lang.version>2.6</commons-lang.version>
+        <joda-time.version>2.10.1</joda-time.version>
     </properties>
 
     <!-- 使用阿里 maven 库 -->
@@ -140,6 +144,30 @@
             <artifactId>javax.ws.rs-api</artifactId>
             <version>${javax.ws.rs.api.version}</version>
         </dependency>
+        <!-- Excel -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi-ooxml.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>${commons-lang.version}</version>
+        </dependency>
+        <!-- 日期时间简化工具 -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda-time.version}</version>
+        </dependency>
+
 
     </dependencies>
 

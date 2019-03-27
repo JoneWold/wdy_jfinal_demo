@@ -1,4 +1,4 @@
-package com.wdy;
+package com.wdy.common.cache;
 
 import com.jfinal.plugin.activerecord.cache.ICache;
 import com.jfinal.plugin.ehcache.CacheKit;
