@@ -56,7 +56,7 @@ public class _JFinalDemoGenerator {
         generator.setGenerateDataDictionary(false);
 
         // 设置需要被移除的表名前缀用于生成modelName。例如表名 "osc_user"，移除前缀 "osc_"后生成的model名为 "User"而非 OscUser
-        generator.setRemovedTableNamePrefixes("t_");
+        generator.setRemovedTableNamePrefixes("Sys_");
 
         // 生成
         generator.generate();

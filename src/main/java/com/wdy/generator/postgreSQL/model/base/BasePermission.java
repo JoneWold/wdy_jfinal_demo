@@ -9,36 +9,88 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BasePermission<M extends BasePermission<M>> extends Model<M> implements IBean {
 
+	/**
+	 * 权限id,默认为自增长
+	 */
 	public void setId(java.lang.Integer id) {
 		set("id", id);
 	}
 	
+	/**
+	 * 权限id,默认为自增长
+	 */
 	public java.lang.Integer getId() {
 		return getInt("id");
 	}
 
-	public void setPermissionName(java.lang.String permissionName) {
-		set("permission_name", permissionName);
+	/**
+	 * 权限描述不能为null
+	 */
+	public void setDes(java.lang.String des) {
+		set("des", des);
 	}
 	
-	public java.lang.String getPermissionName() {
-		return getStr("permission_name");
+	/**
+	 * 权限描述不能为null
+	 */
+	public java.lang.String getDes() {
+		return getStr("des");
 	}
 
-	public void setPermissionMenu(java.lang.String permissionMenu) {
-		set("permission_menu", permissionMenu);
+	/**
+	 * 创建时间,默认不能为null
+	 */
+	public void setCreateTime(java.util.Date createTime) {
+		set("createTime", createTime);
 	}
 	
-	public java.lang.String getPermissionMenu() {
-		return getStr("permission_menu");
+	/**
+	 * 创建时间,默认不能为null
+	 */
+	public java.util.Date getCreateTime() {
+		return get("createTime");
 	}
 
-	public void setSort(java.lang.String sort) {
-		set("sort", sort);
+	/**
+	 * 1:界面权限 2:接口权限
+	 */
+	public void setType(java.lang.Integer type) {
+		set("type", type);
 	}
 	
-	public java.lang.String getSort() {
-		return getStr("sort");
+	/**
+	 * 1:界面权限 2:接口权限
+	 */
+	public java.lang.Integer getType() {
+		return getInt("type");
+	}
+
+	/**
+	 * 权限层级码
+	 */
+	public void setPermissionCode(java.lang.String permissionCode) {
+		set("permissionCode", permissionCode);
+	}
+	
+	/**
+	 * 权限层级码
+	 */
+	public java.lang.String getPermissionCode() {
+		return getStr("permissionCode");
+	}
+
+	/**
+	 * 权限名称
+	 */
+	public void setName(java.lang.String name) {
+		set("name", name);
+	}
+	
+	/**
+	 * 权限名称
+	 */
+	public java.lang.String getName() {
+		return getStr("name");
 	}
 
 }

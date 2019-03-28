@@ -11,7 +11,7 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.template.Engine;
 import com.jfinal.template.source.ClassPathSourceFactory;
-import com.wdy.controller.jaxrs.JaxRsController;
+import com.wdy.biz.jaxrs.JaxRsController;
 import com.wdy.generator.mysql.model._MappingKit;
 import com.wdy.interceptor.jfinal.AdminRoutes;
 import live.autu.plugin.jfinal.swagger.config.SwaggerPlugin;
@@ -140,12 +140,6 @@ public class WdyConfig extends JFinalConfig {
         loadConfig();
 
         return new DruidPlugin(p.get("jfinal.MySQL.jdbcUrl"), p.get("jfinal.MySQL.user"), p.get("jfinal.MySQL.password").trim());
-    }
-
-    public static DruidPlugin createDruidPluginPostgreSQL() {
-        loadConfig();
-
-        return new DruidPlugin(p.get("jfinal.postgreSQL.url"), p.get("jfinal.postgreSQL.user"), p.get("jfinal.postgreSQL.password"), p.get("jfinal.postgreSQL.driverClass").trim());
     }
 
     /**

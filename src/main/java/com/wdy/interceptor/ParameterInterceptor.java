@@ -19,7 +19,16 @@ public class ParameterInterceptor implements Interceptor {
             // 获取请求参数
             String[] paras = notNull.paras();
             HttpServletRequest request = inv.getController().getRequest();
+            for (String para : paras) {
+                // 先对url传参进行参数校验
+                String parameter = request.getParameter(para);
+                if (parameter == null) {
+                    inv.getController().renderText("缺少参数：" + para);
+                    return;
+                }
 
+
+            }
         }
         inv.invoke();
     }

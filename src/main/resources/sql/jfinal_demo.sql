@@ -19,6 +19,8 @@
 
 #end
 -- --------------------------------------------
-#sql("findDrop")
-  select * from SysUser
+#namespace("pg")
+    #sql("findCodeTable")
+      select * from code_table
+    #end
 #end

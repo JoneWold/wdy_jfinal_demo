@@ -9,36 +9,228 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseUser<M extends BaseUser<M>> extends Model<M> implements IBean {
 
-	public void setId(java.lang.Integer id) {
+	/**
+	 * 用户ID,uuid,不能为null
+	 */
+	public void setId(java.lang.String id) {
 		set("id", id);
 	}
 	
-	public java.lang.Integer getId() {
-		return getInt("id");
+	/**
+	 * 用户ID,uuid,不能为null
+	 */
+	public java.lang.String getId() {
+		return getStr("id");
 	}
 
-	public void setUsername(java.lang.String username) {
-		set("username", username);
+	/**
+	 * 用户账号,不能为null
+	 */
+	public void setAccount(java.lang.String account) {
+		set("account", account);
 	}
 	
-	public java.lang.String getUsername() {
-		return getStr("username");
+	/**
+	 * 用户账号,不能为null
+	 */
+	public java.lang.String getAccount() {
+		return getStr("account");
 	}
 
+	/**
+	 * 用户密码,不能为null
+	 */
 	public void setPassword(java.lang.String password) {
 		set("password", password);
 	}
 	
+	/**
+	 * 用户密码,不能为null
+	 */
 	public java.lang.String getPassword() {
 		return getStr("password");
 	}
 
-	public void setCurrentRole(java.lang.String currentRole) {
-		set("current_role", currentRole);
+	/**
+	 * 用户名称,不能为null
+	 */
+	public void setName(java.lang.String name) {
+		set("name", name);
 	}
 	
-	public java.lang.String getCurrentRole() {
-		return getStr("current_role");
+	/**
+	 * 用户名称,不能为null
+	 */
+	public java.lang.String getName() {
+		return getStr("name");
+	}
+
+	/**
+	 * 用户手机号,允许为null
+	 */
+	public void setPhone(java.lang.String phone) {
+		set("phone", phone);
+	}
+	
+	/**
+	 * 用户手机号,允许为null
+	 */
+	public java.lang.String getPhone() {
+		return getStr("phone");
+	}
+
+	/**
+	 * 角色ID,用户当前角色,不允许为null
+	 */
+	public void setCurrentUserRoleId(java.lang.String currentUserRoleId) {
+		set("currentUserRoleId", currentUserRoleId);
+	}
+	
+	/**
+	 * 角色ID,用户当前角色,不允许为null
+	 */
+	public java.lang.String getCurrentUserRoleId() {
+		return getStr("currentUserRoleId");
+	}
+
+	/**
+	 * 0 未删除 1已删除 默认为0
+	 */
+	public void setIsDelete(java.lang.Integer isDelete) {
+		set("isDelete", isDelete);
+	}
+	
+	/**
+	 * 0 未删除 1已删除 默认为0
+	 */
+	public java.lang.Integer getIsDelete() {
+		return getInt("isDelete");
+	}
+
+	/**
+	 * 0 为锁定 1已锁定 默认为0
+	 */
+	public void setIsLock(java.lang.Integer isLock) {
+		set("isLock", isLock);
+	}
+	
+	/**
+	 * 0 为锁定 1已锁定 默认为0
+	 */
+	public java.lang.Integer getIsLock() {
+		return getInt("isLock");
+	}
+
+	/**
+	 * 创建时间,不允许为null
+	 */
+	public void setCreateTime(java.util.Date createTime) {
+		set("createTime", createTime);
+	}
+	
+	/**
+	 * 创建时间,不允许为null
+	 */
+	public java.util.Date getCreateTime() {
+		return get("createTime");
+	}
+
+	/**
+	 * 更新时间,不允许为null,默认值是createTime
+	 */
+	public void setUpdateTime(java.util.Date updateTime) {
+		set("updateTime", updateTime);
+	}
+	
+	/**
+	 * 更新时间,不允许为null,默认值是createTime
+	 */
+	public java.util.Date getUpdateTime() {
+		return get("updateTime");
+	}
+
+	/**
+	 * 创建者,只能是account
+	 */
+	public void setCreate(java.lang.String create) {
+		set("create", create);
+	}
+	
+	/**
+	 * 创建者,只能是account
+	 */
+	public java.lang.String getCreate() {
+		return getStr("create");
+	}
+
+	/**
+	 * 用户的管理层级
+	 */
+	public void setSysLevel(java.lang.String sysLevel) {
+		set("sysLevel", sysLevel);
+	}
+	
+	/**
+	 * 用户的管理层级
+	 */
+	public java.lang.String getSysLevel() {
+		return getStr("sysLevel");
+	}
+
+	/**
+	 * 用户所在组织id
+	 */
+	public void setCurrentOrgId(java.lang.String currentOrgId) {
+		set("currentOrgId", currentOrgId);
+	}
+	
+	/**
+	 * 用户所在组织id
+	 */
+	public java.lang.String getCurrentOrgId() {
+		return getStr("currentOrgId");
+	}
+
+	/**
+	 * 0 不只读 1是只读 默认为0
+	 */
+	public void setIsReadOnly(java.lang.Integer isReadOnly) {
+		set("isReadOnly", isReadOnly);
+	}
+	
+	/**
+	 * 0 不只读 1是只读 默认为0
+	 */
+	public java.lang.Integer getIsReadOnly() {
+		return getInt("isReadOnly");
+	}
+
+	/**
+	 * 用户管理层次名称
+	 */
+	public void setSysLevelName(java.lang.String sysLevelName) {
+		set("sysLevelName", sysLevelName);
+	}
+	
+	/**
+	 * 用户管理层次名称
+	 */
+	public java.lang.String getSysLevelName() {
+		return getStr("sysLevelName");
+	}
+
+	/**
+	 * 用户最后登录时间
+	 */
+	public void setLastLoginTime(java.util.Date lastLoginTime) {
+		set("lastLoginTime", lastLoginTime);
+	}
+	
+	/**
+	 * 用户最后登录时间
+	 */
+	public java.util.Date getLastLoginTime() {
+		return get("lastLoginTime");
 	}
 
 }

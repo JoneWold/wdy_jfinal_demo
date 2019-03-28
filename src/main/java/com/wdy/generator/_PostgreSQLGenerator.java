@@ -1,6 +1,8 @@
 package com.wdy.generator;
 
 import com.jfinal.kit.PathKit;
+import com.jfinal.kit.Prop;
+import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.dialect.PostgreSqlDialect;
 import com.jfinal.plugin.activerecord.generator.Generator;
 import com.jfinal.plugin.druid.DruidPlugin;
@@ -17,9 +19,14 @@ import javax.sql.DataSource;
 public class _PostgreSQLGenerator {
 
     public static DataSource getDataSource() {
-        DruidPlugin druidPlugin = WdyConfig.createDruidPluginPostgreSQL();
+        DruidPlugin druidPlugin = createDruidPluginPostgreSQL();
         druidPlugin.start();
         return druidPlugin.getDataSource();
+    }
+
+    public static DruidPlugin createDruidPluginPostgreSQL() {
+        Prop p = PropKit.use("jfinal.properties");
+        return new DruidPlugin(p.get("jfinal.postgreSQL.url"), p.get("jfinal.postgreSQL.user"), p.get("jfinal.postgreSQL.password"), p.get("jfinal.postgreSQL.driverClass").trim());
     }
 
     public static void main(String[] args) {
@@ -37,8 +44,8 @@ public class _PostgreSQLGenerator {
         Generator generator = new Generator(getDataSource(), baseModelPackageName, baseModelOutputDir, modelPackageName, modelOutputDir);
 
         // 配置是否生成备注
-        generator.setGenerateRemarks(false);
-
+        generator.setGenerateRemarks(true);
+//        generator.setBaseModelTemplate("/com/wdy/generator/postgreSQL/model/base/base_model_template.jf");
         // 设置数据库方言
         generator.setDialect(new PostgreSqlDialect());
 
@@ -55,7 +62,7 @@ public class _PostgreSQLGenerator {
         generator.setGenerateDataDictionary(false);
 
         // 设置需要被移除的表名前缀用于生成modelName。例如表名 "osc_user"，移除前缀 "osc_"后生成的model名为 "User"而非 OscUser
-        generator.setRemovedTableNamePrefixes("t_");
+        generator.setRemovedTableNamePrefixes("Sys");
 
         // 生成
         generator.generate();

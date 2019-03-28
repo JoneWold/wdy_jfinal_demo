@@ -16,12 +16,39 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 public class _MappingKit {
 	
 	public static void mapping(ActiveRecordPlugin arp) {
-		arp.addMapping("SysLoginLog", "id", SysLoginLog.class);
-		arp.addMapping("SysOperateLog", "id", SysOperateLog.class);
-		arp.addMapping("SysPermission", "id", SysPermission.class);
-		arp.addMapping("SysRole", "id", SysRole.class);
-		arp.addMapping("SysUser", "id", SysUser.class);
-		arp.addMapping("SysUserRolePermission", "id", SysUserRolePermission.class);
+		arp.addMapping("JobInfo", "id", JobInfo.class);
+		arp.addMapping("SysLoginLog", "id", LoginLog.class);
+		arp.addMapping("SysOperateLog", "id", OperateLog.class);
+		arp.addMapping("SysPermission", "id", Permission.class);
+		arp.addMapping("SysRole", "id", Role.class);
+		arp.addMapping("SysUser", "id", User.class);
+		arp.addMapping("SysUserRolePermission", "id", UserRolePermission.class);
+		arp.addMapping("TempJob", "id", TempJob.class);
+		arp.addMapping("a01", "A0000", A01.class);
+		arp.addMapping("a02", "A0200", A02.class);
+		arp.addMapping("a05", "A0500", A05.class);
+		arp.addMapping("a06", "A0600", A06.class);
+		arp.addMapping("a08", "A0800", A08.class);
+		arp.addMapping("a11", "A1100", A11.class);
+		arp.addMapping("a14", "A1400", A14.class);
+		arp.addMapping("a15", "A1500", A15.class);
+		arp.addMapping("a31", "A0000", A31.class);
+		arp.addMapping("a32", "USERID", A32.class);
+		arp.addMapping("a36", "A3600", A36.class);
+		arp.addMapping("a37", "A0000", A37.class);
+		arp.addMapping("a41", "A4100", A41.class);
+		arp.addMapping("a53", "A5300", A53.class);
+		arp.addMapping("a57", "A0000", A57.class);
+		arp.addMapping("a60", "A0000", A60.class);
+		arp.addMapping("a61", "A0000", A61.class);
+		arp.addMapping("a62", "A0000", A62.class);
+		arp.addMapping("a63", "A0000", A63.class);
+		arp.addMapping("a64", "A6400", A64.class);
+		arp.addMapping("a71", "A7100", A71.class);
+		arp.addMapping("a99z1", "A99Z100", A99z1.class);
+		arp.addMapping("b01", "id", B01.class);
+		arp.addMapping("code_table", "TABLE_CODE", CodeTable.class);
+		arp.addMapping("code_value", "CODE_VALUE_SEQ", CodeValue.class);
 	}
 }
 

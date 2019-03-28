@@ -1,8 +1,8 @@
 package com.wdy.interceptor.jfinal;
 
 import com.jfinal.config.Routes;
-import com.wdy.controller.hello.HelloController;
-import com.wdy.controller.swagger.WdySwaggerController;
+import com.wdy.biz.hello.controller.HelloController;
+import com.wdy.biz.swagger.WdySwaggerController;
 
 /**
  * Created by wgch on 2019/3/6.
