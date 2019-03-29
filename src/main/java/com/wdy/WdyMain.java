@@ -37,6 +37,7 @@ public class WdyMain {
 
         String s = "001.001.002.046." + new DecimalFormat("000").format(1);
         System.out.println("--->>> " + s);
+        System.out.println("最强王者".substring(0,1));
     }
 
     public static void md5() {
