@@ -1,0 +1,33 @@
+    /**
+     * 管理机构
+     *
+     * @param currOrgArray
+     * @return
+     */
+    public List<String> currManageOrg(List<JSONObject> currOrgArray) {
+        // 所有管理层级
+        List<String> midList = new ArrayList<>();
+        for (JSONObject jsonObject : currOrgArray) {
+            String currOrgId = jsonObject.getString(ORG_ID);
+            B01 org = orgDao.findById(currOrgId);
+            String b0111 = org.getB0111();
+            midList.add(b0111);
+        }
+        List<String> orgCodeList = new ArrayList<>();
+        // 合并相同层级，不同层级的层级码
+        for (String midCode : midList) {
+            if (orgCodeList.size() == ZERO_INT) {
+                orgCodeList.add(midCode);
+            }
+            for (String orgCode : orgCodeList) {
+                // 相同层级
+                if (orgCode.startsWith(midCode)) {
+                    orgCodeList.remove(orgCode);
+                    orgCodeList.add(midCode);
+                } else {
+                    orgCodeList.add(midCode);
+                }
+            }
+        }
+        return orgCodeList;
+    }
