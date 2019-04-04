@@ -13,6 +13,7 @@ public class WdyMain {
         System.out.println(Fribonacci(9));
         WdyString();
         md5();
+        getSQL();
     }
 
     public static int Fribonacci(int n) {
@@ -43,4 +44,14 @@ public class WdyMain {
         String md5Hex = DigestUtil.md5Hex("123456");
         System.out.println(md5Hex);
     }
+
+    public static void getSQL() {
+        String str = "select a01.\"A0000\",a01.\"A0101\",a01.\"A0192\" as \"A0215A\" ,(select string_agg(a02.\"A0215B\",'、') from \"a02\" where \"A0000\" = a01.\"A0000\" group by \"A0000\") as \"A0215B\",(select string_agg ( to_char ( a02.\"A0243\", 'YYYY.MM' ), '、' ) from \"a02\" where \"A0000\" =a01.\"A0000\" group by \"A0000\") AS \"A0243\",a01.\"A0192C\",a01.\"A0104\",a01.\"A0117\",to_char(a01.\"A0107\",'YYYY.MM') as \"A0107\",a01.\"A0111A\",a01.\"QRZZS\",a01.\"ZZZS\",a01.\"A0196\",to_char(a01.\"A0134\",'YYYY.MM') as \"A0134\",to_char(a01.\"A0144\",'YYYY.MM') as \"A0140\",string_agg(a02.\"mark\",'、') as \"mark\",concat(a01.\"XGR\",to_char(a01.\"XGSJ\",'YYYY.MM')) as \"XGRANDXGSJ\",a01.\"A0198\"\tfrom \"a01\" left join \"a02\" on a01.\"A0000\" = a02.\"A0000\" left join \"b01\" on a02.\"A0201B\" = b01.\"id\" left join \"a08\" on a08.\"A0000\" = a01.\"A0000\" where  b01.\"B0111\" like 'null%' group by a01.\"A0000\"";
+        String sql = str.substring(0, str.lastIndexOf("from"));
+        System.out.println(sql);
+        System.out.println("================");
+        String from = str.substring(str.lastIndexOf("from"));
+        System.out.println(from);
+    }
+
 }
