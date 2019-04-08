@@ -1,4 +1,4 @@
-package com.wdy.common.vo;
+package com.wdy.vo;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

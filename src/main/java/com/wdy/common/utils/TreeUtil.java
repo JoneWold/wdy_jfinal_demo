@@ -1,7 +1,7 @@
 package com.wdy.common.utils;
 
 
-import com.wdy.common.vo.TreeNodeVo;
+import com.wdy.vo.TreeNodeVo;
 
 import java.util.ArrayList;
 import java.util.List;
