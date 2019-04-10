@@ -1,5 +1,6 @@
 package com.wdy.bizz.hello;
 
+import cn.hutool.core.date.DateUtil;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
@@ -13,6 +14,10 @@ import com.wdy.generator.postgreSQL.model._MappingKit;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static com.wdy.config.constant.Constant.DB_MySQL;
 import static com.wdy.config.constant.Constant.DB_PGSQL;
@@ -70,6 +75,24 @@ public class TestHelloController {
         OutMessage message = hello.getPostgreSQLList();
         System.out.println(message);
         assertThat(message.getCode(), is(SUCCESS.getCode()));
+    }
+
+    /**
+     * 测试字符串转时间格式
+     */
+    @Test
+    public void testStrToDate() {
+        String format = DateUtil.format(DateUtil.parse("2019-04-11", "yyyy-MM-dd"), "yyyyMM");
+        System.out.println(format);
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2017-04-11 12:12:00");
+            System.out.println(date);
+            String yyyyMM1 = new SimpleDateFormat("yyyyMM").format(date);
+            System.out.println(yyyyMM1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
