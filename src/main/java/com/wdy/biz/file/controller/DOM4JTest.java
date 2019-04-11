@@ -48,15 +48,14 @@ public class DOM4JTest {
                 // 获取book的属性名以及 属性值
                 List<Attribute> bookAttrs = book.attributes();
                 for (Attribute attr : bookAttrs) {
-                    System.out.println("属性名：" + attr.getName() + "--属性值："
-                            + attr.getValue());
+                    System.out.println("属性名：" + attr.getName() + "--属性值：" + attr.getValue());
                     bookModel.setId(attr.getValue());
                 }
                 Iterator itt = book.elementIterator();
                 while (itt.hasNext()) {
                     Element bookChild = (Element) itt.next();
-                    System.out.println("节点名：" + bookChild.getName() + "--节点值："
-                            + bookChild.getStringValue());
+                    System.out.println("节点名：" + bookChild.getName() + "--节点值：" + bookChild.getStringValue());
+                    // 组装数据
                     if ("name".equals(bookChild.getName())) {
                         bookModel.setName(bookChild.getStringValue());
                     } else if ("author".equals(bookChild.getName())) {
