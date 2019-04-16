@@ -1,5 +1,6 @@
 package com.wdy.bizz.hello;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import com.jfinal.kit.Prop;
@@ -9,6 +10,7 @@ import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.dialect.PostgreSqlDialect;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.wdy.biz.hello.service.HelloService;
 import com.wdy.common.utils.OutMessage;
 import com.wdy.generator.postgreSQL.model._MappingKit;
@@ -18,7 +20,9 @@ import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.wdy.config.constant.Constant.DB_MySQL;
 import static com.wdy.config.constant.Constant.DB_PGSQL;
@@ -79,7 +83,7 @@ public class TestHelloController {
     }
 
     /**
-     * 测试字符串转时间格式
+     * 字符串 转 时间格式
      */
     @Test
     public void testStrToDate() {
@@ -98,6 +102,18 @@ public class TestHelloController {
             e.printStackTrace();
         }
 
+    }
+
+    @Test
+    public void testJoin() {
+        List<String> list = new ArrayList();
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add("d");
+        System.out.println(list);
+        String join = CollectionUtil.join(list, " AND ");
+        System.out.println(join);
     }
 
 }
