@@ -1,5 +1,6 @@
 package com.wdy.bizz.hello;
 
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
@@ -84,6 +85,10 @@ public class TestHelloController {
     public void testStrToDate() {
         String format = DateUtil.format(DateUtil.parse("2019-04-11", "yyyy-MM-dd"), "yyyyMM");
         System.out.println(format);
+
+        // 字符串格式 转 时间格式
+        DateTime parse = DateUtil.parse("20190416");
+        System.out.println(parse);
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2017-04-11 12:12:00");
             System.out.println(date);
