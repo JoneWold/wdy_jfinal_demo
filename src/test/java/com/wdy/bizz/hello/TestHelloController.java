@@ -10,7 +10,6 @@ import com.jfinal.plugin.activerecord.DbKit;
 import com.jfinal.plugin.activerecord.dialect.PostgreSqlDialect;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.wdy.biz.hello.service.HelloService;
 import com.wdy.common.utils.OutMessage;
 import com.wdy.generator.postgreSQL.model._MappingKit;
