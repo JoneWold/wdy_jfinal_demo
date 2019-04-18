@@ -7,6 +7,7 @@ import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.DbKit;
+import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.dialect.PostgreSqlDialect;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
@@ -113,6 +114,32 @@ public class TestHelloController {
         System.out.println(list);
         String join = CollectionUtil.join(list, " AND ");
         System.out.println(join);
+    }
+
+    @Test
+    public void list() {
+        List<String> aList = new ArrayList<>();
+        List<String> aCopyList = new ArrayList<>();
+        aList.add("张三");
+        aList.add("李四");
+        aList.add("王五");
+        aCopyList.addAll(aList);
+        List<String> bList = new ArrayList<>();
+        bList.add("张三");
+        bList.add("李四b");
+        bList.add("王五b");
+        System.out.println("原aList：" + aList);
+        aList.retainAll(bList);
+        System.out.println("交集aList：" + aList);
+        System.out.println("-------------");
+        aCopyList.removeAll(aList);
+        System.out.println("原bList：" + bList);
+        System.out.println("aCopyList：" + aCopyList);
+        Record record = new Record();
+        for (String ss : bList) {
+            record.set(ss, ss);
+        }
+        System.out.println("\n" + record);
     }
 
 }
