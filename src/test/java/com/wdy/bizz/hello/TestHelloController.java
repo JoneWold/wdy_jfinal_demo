@@ -131,7 +131,7 @@ public class TestHelloController {
         list1.addAll(list2);
         List list = removeDuplicate(list1);
         System.out.println(list);
-
+        System.out.println("------------------------");
         //交集
         list1.retainAll(list2);
         System.out.println("交集：");
@@ -160,10 +160,10 @@ public class TestHelloController {
      * @param list
      * @return
      */
-    public List removeDuplicate(List list) {
-        HashSet h = new HashSet(list);
+    public List<String> removeDuplicate(List<String> list) {
+        HashSet hashSet = new HashSet<>(list);
         list.clear();
-        list.addAll(h);
+        list.addAll(hashSet);
         return list;
     }
 
