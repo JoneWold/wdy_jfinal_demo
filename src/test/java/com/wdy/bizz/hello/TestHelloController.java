@@ -20,13 +20,12 @@ import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.wdy.config.constant.Constant.DB_MySQL;
 import static com.wdy.config.constant.Constant.DB_PGSQL;
 import static com.wdy.config.constant.Status.SUCCESS;
+import static org.hamcrest.CoreMatchers.both;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -118,28 +117,54 @@ public class TestHelloController {
 
     @Test
     public void list() {
-        List<String> aList = new ArrayList<>();
-        List<String> aCopyList = new ArrayList<>();
-        aList.add("张三");
-        aList.add("李四");
-        aList.add("王五");
-        aCopyList.addAll(aList);
-        List<String> bList = new ArrayList<>();
-        bList.add("张三");
-        bList.add("李四b");
-        bList.add("王五b");
-        System.out.println("原aList：" + aList);
-        aList.retainAll(bList);
-        System.out.println("交集aList：" + aList);
-        System.out.println("-------------");
-        aCopyList.removeAll(aList);
-        System.out.println("原bList：" + bList);
-        System.out.println("aCopyList：" + aCopyList);
+        List<String> list1 = new ArrayList<>();
+        list1.add("张三");
+        list1.add("李四1");
+        list1.add("王五1");
+        list1.add("王五2");
+        List<String> list2 = new ArrayList<>();
+        list2.add("张三");
+        list2.add("李四2");
+        list2.add("王五2");
+        list2.add("王五1");
+        //并集
+        list1.addAll(list2);
+        List list = removeDuplicate(list1);
+        System.out.println(list);
+
+        //交集
+        list1.retainAll(list2);
+        System.out.println("交集：");
+        System.out.println("list1：" + list1);
+        System.out.println("list2：" + list2);
+        //差集
+        list1.removeAll(list2);
+        System.out.println("差集：");
+        System.out.println("list1：" + list1);
+        System.out.println("list2：" + list2);
+        //无重复并集
+        list2.removeAll(list1);
+        list1.addAll(list2);
+        System.out.println("无重复并集：");
+        System.out.println("list1：" + list1);
+        System.out.println("list2：" + list2);
         Record record = new Record();
-        for (String ss : bList) {
+        for (String ss : list2) {
             record.set(ss, ss);
         }
-        System.out.println("\n" + record);
+    }
+
+    /**
+     * 通过HashSet踢除list中重复元素
+     *
+     * @param list
+     * @return
+     */
+    public List removeDuplicate(List list) {
+        HashSet h = new HashSet(list);
+        list.clear();
+        list.addAll(h);
+        return list;
     }
 
 }
