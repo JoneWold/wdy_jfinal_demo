@@ -11,7 +11,7 @@
  Target Server Version : 50725
  File Encoding         : 65001
 
- Date: 27/03/2019 14:16:20
+ Date: 23/04/2019 14:21:51
 */
 
 SET NAMES utf8mb4;
@@ -130,5 +130,22 @@ INSERT INTO `sys_user` VALUES (88, 'fba486ef-c4a4-48e8-8156-3b8e6cc997de', 'wg2'
 INSERT INTO `sys_user` VALUES (89, 'b080f3a1-c48c-4b5b-b498-78594dc390c1', '123', '123', '3ae1d8193557c465f371a2045f029ea6', 'f7295d2dc0cb4c6dac432ba499348e96', NULL, NULL, NULL, NULL, 'jd1', NULL, 1, NULL, '18223407969', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-30 22:03:16', NULL, b'0', NULL, NULL);
 INSERT INTO `sys_user` VALUES (90, '9c1430db-0af9-434d-86c8-26b670910756', 'jd2', 'jd2', 'c0faf521321d9002022ba2d01ca9f9cd', '41ff96bde69148d508d11c41cedeae89', '001001001', '葛城街道', NULL, NULL, NULL, NULL, 1, NULL, '15202345616', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-30 22:03:16', NULL, b'0', NULL, NULL);
 INSERT INTO `sys_user` VALUES (91, 'b928db60-6f8f-40bd-a73c-469663f68010', '1sq', '1sq', 'b0bfce8c468f95d30ecad36aab7b4c10', '514db14185ac9b93714ef66d5103a893', '001001001', '葛城街道', NULL, NULL, 'oqcM46Dp_TUnwH7xY_Q7VRMtVQN4', NULL, 1, '11@11.com', '15203254514', '1', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2018-11-30 22:03:16', NULL, b'0', NULL, NULL);
+
+-- ----------------------------
+-- Table structure for verify_rule
+-- ----------------------------
+DROP TABLE IF EXISTS `verify_rule`;
+CREATE TABLE `verify_rule`  (
+  `VSC001` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `VRU001` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `VRU002` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `VRU003` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `VRU004` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `VRU005` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `VRU006` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `VRU007` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `VRU008` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `VRU009` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
