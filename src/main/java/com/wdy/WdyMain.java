@@ -16,6 +16,7 @@ public class WdyMain {
         wdy.getNodeCode();
         wdy.md5();
         wdy.getSQL();
+        wdy.wdyStringBuffer();
     }
 
     // 回调函数
@@ -69,4 +70,13 @@ public class WdyMain {
         System.out.println(from);
     }
 
+    // StringBuffer相等判断
+    private void wdyStringBuffer() {
+        StringBuffer b1 = new StringBuffer();
+        StringBuffer b2 = new StringBuffer();
+        b1.append("万州学院 军事学");
+        b2.append("万州学院 军事学");
+        System.out.println(b1.toString().equals(b2.toString()));
+
+    }
 }
