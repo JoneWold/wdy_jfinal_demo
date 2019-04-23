@@ -23,7 +23,7 @@ public class JProgressBarDemo extends JFrame implements Runnable {
 
         this.add(progress);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setBounds(200, 300, 250, 50);
+        this.setBounds(200, 300, 250, 80);
         this.setVisible(true);
     }
 
