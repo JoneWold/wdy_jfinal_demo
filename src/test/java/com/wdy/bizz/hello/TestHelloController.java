@@ -20,12 +20,14 @@ import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 
 import static com.wdy.config.constant.Constant.DB_MySQL;
 import static com.wdy.config.constant.Constant.DB_PGSQL;
 import static com.wdy.config.constant.Status.SUCCESS;
-import static org.hamcrest.CoreMatchers.both;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
