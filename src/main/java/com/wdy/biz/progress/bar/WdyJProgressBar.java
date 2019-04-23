@@ -1,4 +1,4 @@
-package com.wdy.biz.progress;
+package com.wdy.biz.progress.bar;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
