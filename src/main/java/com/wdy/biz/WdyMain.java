@@ -1,4 +1,4 @@
-package com.wdy;
+package com.wdy.biz;
 
 import cn.hutool.crypto.digest.DigestUtil;
 
