@@ -1,7 +1,9 @@
 package com.wdy.config;
 
 import com.jfinal.config.*;
+import com.jfinal.ext.handler.UrlSkipHandler;
 import com.jfinal.json.FastJsonFactory;
+import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
@@ -12,7 +14,10 @@ import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.template.Engine;
 import com.jfinal.template.source.ClassPathSourceFactory;
 import com.wdy.biz.jaxrs.JaxRsController;
+import com.wdy.biz.progress.jfinal.AlarmThreadController;
+import com.wdy.biz.progress.jfinal.InterWsController;
 import com.wdy.generator.mysql.model._MappingKit;
+import com.wdy.biz.progress.jfinal.WebSocketHandler;
 import com.wdy.interceptor.jfinal.AdminRoutes;
 import live.autu.plugin.jfinal.swagger.config.SwaggerPlugin;
 import live.autu.plugin.jfinal.swagger.config.routes.SwaggerRoutes;
@@ -73,6 +78,7 @@ public class WdyConfig extends JFinalConfig {
         me.add(new SwaggerRoutes());
         me.add(new AdminRoutes());
         me.add("/jax", JaxRsController.class);
+        me.add("/webSocket", InterWsController.class, "/ws");
     }
 
     /**
@@ -80,6 +86,8 @@ public class WdyConfig extends JFinalConfig {
      */
     @Override
     public void configEngine(Engine me) {
+        // 设置视图的基础路径
+        me.setBaseTemplatePath(PathKit.getWebRootPath() + "/WEB-INF/view");
         // 添加共享模板函数
         me.addSharedFunction("/common/_layout.html");
 
@@ -136,6 +144,8 @@ public class WdyConfig extends JFinalConfig {
         // TODO 配置swagger插件
         me.add(new SwaggerPlugin(new SwaggerDoc().setBasePath("/").setHost("127.0.0.1").setSwagger("2.0")
                 .setInfo(new SwaggerApiInfo("jfinal swagger demo", "1.0", "jfinal swagger", ""))));
+
+        AlarmThreadController.getInstance().start();
     }
 
     public static DruidPlugin createDruidPluginMySQL() {
@@ -169,7 +179,8 @@ public class WdyConfig extends JFinalConfig {
 
     @Override
     public void configHandler(Handlers handlers) {
-
+        handlers.add(new WebSocketHandler());
+//        handlers.add(new UrlSkipHandler("/ws/socket.ws", false));
     }
 
     @Override

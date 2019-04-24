@@ -35,7 +35,7 @@ public class DOM4JTest {
         SAXReader reader = new SAXReader();
         try {
             // 通过reader对象的read方法加载books.xml文件,获取docuemnt对象。
-            Document document = reader.read(new File("D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\book\\book.xml"));
+            Document document = reader.read(new File("D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\book\\book.xml"));
             // 通过document对象获取根节点bookstore
             Element bookStore = document.getRootElement();
             // 通过element对象的elementIterator方法获取迭代器
