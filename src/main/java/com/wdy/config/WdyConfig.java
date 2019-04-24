@@ -1,7 +1,6 @@
 package com.wdy.config;
 
 import com.jfinal.config.*;
-import com.jfinal.ext.handler.UrlSkipHandler;
 import com.jfinal.json.FastJsonFactory;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Prop;
@@ -14,8 +13,9 @@ import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.template.Engine;
 import com.jfinal.template.source.ClassPathSourceFactory;
 import com.wdy.biz.jaxrs.JaxRsController;
+import com.wdy.biz.progress.MobSdController;
 import com.wdy.biz.progress.jfinal.AlarmThreadController;
-import com.wdy.biz.progress.jfinal.InterWsController;
+import com.wdy.biz.progress.jfinal.WebSocketController;
 import com.wdy.generator.mysql.model._MappingKit;
 import com.wdy.biz.progress.jfinal.WebSocketHandler;
 import com.wdy.interceptor.jfinal.AdminRoutes;
@@ -66,8 +66,8 @@ public class WdyConfig extends JFinalConfig {
         me.setJsonFactory(new FastJsonFactory());
         // 配置 Date 类型转 json 后的格式
         me.setJsonDatePattern("yyyy-MM--dd");
-        // 文件默认上传大小
-        me.setMaxPostSize(10000);
+        // 文件默认上传大小 100M
+        me.setMaxPostSize(100000);
     }
 
     /**
@@ -78,7 +78,8 @@ public class WdyConfig extends JFinalConfig {
         me.add(new SwaggerRoutes());
         me.add(new AdminRoutes());
         me.add("/jax", JaxRsController.class);
-        me.add("/webSocket", InterWsController.class, "/ws");
+        me.add("/webSocket", WebSocketController.class, "/ws");
+        me.add("/mob", MobSdController.class);
     }
 
     /**

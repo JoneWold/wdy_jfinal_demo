@@ -5,12 +5,27 @@
     <title>Java后端WebSocket的Tomcat实现</title>
 </head>
 <body>
-Welcome<br/><input id="text" type="text"/>
+Welcome
+<br/>
+<input id="text" type="text"/>
 <button onclick="send()">发送消息</button>
 <hr/>
 <button onclick="closeWebSocket()">关闭WebSocket连接</button>
 <hr/>
 <div id="message"></div>
+<hr/>
+<h3>文件上传</h3>
+<form action="upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="fileUpload"/>
+    <input type="submit" value="上传文件" onclick="wsBar()"/>
+</form>
+<br>
+<!-- 外层div 进度条的整体视觉和位置设置 -->
+<div style="width:300px; height:20px; border: 1px solid #CCC">
+    <!-- 内层div  逐渐递增的进度条 -->
+    <div id="jdt" style="height: 20px"></div>
+</div>
+
 </body>
 
 <script type="text/javascript">
@@ -62,6 +77,39 @@ Welcome<br/><input id="text" type="text"/>
     function send() {
         var message = document.getElementById('text').value;
         websocket.send(message);
+    }
+
+    //upload
+    function wsBar() {
+        // 获取表单对象
+        var fm = document.getElementById("mainForm");
+        // 实例化FormData对象
+        var fd = new FormData(fm);
+        // 创建XMLHttpRequest对象
+        var xhr = new XMLHttpRequest();
+        // console.log(xhr);
+        // 调用open方法准备ajax请求
+        xhr.open('get', 'ws://localhost:8080/ws/socket.ws');
+
+        var jdt = document.getElementById('jdt');
+        // 绑定onprogress事件
+        xhr.upload.onprogress = function (evt) {
+            // console.log(evt);
+            // toFixed修正结果，只保留小数点后两位
+            // 计算上传大小的百分比
+            percent = (evt.loaded / evt.total).toFixed(2);
+            // 设置进度条样式
+            jdt.style.width = percent * 300 + 'px';
+            jdt.style.background = 'skyblue';
+        }
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                alert(xhr.responseText);
+            }
+        }
+        // 发送ajax请求
+        xhr.send(fd);
     }
 </script>
 </html>

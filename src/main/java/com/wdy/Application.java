@@ -20,7 +20,7 @@ public class Application {
         UndertowServer.create(WdyConfig.class, "jfinal.properties")
                 .configWeb(builder -> {
                     // 配置 WebSocket，MyWebSocket 需使用 ServerEndpoint 注解
-                    builder.addWebSocketEndpoint("com.wdy.biz.progress.jfinal.WebSocketController");
+                    builder.addWebSocketEndpoint("com.wdy.biz.progress.jfinal.WebSocket");
                 }).start();
 
     }

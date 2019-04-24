@@ -1,4 +1,4 @@
-package com.wdy.biz.progress;
+package com.wdy.biz.progress.bar;
 
 import java.io.*;
 import java.util.ArrayList;
