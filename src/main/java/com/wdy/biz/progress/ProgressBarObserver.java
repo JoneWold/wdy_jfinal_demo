@@ -1,5 +1,10 @@
 package com.wdy.biz.progress;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import java.util.Observable;
 
 /**
@@ -7,6 +12,10 @@ import java.util.Observable;
  * @Description 进度条组件被观察者
  * @date 2019/4/24 18:06
  */
+@Data
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProgressBarObserver extends Observable {
     private int uploadedSize = 0;
     private ProgressBarEntity bar;

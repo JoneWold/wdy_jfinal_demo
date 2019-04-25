@@ -66,8 +66,8 @@ public class WdyConfig extends JFinalConfig {
         me.setJsonFactory(new FastJsonFactory());
         // 配置 Date 类型转 json 后的格式
         me.setJsonDatePattern("yyyy-MM--dd");
-        // 文件默认上传大小 100M
-        me.setMaxPostSize(100000);
+        // 文件默认上传大小 1024
+        me.setMaxPostSize(1024000);
     }
 
     /**

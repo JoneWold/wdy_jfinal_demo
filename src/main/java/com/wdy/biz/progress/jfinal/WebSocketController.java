@@ -23,6 +23,9 @@ public class WebSocketController extends Controller {
         long length = file.length();
         // 1、将文件进度存入缓存
         // 2、通过ws访问直接取缓存值
+        int contentLength = getRequest().getContentLength();
+        System.out.println(contentLength);
+
         renderText(String.valueOf(length));
     }
 
