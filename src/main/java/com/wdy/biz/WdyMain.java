@@ -1,6 +1,7 @@
 package com.wdy.biz;
 
 import cn.hutool.crypto.digest.DigestUtil;
+import com.jfinal.plugin.activerecord.Record;
 
 import java.text.DecimalFormat;
 
@@ -83,5 +84,13 @@ public class WdyMain {
         System.out.println("format1: " + format1);
         String format2 = String.format("%.2f", (float) 7 / 12);
         System.out.println("format2: " + format2);
+        System.out.println("format2: " + String.format("%.2f", (float) 12 / 12));
+
+        Record record = new Record();
+        record.set("name", "ss");
+        record.set("id", null);
+        if ("1.00".equals(record.getStr("id"))) {
+            System.out.println("啦啦啦啦啦啦啦啦");
+        }
     }
 }

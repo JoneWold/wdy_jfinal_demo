@@ -1,6 +1,7 @@
 package com.wdy.config;
 
 import com.jfinal.config.*;
+import com.jfinal.core.Const;
 import com.jfinal.json.FastJsonFactory;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Prop;
@@ -66,8 +67,8 @@ public class WdyConfig extends JFinalConfig {
         me.setJsonFactory(new FastJsonFactory());
         // 配置 Date 类型转 json 后的格式
         me.setJsonDatePattern("yyyy-MM--dd");
-        // 文件默认上传大小 1024
-        me.setMaxPostSize(1024000);
+        // 文件默认上传大小 10485760字节 10M
+        me.setMaxPostSize(10 * Const.DEFAULT_MAX_POST_SIZE);
     }
 
     /**
