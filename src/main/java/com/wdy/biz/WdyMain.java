@@ -78,5 +78,10 @@ public class WdyMain {
         b2.append("万州学院 军事学");
         System.out.println(b1.toString().equals(b2.toString()));
 
+        // 保留小数点
+        String format1 = new DecimalFormat("0.00").format((float) 1 / 12);
+        System.out.println("format1: " + format1);
+        String format2 = String.format("%.2f", (float) 7 / 12);
+        System.out.println("format2: " + format2);
     }
 }
