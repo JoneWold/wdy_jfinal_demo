@@ -1,4 +1,4 @@
-package com.wdy.biz.progress.jfinal;
+package com.wdy.biz.progress.websocket;
 
 
 import javax.websocket.*;
@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 /**
  * @author wgch
- * @Description
+ * @Description WebSocket
  * @date 2019/4/24 9:30
  */
 @ServerEndpoint("/ws/socket.ws")

@@ -1,4 +1,4 @@
-package com.wdy.biz.progress;
+package com.wdy.biz.progress.jfinal;
 
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
@@ -11,7 +11,7 @@ import java.util.Observer;
 
 /**
  * @author wgch
- * @Description
+ * @Description jFinal文件上传进度
  * @date 2019/4/24 18:19
  */
 @Before(ParameterInterceptor.class)

@@ -1,9 +1,6 @@
-package com.wdy.biz.progress.jfinal;
+package com.wdy.biz.progress.websocket;
 
 import org.apache.log4j.Logger;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * @author wgch

@@ -1,4 +1,4 @@
-package com.wdy.biz.progress.jfinal;
+package com.wdy.biz.progress.websocket;
 
 import com.jfinal.handler.Handler;
 

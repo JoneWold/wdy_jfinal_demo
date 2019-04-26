@@ -1,4 +1,4 @@
-package com.wdy.biz.progress;
+package com.wdy.biz.progress.jfinal;
 
 import java.io.File;
 import java.io.IOException;

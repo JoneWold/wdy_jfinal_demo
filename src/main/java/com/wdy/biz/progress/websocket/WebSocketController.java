@@ -1,4 +1,4 @@
-package com.wdy.biz.progress.jfinal;
+package com.wdy.biz.progress.websocket;
 
 import com.jfinal.core.Controller;
 import com.jfinal.upload.UploadFile;

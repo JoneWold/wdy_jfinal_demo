@@ -1,4 +1,4 @@
-package com.wdy.biz.progress;
+package com.wdy.biz.progress.jfinal;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
