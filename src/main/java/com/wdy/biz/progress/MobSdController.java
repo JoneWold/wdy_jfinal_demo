@@ -28,12 +28,14 @@ public class MobSdController extends ProgressBarController {
 
     @SuppressWarnings("unchecked")
     public void upload() {
-        long _ratio = 0;
+
+        // ThreadLocal来存放结果
+        ThreadLocal<Object> local = new ThreadLocal<>();
+
         removeSessionAttr("progressbar");
         ProgressBarObserver observer = new ProgressBarObserver(getRequest().getContentLength(), 0);
 
         observer.addObserver(new Observer() {
-            float ratio = _ratio;
 
             @Override
             public void update(Observable o, Object arg) {
@@ -45,10 +47,11 @@ public class MobSdController extends ProgressBarController {
                     // 进度比例
                     long totalSize = bar.getTotalSize();
                     int uploadedSize = bar.getUploadedSize();
-                    ratio = ((float) uploadedSize / totalSize);
+                    float ratio = ((float) uploadedSize / totalSize);
 //                    System.out.println(new DecimalFormat("0.00").format(ratio));
-                    String res = String.format("%.2f", ratio);
-                    System.out.println(res);
+                    String result = String.format("%.2f", ratio);
+                    // 匿名内部类的传值
+                    local.set(result);
                 }
             }
         });
@@ -57,8 +60,10 @@ public class MobSdController extends ProgressBarController {
         UploadFile file = getFile(observer);
 
         //UploadFile file = getFile("uploadFile","",PropKit.getInt("fileMaxPostSize", 5242880));
-        //TODO
-
+        //TODO 接收类部类传值
+        System.out.println(local.get());
+        Object _ratio = local.get();
+        local.remove();
         renderJson(_ratio);
     }
 
