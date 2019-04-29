@@ -4,6 +4,7 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.jfinal.plugin.activerecord.Record;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * Created by wgch on 2019/3/14.
@@ -84,7 +85,14 @@ public class WdyMain {
         System.out.println("format1: " + format1);
         String format2 = String.format("%.2f", (float) 7 / 12);
         System.out.println("format2: " + format2);
-        System.out.println("format2: " + String.format("%.2f", (float) 12 / 12));
+        System.out.println("format3: " + String.format("%.2f", (float) 12 / 12));
+
+        // 创建一个数值格式化对象
+        NumberFormat num = NumberFormat.getInstance();
+        // 设置精确到小数点后2位
+        num.setMaximumFractionDigits(2);
+        String ss = num.format((float) 1 / (float) 12 * 100);
+        System.out.println("百分比：" + ss);
 
         Record record = new Record();
         record.set("name", "ss");
