@@ -43,4 +43,119 @@
             maxElementsOnDisk="10000000"
             diskPersistent="false"
             memoryStoreEvictionPolicy="FIFO"/>
+
+
+    <cache
+            name="userLoginFailedCount"
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="86400"
+            timeToLiveSeconds="86400"
+            overflowToDisk="false"
+            maxElementsOnDisk="10000000"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="FIFO"
+    />
+
+    <cache
+            name="levelCode"
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="86400"
+            timeToLiveSeconds="86400"
+            overflowToDisk="false"
+            maxElementsOnDisk="10000000"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="FIFO" />
+
+    <cache
+            name="dict"
+            maxEntriesLocalHeap="0"
+            maxElementsInMemory="100000"
+            eternal="true"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="FIFO"
+
+    />
+
+    <cache
+            name="file"
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="86400"
+            timeToLiveSeconds="86400"
+            overflowToDisk="false"
+            maxElementsOnDisk="10000000"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="FIFO" />
+    <cache
+            name="fileUploadProgress"
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="86400"
+            timeToLiveSeconds="86400"
+            overflowToDisk="false"
+            maxElementsOnDisk="10000000"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="FIFO" />
+    <cache
+            name="fileDownloadProgress"
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="86400"
+            timeToLiveSeconds="86400"
+            overflowToDisk="false"
+            maxElementsOnDisk="10000000"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="FIFO" />
+    <cache
+            name="exchangeDataProgress"
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="86400"
+            timeToLiveSeconds="86400"
+            overflowToDisk="false"
+            maxElementsOnDisk="10000000"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="FIFO" />
+    <cache
+            name="verifyDataProgress"
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="86400"
+            timeToLiveSeconds="86400"
+            overflowToDisk="false"
+            maxElementsOnDisk="10000000"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="FIFO" />
+    <cache
+            name="verifyDataMemProgress"
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="86400"
+            timeToLiveSeconds="86400"
+            overflowToDisk="false"
+            maxElementsOnDisk="10000000"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="FIFO" />
+    <cache
+            name="verifyDataOrgProgress"
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="86400"
+            timeToLiveSeconds="86400"
+            overflowToDisk="false"
+            maxElementsOnDisk="10000000"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="FIFO" />
+    <cache
+            name="map"
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="86400"
+            timeToLiveSeconds="86400"
+            overflowToDisk="false"
+            maxElementsOnDisk="10000000"
+            diskPersistent="false"
+            memoryStoreEvictionPolicy="FIFO" />
 </ehcache>

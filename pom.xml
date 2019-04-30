@@ -36,6 +36,7 @@
         <joda-time.version>2.10.1</joda-time.version>
         <javax.websocket-api.version>1.1</javax.websocket-api.version>
         <undertow-websockets-jsr.version>2.0.20.Final</undertow-websockets-jsr.version>
+        <swagger.jaxrs2.version>2.0.8</swagger.jaxrs2.version>
     </properties>
 
     <!-- 使用阿里 maven 库 -->
@@ -185,6 +186,11 @@
             <groupId>io.undertow</groupId>
             <artifactId>undertow-websockets-jsr</artifactId>
             <version>${undertow-websockets-jsr.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-jaxrs2</artifactId>
+            <version>${swagger.jaxrs2.version}</version>
         </dependency>
 
     </dependencies>

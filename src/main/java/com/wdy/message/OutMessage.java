@@ -1,6 +1,5 @@
-package com.wdy.common.utils;
+package com.wdy.message;
 
-import com.wdy.config.constant.Status;
 import lombok.ToString;
 
 /**
@@ -34,7 +33,7 @@ public class OutMessage<T> {
         this.message = status.getMessage();
     }
 
-    public OutMessage(Status status, T data){
+    public OutMessage(Status status,T data){
 
         this.code = status.getCode();
         this.message = status.getMessage();

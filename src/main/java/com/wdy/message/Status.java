@@ -1,4 +1,4 @@
-package com.wdy.config.constant;
+package com.wdy.message;
 
 /***
  * 定义全局状态码:
