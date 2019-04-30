@@ -57,7 +57,7 @@ public class TestHelloController extends TestWdyConfig {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
+        System.out.println(DateUtil.parse(null));
     }
 
     @Test
