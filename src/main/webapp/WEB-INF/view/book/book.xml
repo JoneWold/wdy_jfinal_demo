@@ -12,4 +12,11 @@
         <price>77</price>
         <language>English</language>
     </book>
+    <book id="3">
+        <name>安猪啦baby
+        hxm</name>
+        <year>2004</year>
+        <price>77</price>
+        <language>English</language>
+    </book>
 </bookstore>
