@@ -184,7 +184,7 @@ public class DOM4JTest {
                 for (Attribute a : attributes) {
                     String name = a.getName();
                     String value = a.getValue();
-                    // 简历格式拼接
+                    // 简历格式拼接，将空格转换为换行
                     if ("A1701".equals(name)) {
                         char[] chars = value.toCharArray();
                         StringBuilder builder = new StringBuilder();
@@ -196,6 +196,7 @@ public class DOM4JTest {
                             char aChar1 = chars[i + 1];
                             char aChar2 = chars[i + 2];
                             char aChar3 = chars[i + 3];
+                            // 前一位是空格，当前及后面三位是数字
                             if (aChar0 == 32 && aChar >= 48 && aChar <= 57 && aChar1 >= 48 && aChar1 <= 57
                                     && aChar2 >= 48 && aChar2 <= 57 && aChar3 >= 48 && aChar3 <= 57) {
                                 sb.append(value, index, i - 1).append("\n");
@@ -203,8 +204,26 @@ public class DOM4JTest {
                                 builder.append(sb);
                             }
                         }
-                        // 最后一段
-                        String endStr = value.substring(index, index + 9) + " " + " " + value.substring(index + 9);
+                        // 最后一段 2015.12--         药品不良反应监测中心 副主任科员
+                        String endStr = value.substring(index);
+                        char[] endChars = endStr.toCharArray();
+                        int num = 0;
+                        int space = 0;
+                        for (int i = 0; i < endChars.length - 2; i++) {
+                            // 找到两条'-'的坐标
+                            if (endChars[i] == 45 && endChars[i + 1] == 45) {
+                                num = i + 2;
+                                // 从空格处开始循环
+                                for (int k = num; k < endChars.length - 2; k++) {
+                                    if (endChars[k] == 32) {
+                                        space++;
+                                    }
+                                }
+                            }
+                        }
+                        if (space == 7) {
+                            endStr = value.substring(index, index + 9) + " " + " " + value.substring(index + 9);
+                        }
                         builder.append(endStr);
 
                         value = builder.toString();
