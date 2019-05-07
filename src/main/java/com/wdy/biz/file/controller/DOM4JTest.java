@@ -1,6 +1,7 @@
 package com.wdy.biz.file.controller;
 
 import com.jfinal.kit.PathKit;
+import com.jfinal.plugin.activerecord.Record;
 import com.wdy.biz.file.model.Book;
 import org.dom4j.*;
 import org.dom4j.io.OutputFormat;
@@ -23,8 +24,12 @@ public class DOM4JTest {
     private static ArrayList<Book> bookList = new ArrayList<Book>();
 
     public static void main(String[] args) {
-        ArrayList<Book> xmlData = getXmlData();
-        System.out.println(xmlData);
+        String bookPath = "D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\book\\book.xml";
+        String a01Path = "D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\book\\A01.xml";
+//        ArrayList<Book> xmlData = getXmlData(bookPath);
+//        System.out.println(xmlData);
+        List<Record> a01XmlData = getA01XmlData(a01Path);
+        System.out.println(a01XmlData);
 //        testDoc();
 //        testCharAt();
     }
@@ -47,7 +52,7 @@ public class DOM4JTest {
     /**
      * DOM4J解析xml
      */
-    public static ArrayList<Book> getXmlData() {
+    public static ArrayList<Book> getXmlData(String filePath) {
         // 解析books.xml文件
         // 创建SAXReader的对象reader
         SAXReader reader = new SAXReader();
@@ -68,7 +73,7 @@ public class DOM4JTest {
 //        });
         try {
             // 通过reader对象的read方法加载books.xml文件,获取docuemnt对象。
-            Document document = reader.read(new File("D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\book\\book.xml"));
+            Document document = reader.read(new File(filePath));
             // xml文件保留换行
 //            document.getRootElement().addAttribute(QName.get("space", Namespace.XML_NAMESPACE), "preserve");
 
@@ -142,6 +147,69 @@ public class DOM4JTest {
             e.printStackTrace();
         }
         return bookList;
+    }
+
+    /**
+     * 解析 A01.xml
+     *
+     * @param filePath
+     * @return
+     */
+    public static List<Record> getA01XmlData(String filePath) {
+        List<Record> data = new ArrayList<>();
+        SAXReader saxReader = new SAXReader();
+        File file = new File(filePath);
+        if (!file.exists()) {
+            return new ArrayList<>();
+        }
+        Document document = null;
+        try {
+            document = saxReader.read(file);
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+
+        Element xmlElement = document.getRootElement();
+        Iterator<Element> iterator = xmlElement.elementIterator();
+        while (iterator.hasNext()) {
+            Element dataElement = iterator.next();
+            Iterator<Element> it = dataElement.elementIterator();
+            while (it.hasNext()) {
+                Record record = new Record();
+                Element row = it.next();
+                List<Attribute> attributes = row.attributes();
+                for (Attribute a : attributes) {
+                    String name = a.getName();
+                    String value = a.getValue();
+                    // 简历拼接
+                    if ("A1701".equals(name)) {
+                        char[] chars = value.toCharArray();
+                        StringBuilder builder = new StringBuilder();
+                        int index = 0;
+                        for (int i = 1; i < chars.length - 4; i++) {
+                            StringBuilder sb = new StringBuilder();
+                            char aChar0 = chars[i - 1];
+                            char aChar = chars[i];
+                            char aChar1 = chars[i + 1];
+                            char aChar2 = chars[i + 2];
+                            char aChar3 = chars[i + 3];
+                            if (aChar0 == 32 && aChar >= 48 && aChar <= 57 && aChar1 >= 48 && aChar1 <= 57
+                                    && aChar2 >= 48 && aChar2 <= 57 && aChar3 >= 48 && aChar3 <= 57) {
+                                sb.append(value.substring(index, i - 1)).append("\n");
+                                index = i;
+                                builder.append(sb);
+                            }
+                        }
+                        // 最后一段
+                        builder.append(value.substring(index));
+                        value = builder.toString();
+                    }
+                    record.set(name, value);
+                }
+                data.add(record);
+            }
+        }
+        return data;
     }
 
     /**
