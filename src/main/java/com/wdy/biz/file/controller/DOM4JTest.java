@@ -51,6 +51,9 @@ public class DOM4JTest {
 
     /**
      * DOM4J解析xml
+     *
+     * @param filePath
+     * @return
      */
     public static ArrayList<Book> getXmlData(String filePath) {
         // 解析books.xml文件
@@ -181,7 +184,7 @@ public class DOM4JTest {
                 for (Attribute a : attributes) {
                     String name = a.getName();
                     String value = a.getValue();
-                    // 简历拼接
+                    // 简历格式拼接
                     if ("A1701".equals(name)) {
                         char[] chars = value.toCharArray();
                         StringBuilder builder = new StringBuilder();
@@ -195,13 +198,15 @@ public class DOM4JTest {
                             char aChar3 = chars[i + 3];
                             if (aChar0 == 32 && aChar >= 48 && aChar <= 57 && aChar1 >= 48 && aChar1 <= 57
                                     && aChar2 >= 48 && aChar2 <= 57 && aChar3 >= 48 && aChar3 <= 57) {
-                                sb.append(value.substring(index, i - 1)).append("\n");
+                                sb.append(value, index, i - 1).append("\n");
                                 index = i;
                                 builder.append(sb);
                             }
                         }
                         // 最后一段
-                        builder.append(value.substring(index));
+                        String endStr = value.substring(index, index + 9) + " " + " " + value.substring(index + 9);
+                        builder.append(endStr);
+
                         value = builder.toString();
                     }
                     record.set(name, value);
