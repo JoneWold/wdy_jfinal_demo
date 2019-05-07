@@ -3,6 +3,7 @@ package com.wdy.bizz.excel;
 import cn.hutool.core.collection.CollectionUtil;
 import com.jfinal.plugin.activerecord.Record;
 import com.wdy.biz.dictionary.service.DictionaryService;
+import com.wdy.biz.excel.dao.ExportExcelDao;
 import com.wdy.biz.excel.service.ExportExcelService;
 import com.wdy.bizz.TestWdyConfig;
 import com.wdy.message.OutMessage;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.wdy.config.constant.CommonConstant.FONE;
 import static com.wdy.config.constant.CommonConstant.ONE;
@@ -28,9 +30,23 @@ public class TestExportExcelService extends TestWdyConfig {
     @Test
     public void testExportAge() throws IOException {
         ExportExcelService excelService = new ExportExcelService();
-        OutMessage message = excelService.exportAge("001.001", "01,02,03,04,09", "1A,1B");
+        OutMessage message = excelService.exportAge("001.001", "01,02,03,04,09", "all");
         System.out.println(message);
     }
+
+
+    /**
+     * 职务层次字典表数据
+     */
+    @Test
+    public void testExpExcelDao() {
+        ExportExcelDao.ZwcjDto zwcjData = new ExportExcelDao().getZwcjData("all");
+        System.out.println(zwcjData);
+//        ExportExcelService excelService = new ExportExcelService();
+//        List<Map<String, List<String>>> A0221List = excelService.getA0221List(zwcjData.getParent(), zwcjData.getSon());
+//        System.out.println(A0221List);
+    }
+
 
     /**
      * 测试职务层次字典表
