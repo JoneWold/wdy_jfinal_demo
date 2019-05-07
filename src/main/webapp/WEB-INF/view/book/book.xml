@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bookstore>
-    <book id="1">
+<bookstore xml:space='preserve'>
+    <book id="1
+one
+two
+three
+1997.07--1997.09  待入学
+2000.07--2000.08  待业
+2008.11--2012.05  食品药品监督管理局医疗器械处任副调研员">
         <name>冰与火之歌</name>
         <author>乔治马丁</author>
         <year>2014</year>
