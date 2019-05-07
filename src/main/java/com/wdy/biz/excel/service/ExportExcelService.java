@@ -38,6 +38,8 @@ public class ExportExcelService {
     private ExportExcelDao exportExcelDao = Aop.get(ExportExcelDao.class);
 
     /**
+     * 年龄统计导出
+     *
      * @param orgCode
      * @param a0165
      * @param a0221
@@ -61,6 +63,7 @@ public class ExportExcelService {
         HSSFWorkbook workBook = new HSSFWorkbook(fs);
         // 获取第一个sheet页
         HSSFSheet sheet = workBook.getSheetAt(0);
+//        HSSFSheet sheet = workBook.cloneSheet(0);
         sheet.setForceFormulaRecalculation(true);
 
         // 存储表头及其样式
