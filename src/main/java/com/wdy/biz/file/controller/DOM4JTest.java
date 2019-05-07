@@ -93,6 +93,8 @@ public class DOM4JTest {
 //                    value = value.replaceAll("&#xD;", "\r").replaceAll("&#xA;", "\n");
                     // 你可以使用实体&#10; 在XML属性中表示换行符。 &#13; 可以用来表示回车。 Windows风格的CRLF可以表示为&#13;&#10; 。
 //                    value = value.replaceAll("&#13;&#10;", "\n");
+
+                    // 简历格式 将空格 转换为 换行
                     char[] chars = value.toCharArray();
                     StringBuilder builder = new StringBuilder();
                     int index = 0;
