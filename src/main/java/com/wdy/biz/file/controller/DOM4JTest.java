@@ -218,6 +218,10 @@ public class DOM4JTest {
                                     if (endChars[k] == 32) {
                                         space++;
                                     }
+                                    // 只循环 9 次，后面的字符不读了（从0开始）
+                                    if (k - num > 7) {
+                                        break;
+                                    }
                                 }
                             }
                         }
