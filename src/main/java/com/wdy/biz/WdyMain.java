@@ -19,6 +19,7 @@ public class WdyMain {
         wdy.md5();
         wdy.getSQL();
         wdy.wdyStringBuffer();
+        wdy.progressBar();
     }
 
     // 回调函数
@@ -80,6 +81,18 @@ public class WdyMain {
         b2.append("万州学院 军事学");
         System.out.println(b1.toString().equals(b2.toString()));
 
+        Record record = new Record();
+        record.set("name", "ss");
+        record.set("id", null);
+        if ("1.00".equals(record.getStr("id"))) {
+            System.out.println("啦啦啦啦啦啦啦啦");
+        }
+    }
+
+    /**
+     * 数字百分比
+     */
+    private void progressBar() {
         // 保留小数点
         String format1 = new DecimalFormat("0.00").format((float) 1 / 12);
         System.out.println("format1: " + format1);
@@ -94,11 +107,12 @@ public class WdyMain {
         String ss = num.format((float) 1 / (float) 12 * 100);
         System.out.println("百分比：" + ss);
 
-        Record record = new Record();
-        record.set("name", "ss");
-        record.set("id", null);
-        if ("1.00".equals(record.getStr("id"))) {
-            System.out.println("啦啦啦啦啦啦啦啦");
-        }
+        // 进度百分比
+        double d1 = (2645 / 23);
+        double d2 = (float) (2645 / 23) / 2645 * 100;
+        System.out.println(d1);
+        System.out.println(d2);
     }
+
+
 }
