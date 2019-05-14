@@ -1,5 +1,7 @@
 package com.wdy.config.constant;
 
+import java.io.File;
+
 /**
  * @author TMW
  * @version 1.0
@@ -7,6 +9,10 @@ package com.wdy.config.constant;
  * @date 2019/3/20 17:54
  */
 public class CommonConstant {
+    /**
+     * /
+     */
+    public static final String SEPARATOR = File.separator;
     /**
      * 零
      */
@@ -135,11 +141,11 @@ public class CommonConstant {
     /**
      * 人员
      */
-    public static final String MEM="mem";
+    public static final String MEM = "mem";
     /**
      * 机构
      */
-    public static final String ORG="org";
+    public static final String ORG = "org";
     /**
      * 名册
      */
