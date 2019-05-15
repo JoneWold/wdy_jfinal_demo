@@ -20,8 +20,8 @@ public class ImageController {
         String imageToBase64 = imageToBase64(path);
         System.out.println(imageToBase64);
 
-        boolean b = base64ToImage(imageToBase64, PathKit.getWebRootPath() + SEPARATOR + "download" + SEPARATOR+"123.jpg");
-        System.out.println(b);
+        String image = base64ToImage(imageToBase64, PathKit.getWebRootPath() + SEPARATOR + "download" + SEPARATOR + "123.jpg");
+        System.out.println(image);
 
     }
 
@@ -53,9 +53,9 @@ public class ImageController {
      * @return
      * @Description: 将base64编码字符串转换为图片
      */
-    public static boolean base64ToImage(String imgBase64Str, String imagePath) {
+    public static String base64ToImage(String imgBase64Str, String imagePath) {
         if (imgBase64Str == null) {
-            return false;
+            return null;
         }
         BASE64Decoder decoder = new BASE64Decoder();
         try {
@@ -71,10 +71,10 @@ public class ImageController {
             out.write(b);
             out.flush();
             out.close();
-            return true;
+            return imagePath;
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
