@@ -3,6 +3,7 @@ package com.wdy.biz.file.controller;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.jfinal.kit.PathKit;
 import com.wdy.common.utils.Logs;
 
 import java.io.*;
@@ -19,8 +20,8 @@ public class FileController {
     private final static String FILEPATH_PHOTOS = "wdyPhotos";
 
     public static void main(String[] args) {
-//        copyPhotos("D:", "ss");
-        getFiles("C:\\Users\\Administrator\\Desktop\\111");
+        copyPhotos(PathKit.getWebRootPath() + SEPARATOR + "download" + SEPARATOR, "ss");
+        getFiles("D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\book\\20190512.jpg");
     }
 
     public void zip() throws Exception {
@@ -96,7 +97,7 @@ public class FileController {
      * @param fileName
      */
     public static void copyPhotos(String filePath, String fileName) {
-        String path = "C:\\Users\\Administrator\\Desktop\\少时诵诗书.png";
+        String path = "D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\book\\20190512.jpg";
 
         File file = new File(path);
         try {
