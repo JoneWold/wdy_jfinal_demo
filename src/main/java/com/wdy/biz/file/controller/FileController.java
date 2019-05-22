@@ -18,10 +18,12 @@ import java.util.zip.ZipOutputStream;
 public class FileController {
     private static final String SEPARATOR = File.separator;
     private final static String FILEPATH_PHOTOS = "wdyPhotos";
+    private final static String PATH_DOWNLOAD = PathKit.getWebRootPath() + SEPARATOR + "download";
 
     public static void main(String[] args) {
-        copyPhotos(PathKit.getWebRootPath() + SEPARATOR + "download" + SEPARATOR, "ss");
+        copyPhotos(PATH_DOWNLOAD, "ss");
         getFiles("D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\book\\20190512.jpg");
+        delFiles(PATH_DOWNLOAD + "/AAA");
     }
 
     public void zip() throws Exception {
@@ -144,4 +146,23 @@ public class FileController {
     }
 
 
+    /**
+     * 删除文件目录
+     *
+     * @param path
+     */
+    public static void delFiles(String path) {
+        File dir = new File(path);
+        if (dir.exists()) {
+            File[] files = dir.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
+                    delFiles(path + SEPARATOR + files[i].getName());
+                } else {
+                    files[i].delete();
+                }
+            }
+            dir.delete();
+        }
+    }
 }
