@@ -174,6 +174,7 @@ public class DOM4JTest {
 
         Element xmlElement = document.getRootElement();
         Iterator<Element> iterator = xmlElement.elementIterator();
+        int i = 0;
         while (iterator.hasNext()) {
             Element dataElement = iterator.next();
             Iterator<Element> it = dataElement.elementIterator();
@@ -185,56 +186,15 @@ public class DOM4JTest {
                     String name = a.getName();
                     String value = a.getValue();
                     // 简历格式拼接，将空格转换为换行
-                    if ("A1701".equals(name)) {
-                        char[] chars = value.toCharArray();
-                        StringBuilder builder = new StringBuilder();
-                        int index = 0;
-                        for (int i = 1; i < chars.length - 4; i++) {
-                            StringBuilder sb = new StringBuilder();
-                            char aChar0 = chars[i - 1];
-                            char aChar = chars[i];
-                            char aChar1 = chars[i + 1];
-                            char aChar2 = chars[i + 2];
-                            char aChar3 = chars[i + 3];
-                            // 前一位是空格，当前及后面三位是数字
-                            if (aChar0 == 32 && aChar >= 48 && aChar <= 57 && aChar1 >= 48 && aChar1 <= 57
-                                    && aChar2 >= 48 && aChar2 <= 57 && aChar3 >= 48 && aChar3 <= 57) {
-                                sb.append(value, index, i - 1).append("\n");
-                                index = i;
-                                builder.append(sb);
-                            }
-                        }
-                        // 最后一段 2015.12--         药品不良反应监测中心 副主任科员
-                        String endStr = value.substring(index);
-                        char[] endChars = endStr.toCharArray();
-                        int num = 0;
-                        int space = 0;
-                        for (int i = 0; i < endChars.length - 2; i++) {
-                            // 找到两条'-'的坐标
-                            if (endChars[i] == 45 && endChars[i + 1] == 45) {
-                                num = i + 2;
-                                // 从空格处开始循环
-                                for (int k = num; k < endChars.length - 2; k++) {
-                                    if (endChars[k] == 32) {
-                                        space++;
-                                    }
-                                    // 只循环 9 次，后面的字符不读了（从0开始）
-                                    if (k - num > 7) {
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                        if (space == 7) {
-                            endStr = value.substring(index, index + 9) + " " + " " + value.substring(index + 9);
-                        }
-                        builder.append(endStr);
-
-                        value = builder.toString();
-                    }
+                    value = setFormatA1701(name, value);
                     record.set(name, value);
                 }
                 data.add(record);
+                i++;
+                if (data.size() % 1000 == 0 || !it.hasNext()) {
+                    System.out.println("---->>>" + i);
+                    data.clear();
+                }
             }
         }
         return data;
@@ -253,6 +213,59 @@ public class DOM4JTest {
         XMLWriter xmlWriter = new XMLWriter(new FileOutputStream(new File(PathKit.getWebRootPath() + "/download/book2.xml")), format);
         xmlWriter.write(document);
         xmlWriter.close();
+    }
+
+    /**
+     * 格式化简历
+     */
+    public static String setFormatA1701(String name, String value) {
+        if ("A1701".equals(name)) {
+            char[] chars = value.toCharArray();
+            StringBuilder builder = new StringBuilder();
+            int index = 0;
+            for (int i = 1; i < chars.length - 4; i++) {
+                StringBuilder sb = new StringBuilder();
+                char aChar0 = chars[i - 1];
+                char aChar = chars[i];
+                char aChar1 = chars[i + 1];
+                char aChar2 = chars[i + 2];
+                char aChar3 = chars[i + 3];
+                // 前一位是空格，当前及后面三位是数字
+                if (aChar0 == 32 && aChar >= 48 && aChar <= 57 && aChar1 >= 48 && aChar1 <= 57
+                        && aChar2 >= 48 && aChar2 <= 57 && aChar3 >= 48 && aChar3 <= 57) {
+                    sb.append(value, index, i - 1).append("\n");
+                    index = i;
+                    builder.append(sb);
+                }
+            }
+            // 最后一段 2015.12--         药品不良反应监测中心 副主任科员
+            String endStr = value.substring(index);
+            char[] endChars = endStr.toCharArray();
+            int num = 0;
+            int space = 0;
+            for (int i = 0; i < endChars.length - 2; i++) {
+                // 找到两条'-'的坐标
+                if (endChars[i] == 45 && endChars[i + 1] == 45) {
+                    num = i + 2;
+                    // 从空格处开始循环
+                    for (int k = num; k < endChars.length - 2; k++) {
+                        if (endChars[k] == 32) {
+                            space++;
+                        }
+                        // 只循环 9 次，后面的字符不读了（从0开始）
+                        if (k - num > 7) {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (space == 7) {
+                endStr = value.substring(index, index + 9) + " " + " " + value.substring(index + 9);
+            }
+            builder.append(endStr);
+            value = builder.toString();
+        }
+        return value;
     }
 
 

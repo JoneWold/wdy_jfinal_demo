@@ -2,6 +2,7 @@ package com.wdy.biz.hello.service;
 
 import com.jfinal.kit.Kv;
 import com.jfinal.plugin.activerecord.*;
+import com.wdy.config.constant.CacheConstant;
 import com.wdy.generator.mysql.model.Blog;
 import com.wdy.generator.mysql.model.SysUser;
 import com.wdy.generator.postgreSQL.model.CodeTable;
@@ -52,7 +53,7 @@ public class HelloService {
 
     // Ehcache 缓存 ？？？
     public List<Blog> cache() {
-        List<Blog> blogList = blog.findByCache("WdyCache22", "wkey22", "select * from blog");
+        List<Blog> blogList = blog.findByCache(CacheConstant.WDY_CACHE, "wkey22", "select * from blog");
         return blogList;
     }
 

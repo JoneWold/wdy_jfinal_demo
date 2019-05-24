@@ -12,7 +12,6 @@ import com.wdy.biz.exception.PermissionException;
 import com.wdy.config.constant.PermissionConstant;
 import com.wdy.generator.postgreSQL.model.B01;
 import com.wdy.vo.UserVo;
-import org.postgresql.util.PGobject;
 
 import java.util.ArrayList;
 import java.util.List;

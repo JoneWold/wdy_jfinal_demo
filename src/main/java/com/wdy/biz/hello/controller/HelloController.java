@@ -6,6 +6,7 @@ import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.ehcache.CacheKit;
+import com.wdy.config.constant.CacheConstant;
 import com.wdy.generator.mysql.model.Blog;
 import com.wdy.generator.mysql.model.SysUser;
 import com.wdy.biz.hello.service.HelloService;
@@ -46,10 +47,10 @@ public class HelloController extends Controller {
 
     // CacheKit 工具类
     public void cacheKit() {
-        List<Blog> list = CacheKit.get("WdyCache", "wkey");
+        List<Blog> list = CacheKit.get(CacheConstant.WDY_CACHE, "wkey");
         if (list == null) {
             list = service.getBlogList();
-            CacheKit.put("WdyCache", "wkey", list);
+            CacheKit.put(CacheConstant.WDY_CACHE, "wkey", list);
         }
         renderJson(list);
     }
