@@ -5,14 +5,13 @@ import com.jfinal.plugin.activerecord.Record;
 import com.wdy.biz.dictionary.service.DictionaryService;
 import com.wdy.biz.excel.dao.ExportExcelDao;
 import com.wdy.biz.excel.service.ExportExcelService;
-import com.wdy.bizz.TestWdyConfig;
+import com.wdy.bizz.TestBeforeWdyConfig;
 import com.wdy.message.OutMessage;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static com.wdy.config.constant.CommonConstant.FONE;
 import static com.wdy.config.constant.CommonConstant.ONE;
@@ -22,7 +21,7 @@ import static com.wdy.config.constant.CommonConstant.ONE;
  * @Description
  * @date 2019/4/30 10:44
  */
-public class TestExportExcelService extends TestWdyConfig {
+public class TestExportExcelService extends TestBeforeWdyConfig {
 
     /**
      * 测试年龄统计导出

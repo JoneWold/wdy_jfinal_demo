@@ -2,7 +2,7 @@ package com.wdy.bizz.org;
 
 import com.alibaba.fastjson.JSONObject;
 import com.wdy.biz.org.service.OrgService;
-import com.wdy.bizz.TestWdyConfig;
+import com.wdy.bizz.TestBeforeWdyConfig;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
  * @Description
  * @date 2019/4/29 18:33
  */
-public class TestOrgService extends TestWdyConfig {
+public class TestOrgService extends TestBeforeWdyConfig {
 
     /**
      * 测试管理机构

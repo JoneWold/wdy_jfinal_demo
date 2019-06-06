@@ -17,10 +17,10 @@ import static com.wdy.config.constant.Constant.DB_PGSQL;
 
 /**
  * @author wgch
- * @Description
+ * @Description 数据库连接配置
  * @date 2019/4/30 10:45
  */
-public class TestWdyConfig {
+public class TestBeforeWdyConfig {
     /**
      * 初始化
      */

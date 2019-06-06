@@ -3,18 +3,16 @@ package com.wdy.bizz.hello;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import com.jfinal.aop.Aop;
 import com.jfinal.plugin.activerecord.Record;
 import com.wdy.biz.hello.service.HelloService;
-import com.wdy.bizz.TestWdyConfig;
+import com.wdy.bizz.TestBeforeWdyConfig;
 import com.wdy.message.OutMessage;
 import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import static com.wdy.message.Status.SUCCESS;
 import static org.hamcrest.core.Is.is;
@@ -22,17 +20,17 @@ import static org.junit.Assert.assertThat;
 
 /**
  * @author wgch
- * @Description
+ * @Description hello
  * @date 2019/3/28 10:35
  */
-public class TestHelloController extends TestWdyConfig {
+public class TestHelloController extends TestBeforeWdyConfig {
+    private HelloService hello = Aop.get(HelloService.class);
 
     /**
      * 测试方法
      */
     @Test
     public void testGetPostgreSQLList() {
-        HelloService hello = new HelloService();
         OutMessage message = hello.getPostgreSQLList();
         System.out.println(message);
         assertThat(message.getCode(), is(SUCCESS.getCode()));
@@ -58,6 +56,10 @@ public class TestHelloController extends TestWdyConfig {
             e.printStackTrace();
         }
         System.out.println(DateUtil.parse(null));
+
+        // 计算两个日期相差年数
+        long betweenYear = DateUtil.betweenYear(DateUtil.parse("2012.06", "yyyy.MM"), new Date(), false);
+        System.out.println(betweenYear);
     }
 
     @Test
