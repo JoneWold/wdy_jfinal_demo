@@ -13,7 +13,7 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.template.Engine;
 import com.jfinal.template.source.ClassPathSourceFactory;
-import com.wdy.biz.jaxrs.JaxRsController;
+import com.wdy.biz.wdy.JaxRsController;
 import com.wdy.biz.progress.jfinal.MobSdController;
 import com.wdy.biz.progress.websocket.AlarmThreadController;
 import com.wdy.biz.progress.websocket.WebSocketController;

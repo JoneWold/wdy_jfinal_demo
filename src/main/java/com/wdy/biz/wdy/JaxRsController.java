@@ -1,4 +1,4 @@
-package com.wdy.biz.jaxrs;
+package com.wdy.biz.wdy;
 
 import com.jfinal.core.Controller;
 import com.wdy.annotation.NotNull;
@@ -27,9 +27,11 @@ public class JaxRsController extends Controller {
     @Context
     Request request; // this is ok: the proxy of Request will be injected into this singleton
 
+    @GET
     @Path("/helloworld")
-    public void HelloWorldResource() {
+    public void helloWorldResource() {
         System.out.println("HelloWorldResource...");
+        renderJson();
     }
 
     @GET

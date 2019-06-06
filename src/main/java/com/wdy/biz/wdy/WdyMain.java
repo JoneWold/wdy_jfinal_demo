@@ -1,4 +1,4 @@
-package com.wdy.biz;
+package com.wdy.biz.wdy;
 
 import cn.hutool.crypto.digest.DigestUtil;
 import com.jfinal.plugin.activerecord.Record;
