@@ -5,6 +5,7 @@ import com.wdy.bizz.TestBeforeWdyConfig;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -54,6 +55,11 @@ public class TestJavaSkill extends TestBeforeWdyConfig {
             System.out.println(key + ">>>" + values);
         }
         System.out.println(map);
+    }
+
+    @Test
+    public void testForEach() {
+        Arrays.asList("a", "b", "c").forEach(e -> System.out.println(e));
     }
 
 }
