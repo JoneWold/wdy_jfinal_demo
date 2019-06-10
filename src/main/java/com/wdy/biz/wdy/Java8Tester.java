@@ -33,8 +33,18 @@ public class Java8Tester {
     }
 
 
+    /**
+     * 定义函数式接口：
+     * 该接口只能有一个抽象函数。当该接口中抽象函数个数不是1时就会报错提示。
+     * 不过，默认方法和静态方法 不会破坏函数式接口的定义
+     */
+    @FunctionalInterface
     interface MathOperation {
         int operation(int a, int b);
+
+        static void p() {
+            System.out.println("静态方法");
+        }
     }
 
     interface GreetingService {

@@ -57,9 +57,19 @@ public class TestJavaSkill extends TestBeforeWdyConfig {
         System.out.println(map);
     }
 
+    /**
+     * Lambda表达式用于表示一个函数，所以它和函数一样，也拥有参数、返回值、函数体，但它没有函数名，所以Lambda表达式相当于一个匿名函数
+     */
     @Test
     public void testForEach() {
-        Arrays.asList("a", "b", "c").forEach(e -> System.out.println(e));
+        Arrays.asList("a", "b", "c").forEach(System.out::print);
+
+        // e表示参数，花括号中相当于函数体，且JVM会根据->右侧语句的返回结果自动判断返回值类型
+        Arrays.asList("1", "2", "3").forEach(e -> {
+            System.out.print(e);
+            System.out.print(e);
+        });
     }
+
 
 }
