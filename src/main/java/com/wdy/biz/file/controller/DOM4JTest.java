@@ -101,28 +101,6 @@ public class DOM4JTest {
 //                    value = value.replaceAll("&#xD;", "\r").replaceAll("&#xA;", "\n");
                     // 你可以使用实体&#10; 在XML属性中表示换行符。 &#13; 可以用来表示回车。 Windows风格的CRLF可以表示为&#13;&#10; 。
 //                    value = value.replaceAll("&#13;&#10;", "\n");
-
-                    // 简历格式 将空格 转换为 换行
-                    char[] chars = value.toCharArray();
-                    StringBuilder builder = new StringBuilder();
-                    int index = 0;
-                    for (int i = 1; i < chars.length - 4; i++) {
-                        StringBuilder sb = new StringBuilder();
-                        char aChar0 = chars[i - 1];
-                        char aChar = chars[i];
-                        char aChar1 = chars[i + 1];
-                        char aChar2 = chars[i + 2];
-                        char aChar3 = chars[i + 3];
-                        if (aChar0 == 32 && aChar >= 48 && aChar <= 57 && aChar1 >= 48 && aChar1 <= 57
-                                && aChar2 >= 48 && aChar2 <= 57 && aChar3 >= 48 && aChar3 <= 57) {
-                            sb.append(value.substring(index, i - 1)).append("\n");
-                            index = i;
-                            builder.append(sb);
-                        }
-                    }
-                    // 最后一段
-                    builder.append(value.substring(index));
-                    value = builder.toString();
                     bookModel.setId(value);
                 }
                 Iterator itt = book.elementIterator();
