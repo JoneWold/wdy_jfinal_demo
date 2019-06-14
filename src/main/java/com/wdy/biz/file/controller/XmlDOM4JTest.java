@@ -20,7 +20,7 @@ import java.util.List;
  * @Description DOM4J解析xml
  * @date 2019/4/11 15:50
  */
-public class DOM4JTest {
+public class XmlDOM4JTest {
     private static ArrayList<Book> bookList = new ArrayList<Book>();
 
     public static void main(String[] args) {
