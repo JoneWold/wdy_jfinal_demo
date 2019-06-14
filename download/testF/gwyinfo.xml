@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <node name="type" value="23"/>
+    <node name="time" value="1558420467481"/>
+    <node name="dataversion" value="V2019.05"/>
+    <node name="psncount" value="118"/>
+    <node name="B0101" value="药品监督管理局"/>
+    <node name="B0111" value="001.001.015"/>
+    <node name="B0114" value="E09.640"/>
+    <node name="B0194" value="1"/>
+    <node name="contact" value="超级管理员"/>
+    <node name="tel" value="1899460182"/>
+    <node name="notes" value=""/>
+    <tablelist>
+        <tablelist name="A01"/>
+        <tablelist name="A02"/>
+        <tablelist name="A05"/>
+        <tablelist name="A06"/>
+        <tablelist name="A08"/>
+        <tablelist name="A14"/>
+        <tablelist name="A15"/>
+        <tablelist name="A30"/>
+        <tablelist name="A36"/>
+        <tablelist name="A57"/>
+        <tablelist name="B01"/>
+        <tablelist name="A99Z1"/>
+    </tablelist>
+</root>
