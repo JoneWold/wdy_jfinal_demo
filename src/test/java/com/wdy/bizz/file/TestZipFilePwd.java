@@ -17,14 +17,17 @@ import java.util.zip.ZipException;
 
 /**
  * @author wgch
- * @Description
+ * @Description 压缩文件 解压文件
  * @date 2019/6/13 16:03
  */
 public class TestZipFilePwd {
 
+    /**
+     * 测试加密压缩ZIP
+     */
     @Test
-    public void testinq() throws IOException, ZipException, net.lingala.zip4j.exception.ZipException {
-        ZipFile zipFile = new ZipFile("D:\\IdeaProjects\\gb\\file\\exp\\test.zip");
+    public void testinq() throws net.lingala.zip4j.exception.ZipException {
+        ZipFile zipFile = new ZipFile("D:\\wdy\\wdy_jfinal_demo\\target\\test.zip");
         ZipParameters parameters = new ZipParameters();
         parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
 
@@ -37,7 +40,7 @@ public class TestZipFilePwd {
         parameters.setAesKeyStrength(Zip4jConstants.AES_STRENGTH_256);
         parameters.setPassword("123");
 
-        zipFile.addFile(new File("D:\\IdeaProjects\\gb\\file\\exp\\1557892665682111.png"), parameters);
+        zipFile.addFile(new File("D:\\wdy\\wdy_jfinal_demo\\download\\123.jpg"), parameters);
     }
 
     @Test
@@ -82,6 +85,9 @@ public class TestZipFilePwd {
         zipFile.getFile().delete();
     }
 
+    /**
+     * 测试加密压缩ZIP
+     */
     @Test
     public void testXmlZipFileUtil() {
         File srcfile = new File("D:\\IdeaProjects\\gb\\file\\exp\\testF");
@@ -90,9 +96,12 @@ public class TestZipFilePwd {
     }
 
 
+    /**
+     * 测试加密压缩ZIP
+     */
     @Test
     public void testZipFilePWD() throws net.lingala.zip4j.exception.ZipException {
-        ZipFile zipFile = new ZipFile("D:\\IdeaProjects\\gb\\target\\test1.zip");
+        ZipFile zipFile = new ZipFile("D:\\wdy\\wdy_jfinal_demo\\target\\test1.zip");
         ZipParameters parameters = new ZipParameters();
         // 压缩方式
         parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
@@ -103,9 +112,9 @@ public class TestZipFilePwd {
         // 加密方式
         parameters.setEncryptionMethod(Zip4jConstants.ENC_METHOD_AES);
         parameters.setPassword("123".toCharArray());
-        zipFile.addFolder("D:\\IdeaProjects\\gb\\file\\exp\\testF\\Table", parameters);
-        zipFile.addFile(new File("D:\\IdeaProjects\\gb\\file\\exp\\testF\\gwyinfo.xml"), parameters);
-
+        zipFile.addFolder("D:\\wdy\\wdy_jfinal_demo\\download\\testF\\Photos", parameters);
+        zipFile.addFolder("D:\\wdy\\wdy_jfinal_demo\\download\\testF\\Table", parameters);
+        zipFile.addFile(new File("D:\\wdy\\wdy_jfinal_demo\\download\\testF\\gwyinfo.xml"), parameters);
     }
 
 
