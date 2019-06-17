@@ -2,6 +2,7 @@ package com.wdy.biz.hello.controller;
 
 import com.jfinal.aop.Clear;
 import com.jfinal.aop.Inject;
+import com.jfinal.captcha.CaptchaRender;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
@@ -78,6 +79,7 @@ public class HelloController extends Controller {
 
     // 验证码校验
     public boolean checkCode() {
+//        boolean validate = CaptchaRender.validate(this, getPara("code"));
         boolean result = validateCaptcha("code");
         if (!result) {
             renderJson("验证码错误");
