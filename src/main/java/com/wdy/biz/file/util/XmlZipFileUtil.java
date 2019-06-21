@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
-import static com.wdy.config.constant.CommonConstant.SEPARATOR;
+import static com.wdy.constant.CommonConstant.SEPARATOR;
 
 /**
  * 文件压缩解压

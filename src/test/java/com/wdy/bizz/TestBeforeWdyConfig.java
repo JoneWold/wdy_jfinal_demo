@@ -12,8 +12,8 @@ import com.wdy.generator.postgreSQL.model._MappingKit;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
-import static com.wdy.config.constant.Constant.DB_MySQL;
-import static com.wdy.config.constant.Constant.DB_PGSQL;
+import static com.wdy.constant.Constant.DB_MySQL;
+import static com.wdy.constant.Constant.DB_PGSQL;
 
 /**
  * @author wgch

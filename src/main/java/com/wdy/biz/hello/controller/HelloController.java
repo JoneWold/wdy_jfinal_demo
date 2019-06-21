@@ -2,12 +2,11 @@ package com.wdy.biz.hello.controller;
 
 import com.jfinal.aop.Clear;
 import com.jfinal.aop.Inject;
-import com.jfinal.captcha.CaptchaRender;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.ehcache.CacheKit;
-import com.wdy.config.constant.CacheConstant;
+import com.wdy.constant.CacheConstant;
 import com.wdy.generator.mysql.model.Blog;
 import com.wdy.generator.mysql.model.SysUser;
 import com.wdy.biz.hello.service.HelloService;

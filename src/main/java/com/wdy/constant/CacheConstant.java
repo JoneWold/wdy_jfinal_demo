@@ -1,4 +1,4 @@
-package com.wdy.config.constant;
+package com.wdy.constant;
 
 /**
  * 用于存放缓存前缀与缓存名称常量

@@ -1,4 +1,4 @@
-package com.wdy.config.constant;
+package com.wdy.constant;
 
 import java.io.File;
 

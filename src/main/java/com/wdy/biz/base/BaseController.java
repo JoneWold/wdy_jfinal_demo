@@ -9,14 +9,14 @@ import com.jfinal.core.Controller;
 import com.jfinal.core.NotAction;
 import com.jfinal.plugin.ehcache.CacheKit;
 import com.wdy.biz.exception.PermissionException;
-import com.wdy.config.constant.PermissionConstant;
+import com.wdy.constant.PermissionConstant;
 import com.wdy.generator.postgreSQL.model.B01;
 import com.wdy.vo.UserVo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.wdy.config.constant.CacheConstant.CACHE_USER;
+import static com.wdy.constant.CacheConstant.CACHE_USER;
 
 
 /**

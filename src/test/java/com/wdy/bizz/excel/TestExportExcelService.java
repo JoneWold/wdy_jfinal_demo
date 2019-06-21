@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.wdy.config.constant.CommonConstant.FONE;
-import static com.wdy.config.constant.CommonConstant.ONE;
+import static com.wdy.constant.CommonConstant.FONE;
+import static com.wdy.constant.CommonConstant.ONE;
 
 /**
  * @author wgch

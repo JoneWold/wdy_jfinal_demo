@@ -3,7 +3,7 @@ package com.wdy.biz.org.dao;
 import com.jfinal.aop.Aop;
 import com.wdy.generator.postgreSQL.model.B01;
 
-import static com.wdy.config.constant.Constant.DB_PGSQL;
+import static com.wdy.constant.Constant.DB_PGSQL;
 
 /**
  * @author wgch

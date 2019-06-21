@@ -6,7 +6,7 @@ import sun.misc.BASE64Encoder;
 
 import java.io.*;
 
-import static com.wdy.config.constant.CommonConstant.SEPARATOR;
+import static com.wdy.constant.CommonConstant.SEPARATOR;
 
 /**
  * @author wgch

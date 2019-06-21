@@ -1,4 +1,4 @@
-package com.wdy.config.constant;
+package com.wdy.constant;
 
 /**
  * Created by wgch on 2019/3/8.

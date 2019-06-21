@@ -7,7 +7,7 @@ import java.io.FileOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import static com.wdy.config.constant.CommonConstant.SEPARATOR;
+import static com.wdy.constant.CommonConstant.SEPARATOR;
 
 /**
  * @author wgch

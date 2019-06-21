@@ -2,7 +2,7 @@ package com.wdy.biz.hello.service;
 
 import com.jfinal.kit.Kv;
 import com.jfinal.plugin.activerecord.*;
-import com.wdy.config.constant.CacheConstant;
+import com.wdy.constant.CacheConstant;
 import com.wdy.generator.mysql.model.Blog;
 import com.wdy.generator.mysql.model.SysUser;
 import com.wdy.generator.postgreSQL.model.CodeTable;
@@ -12,8 +12,8 @@ import com.wdy.message.Status;
 import java.sql.SQLException;
 import java.util.List;
 
-import static com.wdy.config.constant.Constant.DB_MySQL;
-import static com.wdy.config.constant.Constant.DB_PGSQL;
+import static com.wdy.constant.Constant.DB_MySQL;
+import static com.wdy.constant.Constant.DB_PGSQL;
 
 /**
  * Created by wgch on 2019/3/4.

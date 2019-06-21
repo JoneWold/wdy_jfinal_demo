@@ -1,0 +1,14 @@
+{
+  "singleServerConfig": {
+    "password": "1809",
+    "subscriptionsPerConnection": 5,
+    "clientName": "b1809",
+    "address": "${redis.url}"
+  },
+  "threads": 0,
+  "nettyThreads": 0,
+  "codec": {
+    "class": "org.redisson.codec.MsgPackJacksonCodec"
+  },
+  "transportMode": "NIO"
+}

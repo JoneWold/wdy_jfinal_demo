@@ -5,7 +5,7 @@ import com.jfinal.plugin.activerecord.Record;
 
 import java.util.List;
 
-import static com.wdy.config.constant.Constant.DB_PGSQL;
+import static com.wdy.constant.Constant.DB_PGSQL;
 
 
 /**

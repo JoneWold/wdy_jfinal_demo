@@ -14,7 +14,7 @@ import com.wdy.message.Status;
 
 import java.util.*;
 
-import static com.wdy.config.constant.CommonConstant.*;
+import static com.wdy.constant.CommonConstant.*;
 
 
 /**

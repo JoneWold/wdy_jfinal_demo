@@ -5,7 +5,7 @@ import com.jfinal.aop.Aop;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.ehcache.CacheKit;
 import com.wdy.biz.dictionary.dao.DictionaryDao;
-import com.wdy.config.constant.CacheConstant;
+import com.wdy.constant.CacheConstant;
 import com.wdy.generator.postgreSQL.model.CodeValue;
 import com.wdy.message.OutMessage;
 import com.wdy.message.Status;
