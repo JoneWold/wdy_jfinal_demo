@@ -155,11 +155,13 @@ public class FileController {
         File dir = new File(path);
         if (dir.exists()) {
             File[] files = dir.listFiles();
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isDirectory()) {
-                    delFiles(path + SEPARATOR + files[i].getName());
-                } else {
-                    files[i].delete();
+            if (ObjectUtil.isNotNull(files)) {
+                for (int i = 0; i < files.length; i++) {
+                    if (files[i].isDirectory()) {
+                        delFiles(path + SEPARATOR + files[i].getName());
+                    } else {
+                        files[i].delete();
+                    }
                 }
             }
             dir.delete();
