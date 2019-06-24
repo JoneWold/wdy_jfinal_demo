@@ -17,7 +17,7 @@ import static com.wdy.constant.CommonConstant.SEPARATOR;
 public class ZipFileController {
 
     public static void main(String[] args) {
-        zipFile(new File("D:\\wdy\\wdy_jfinal_demo\\download\\testF"), new File("D:\\wdy\\wdy_jfinal_demo\\download\\testF.zip"));
+        zipFile(new File("D:\\wdy\\wdy_jfinal_demo\\download\\testF"), new File("D:\\wdy\\wdy_jfinal_demo\\target\\testF.zip"));
 
     }
 
