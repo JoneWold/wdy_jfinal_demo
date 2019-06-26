@@ -4,11 +4,11 @@ import com.jfinal.plugin.activerecord.Record;
 import com.wdy.bizz.TestBeforeWdyConfig;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 /**
  * @author wgch
@@ -18,12 +18,16 @@ import java.util.stream.Collectors;
 public class TestJavaSkill extends TestBeforeWdyConfig {
 
 
+    private static String apply(Record d) {
+        return d.getStr("A0000");
+    }
+
     /**
      * java8 list分组
      */
     @Test
     public void testGroupBy() {
-        List<Record> testRecord = new ArrayList<>();
+        List<Record> recordList = new ArrayList<>();
         Record record = new Record();
         record.set("A0000", "1");
         record.set("A0200", "12313213");
@@ -40,16 +44,17 @@ public class TestJavaSkill extends TestBeforeWdyConfig {
         record4.set("A0000", "2");
         record4.set("A0200", "1231312312213");
         record4.set("A03333", "123131231231323");
-        testRecord.add(record);
-        testRecord.add(record2);
-        testRecord.add(record3);
-        testRecord.add(record4);
+        recordList.add(record);
+        recordList.add(record2);
+        recordList.add(record3);
+        recordList.add(record4);
 
-        Map<String, List<Record>> map = testRecord.stream().collect(Collectors.groupingBy(d -> {
-            return d.getStr("A0000");
-        }));
+        Map<String, List<Record>> map = recordList.stream().collect(Collectors.groupingBy(TestJavaSkill::apply));
+        Map<String, List<Record>> map1 = recordList.stream().collect(Collectors.groupingBy(b -> b.getStr("A0000")));
+
+
         // 遍历map集合
-        for (Map.Entry<String, List<Record>> entry : map.entrySet()) {
+        for (Map.Entry<String, List<Record>> entry : map1.entrySet()) {
             String key = entry.getKey();
             List<Record> values = entry.getValue();
             System.out.println(key + ">>>" + values);
@@ -62,9 +67,14 @@ public class TestJavaSkill extends TestBeforeWdyConfig {
      */
     @Test
     public void testForEach() {
-        Arrays.asList("a", "b", "c").forEach(System.out::print);
+        List<String> list1 = Arrays.asList("a", "b", "c");
+        System.out.println(list1);
+
+        List<String> list2 = Stream.of("001.002", "001.002.003", "001.001.002").collect(toList());
+        System.out.println(list2);
 
         // e表示参数，花括号中相当于函数体，且JVM会根据->右侧语句的返回结果自动判断返回值类型
+        list1.forEach(System.out::print);
         Arrays.asList("1", "2", "3").forEach(e -> {
             System.out.print(e);
             System.out.print(e);
