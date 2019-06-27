@@ -37,6 +37,7 @@
         <javax.websocket-api.version>1.1</javax.websocket-api.version>
         <undertow-websockets-jsr.version>2.0.20.Final</undertow-websockets-jsr.version>
         <swagger.jaxrs2.version>2.0.8</swagger.jaxrs2.version>
+        <dom4j.version>2.1.1</dom4j.version>
         <redission.version>3.10.6</redission.version>
     </properties>
 
@@ -215,6 +216,13 @@
             <artifactId>commons-compress</artifactId>
             <version>1.18</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>${dom4j.version}</version>
+        </dependency>
+
         <!---->
         <dependency>
             <groupId>org.redisson</groupId>

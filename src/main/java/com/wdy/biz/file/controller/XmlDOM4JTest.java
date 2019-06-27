@@ -21,7 +21,11 @@ import java.util.List;
  * @date 2019/4/11 15:50
  */
 public class XmlDOM4JTest {
-    private static ArrayList<Book> bookList = new ArrayList<Book>();
+    private static ArrayList<Book> bookList = new ArrayList<>();
+    private static final String QUXIAN_STR = "区县";
+    private static final String SJBM_STR = "市级部门";
+    private static final String LXCS_STR = "联系处室";
+    private static final String GDYX_STR = "高等院校";
 
     public static void main(String[] args) {
         String bookPath = "D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\book\\book.xml";
@@ -32,6 +36,7 @@ public class XmlDOM4JTest {
         System.out.println(a01XmlData);
 //        testDoc();
 //        testCharAt();
+        getOrgXzConfig();
     }
 
     public static void testDoc() {
@@ -247,4 +252,49 @@ public class XmlDOM4JTest {
     }
 
 
+    /**
+     * 获取分析查询筛选项
+     */
+    public static void getOrgXzConfig() {
+        SAXReader saxReader = new SAXReader();
+        File file = new File("D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\config\\OrgXzConfig.xml");
+        Document document = null;
+        try {
+            document = saxReader.read(file);
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+        Element xmlElement = document.getRootElement();
+        Iterator<Element> iterator = xmlElement.elementIterator();
+        List<Record> county = new ArrayList<>();
+        List<Record> cityDepart = new ArrayList<>();
+        List<Record> lxcs = new ArrayList<>();
+        List<Record> colleges = new ArrayList<>();
+        while (iterator.hasNext()) {
+            Element next = iterator.next();
+            String orgXz = next.attributes().get(0).getValue();
+            Iterator<Element> xz = next.elementIterator();
+            while (xz.hasNext()) {
+                Element nextChild = xz.next();
+                List<Attribute> attributesChild = nextChild.attributes();
+                Record record = new Record();
+                for (Attribute attr : attributesChild) {
+                    record.set(attr.getName(), attr.getValue());
+                }
+                if (QUXIAN_STR.equals(orgXz)) {
+                    county.add(record);
+                } else if (SJBM_STR.equals(orgXz)) {
+                    cityDepart.add(record);
+                } else if (LXCS_STR.equals(orgXz)) {
+                    lxcs.add(record);
+                } else if (GDYX_STR.equals(orgXz)) {
+                    colleges.add(record);
+                }
+            }
+        }
+        System.out.println(county);
+        System.out.println(cityDepart);
+        System.out.println(lxcs);
+        System.out.println(colleges);
+    }
 }

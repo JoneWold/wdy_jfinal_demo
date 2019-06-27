@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="GBK" ?>
+<xml>
+    <org name="区县">
+        <B01Z101 id="1" name="党委"/>
+        <B01Z101 id="2" name="政府"/>
+        <B01Z101 id="3" name="人大"/>
+        <B01Z101 id="4" name="政协"/>
+        <B01Z101 id="5" name="法院"/>
+        <B01Z101 id="6" name="检察院"/>
+        <B01Z101 id="7" name="开发区"/>
+        <B01Z101 id="8" name="其他"/>
+    </org>
+    <org name="市级部门">
+        <B01Z101 id="9" name="行政"/>
+        <B01Z101 id="10" name="参工"/>
+        <B01Z101 id="11" name="事业"/>
+        <B01Z101 id="12" name="其他"/>
+    </org>
+    <org name="联系处室">
+        <B01Z102 id="3" name="干部三处"/>
+        <B01Z102 id="4" name="干部四处"/>
+        <B01Z102 id="5" name="干部五处"/>
+    </org>
+    <org name="高等院校">
+        <B01Z101 id="13" name="本科"/>
+        <B01Z101 id="14" name="专科"/>
+    </org>
+</xml>
