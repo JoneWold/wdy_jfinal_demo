@@ -7,7 +7,7 @@ import com.wdy.generator.postgreSQL.model.CodeValue;
 
 import java.util.List;
 
-import static com.wdy.constant.Constant.DB_PGSQL;
+import static com.wdy.constant.DBConstant.DB_PGSQL;
 
 
 /**

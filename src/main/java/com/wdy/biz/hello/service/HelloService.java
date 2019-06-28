@@ -12,8 +12,8 @@ import com.wdy.message.Status;
 import java.sql.SQLException;
 import java.util.List;
 
-import static com.wdy.constant.Constant.DB_MySQL;
-import static com.wdy.constant.Constant.DB_PGSQL;
+import static com.wdy.constant.DBConstant.DB_MySQL;
+import static com.wdy.constant.DBConstant.DB_PGSQL;
 
 /**
  * Created by wgch on 2019/3/4.

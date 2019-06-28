@@ -1,13 +1,19 @@
 package com.wdy.bizz.hello;
 
+import cn.hutool.core.util.StrUtil;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.wdy.bizz.TestBeforeWdyConfig;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.wdy.constant.DBConstant.DB_MySQL;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -79,6 +85,20 @@ public class TestJavaSkill extends TestBeforeWdyConfig {
             System.out.print(e);
             System.out.print(e);
         });
+    }
+
+    /**
+     * 从List<Record>中取出某一字段重新组合成新的集合
+     */
+    @Test
+    public void testTypeConversion() {
+        List<Record> records = Db.use(DB_MySQL).find("SELECT * FROM blog");
+        System.out.println(records);
+        List<String> strList = records.stream()
+                .filter(e -> StrUtil.isNotEmpty(e.getStr("title")))
+                .map(e -> e.getStr("title"))
+                .collect(toList());
+        System.out.println(strList);
     }
 
 
