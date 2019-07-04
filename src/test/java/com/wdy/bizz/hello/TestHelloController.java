@@ -3,6 +3,7 @@ package com.wdy.bizz.hello;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Aop;
 import com.jfinal.plugin.activerecord.Record;
 import com.wdy.biz.hello.service.HelloService;
@@ -124,6 +125,19 @@ public class TestHelloController extends TestBeforeWdyConfig {
         list.clear();
         list.addAll(hashSet);
         return list;
+    }
+
+    /**
+     * String 转换 List<String>
+     */
+    @Test
+    public void testStrToList() {
+        String queryQX = "[\"1\",\"2\"]";
+        List<String> list = JSONObject.parseArray(queryQX, String.class);
+        System.out.println(list);
+
+        String string = JSONObject.toJSONString(list);
+        System.out.println(string);
     }
 
 }
