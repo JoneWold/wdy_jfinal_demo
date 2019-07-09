@@ -2,7 +2,7 @@ package com.wdy.biz.wdy;
 
 /**
  * @author wgch
- * @Description
+ * @Description Java8
  * @date 2019/6/6 16:59
  */
 public class Java8Tester {
