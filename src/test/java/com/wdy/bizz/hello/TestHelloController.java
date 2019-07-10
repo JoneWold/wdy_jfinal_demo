@@ -147,6 +147,11 @@ public class TestHelloController extends TestBeforeWdyConfig {
         // list -> String
         String string = JSONObject.toJSONString(list);
         System.out.println(string);
+
+        // String -> list
+        List<String> list1 = Collections.singletonList("123");
+        System.out.println(list1);
+
     }
 
 }
