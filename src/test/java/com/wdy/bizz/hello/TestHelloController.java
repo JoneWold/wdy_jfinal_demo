@@ -121,10 +121,19 @@ public class TestHelloController extends TestBeforeWdyConfig {
      * @return
      */
     public List<String> removeDuplicate(List<String> list) {
-        HashSet hashSet = new HashSet<>(list);
+        HashSet<String> hs = new HashSet<>(list);
         list.clear();
-        list.addAll(hashSet);
+        list.addAll(hs);
         return list;
+    }
+
+    /**
+     * Unicode 汉字内码表 '淘' 28120
+     */
+    @Test
+    public void testTheClock() {
+        char c = "淘".charAt(0);
+        System.out.println(c);
     }
 
     /**
@@ -135,7 +144,7 @@ public class TestHelloController extends TestBeforeWdyConfig {
         String queryQX = "[\"1\",\"2\"]";
         List<String> list = JSONObject.parseArray(queryQX, String.class);
         System.out.println(list);
-
+        // list -> String
         String string = JSONObject.toJSONString(list);
         System.out.println(string);
     }

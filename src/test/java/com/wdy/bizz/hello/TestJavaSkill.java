@@ -6,6 +6,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.wdy.bizz.TestBeforeWdyConfig;
 import org.junit.Test;
 
+import java.text.Collator;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -105,6 +106,11 @@ public class TestJavaSkill extends TestBeforeWdyConfig {
         System.out.println("max-->" + statistics.getMax());
         System.out.println("sum-->" + statistics.getSum());
 
+        // 对中文排序
+        List<String> hzList = Arrays.asList("谷歌", "腾讯", "百度", "淘宝");
+        Collator collator = Collator.getInstance(Locale.CANADA);
+        hzList.sort((e, v) -> collator.compare(e, v));
+        System.out.println(hzList);
 
     }
 
