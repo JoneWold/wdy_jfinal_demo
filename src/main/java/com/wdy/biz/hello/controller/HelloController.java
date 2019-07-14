@@ -6,10 +6,10 @@ import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.ehcache.CacheKit;
+import com.wdy.biz.hello.service.HelloService;
 import com.wdy.constant.CacheConstant;
 import com.wdy.generator.mysql.model.Blog;
 import com.wdy.generator.mysql.model.SysUser;
-import com.wdy.biz.hello.service.HelloService;
 import com.wdy.message.OutMessage;
 
 import java.util.List;
@@ -84,6 +84,43 @@ public class HelloController extends Controller {
             renderJson("验证码错误");
         }
         return result;
+    }
+
+    public void json() {
+        String str = "{\n" +
+                "    \"code\": 0,\n" +
+                "    \"msg\": \"成功\",\n" +
+                "    \"pageno\": 1,\n" +
+                "    \"pagesize\": 20,\n" +
+                "    \"totalcount\": 116,\n" +
+                "    \"result\": [\n" +
+                "        {\n" +
+                "            \"orgCname\": \"委领导\",\n" +
+                "            \"purpose\": \"2\",\n" +
+                "            \"parentOrgId\": \"500000              \",\n" +
+                "            \"orgCode\": \"50000000D001\",\n" +
+                "            \"organOrder\": 100001,\n" +
+                "            \"relationId\": \"c8bf41271b5c475baaaa1d821cc496be\",\n" +
+                "            \"invalidFlag\": \"1\",\n" +
+                "            \"parentOrgCname\": \"重庆市纪委\",\n" +
+                "            \"id\": \"0f5ef19a9fc641659111edcdfde4447b\",\n" +
+                "            \"orgShortCname\": \"委领导\"\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"orgCname\": \"办公厅\",\n" +
+                "            \"purpose\": \"2\",\n" +
+                "            \"parentOrgId\": \"500000              \",\n" +
+                "            \"orgCode\": \"50000000D003\",\n" +
+                "            \"organOrder\": 100003,\n" +
+                "            \"relationId\": \"92515790d90849109104104bc46477e0\",\n" +
+                "            \"invalidFlag\": \"1\",\n" +
+                "            \"parentOrgCname\": \"重庆市纪委\",\n" +
+                "            \"id\": \"e0814e28cae748ddb694b7cddd664935\",\n" +
+                "            \"orgShortCname\": \"办公厅\"\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}";
+        renderJson(str);
     }
 
 
