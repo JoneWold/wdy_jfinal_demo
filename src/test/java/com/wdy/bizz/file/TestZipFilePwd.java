@@ -125,6 +125,11 @@ public class TestZipFilePwd {
         zipFile.addFile(new File("D:\\wdy\\wdy_jfinal_demo\\download\\testF\\gwyinfo.xml"), parameters);
     }
 
+    /**
+     * 寻找文件
+     *
+     * @throws IOException
+     */
     @Test
     public void getFiles() throws IOException {
         Path path = Paths.get("D:\\wdy\\wdy_jfinal_demo\\target\\testF");
