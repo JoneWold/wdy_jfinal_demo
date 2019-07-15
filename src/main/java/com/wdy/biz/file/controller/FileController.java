@@ -7,6 +7,10 @@ import com.jfinal.kit.PathKit;
 import com.wdy.common.utils.Logs;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -22,6 +26,7 @@ public class FileController {
 
     public static void main(String[] args) {
         copyPhotos(PATH_DOWNLOAD, "ss");
+        copyFiles(PATH_DOWNLOAD + SEPARATOR + "testF" + SEPARATOR + "Photos", PATH_DOWNLOAD);
         getFiles("D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\book\\20190512.jpg");
         delFiles(PATH_DOWNLOAD + "/AAA");
     }
@@ -95,8 +100,8 @@ public class FileController {
     /**
      * 拷贝文件
      *
-     * @param filePath
-     * @param fileName
+     * @param filePath 目标文件路径
+     * @param fileName 目标文件名
      */
     public static void copyPhotos(String filePath, String fileName) {
         String path = "D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\book\\20190512.jpg";
@@ -109,6 +114,36 @@ public class FileController {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * 拷贝文件nio
+     *
+     * @param srcPath 原文件路径
+     * @param newPath 目标文件路径
+     */
+    public static void copyFiles(String srcPath, String newPath) {
+        File srcFile = new File(srcPath);
+        File newFile = new File(newPath);
+        if (!srcFile.exists()) {
+            srcFile.mkdirs();
+        }
+        if (!newFile.exists()) {
+            newFile.mkdirs();
+        }
+        if (ObjectUtil.isNotNull(srcFile)) {
+            for (File file : Objects.requireNonNull(srcFile.listFiles())) {
+                if (!file.isDirectory()) {
+                    Path sPath = Paths.get(file.getPath());
+                    Path nPath = Paths.get(newPath + SEPARATOR + file.getName());
+                    try {
+                        Files.copy(sPath, nPath);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 

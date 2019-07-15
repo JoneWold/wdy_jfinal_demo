@@ -65,6 +65,10 @@ public class TestZipFilePwd {
             if (directory) {
                 val mkdirs = file.mkdirs();
             } else {
+                File parentFile = file.getParentFile();
+                if (!parentFile.exists()) {
+                    boolean mkdirs = parentFile.mkdirs();
+                }
                 boolean isOk = file.createNewFile();
                 FileOutputStream outputStream = new FileOutputStream(file);
                 while ((len = sevenZFile.read(data)) != -1) {
@@ -117,5 +121,11 @@ public class TestZipFilePwd {
         zipFile.addFile(new File("D:\\wdy\\wdy_jfinal_demo\\download\\testF\\gwyinfo.xml"), parameters);
     }
 
+
+    @Test
+    public void TEST() {
+//        Files.walk();
+
+    }
 
 }
