@@ -98,6 +98,10 @@ public class XmlZipFileUtil {
                 if (directory) {
                     file.mkdirs();
                 } else {
+                    File parentFile = file.getParentFile();
+                    if (!parentFile.exists()) {
+                        parentFile.mkdirs();
+                    }
                     file.createNewFile();
                     FileOutputStream outputStream = new FileOutputStream(file);
                     while ((len = sevenZFile.read(data)) != -1) {

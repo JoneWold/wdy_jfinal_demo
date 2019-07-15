@@ -4,13 +4,16 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.jfinal.kit.PathKit;
+import com.jfinal.plugin.activerecord.Record;
 import com.wdy.common.utils.Logs;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -25,10 +28,17 @@ public class FileController {
     private final static String PATH_DOWNLOAD = PathKit.getWebRootPath() + SEPARATOR + "download";
 
     public static void main(String[] args) {
+        // 拷贝文件
         copyPhotos(PATH_DOWNLOAD, "ss");
-        copyFiles(PATH_DOWNLOAD + SEPARATOR + "testF" + SEPARATOR + "Photos", PATH_DOWNLOAD);
+        copyFilesNio(PATH_DOWNLOAD + SEPARATOR + "testF" + SEPARATOR + "Photos", PATH_DOWNLOAD);
+        // 移动文件
+        moveFilesNio("", "");
+        // 遍历文件
         getFiles("D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\book\\20190512.jpg");
+        getFilesNio(PATH_DOWNLOAD + SEPARATOR + "testF");
+        // 删除文件
         delFiles(PATH_DOWNLOAD + "/AAA");
+        delFilesNio(PATH_DOWNLOAD + "/SS");
     }
 
     public void zip() throws Exception {
@@ -118,12 +128,12 @@ public class FileController {
     }
 
     /**
-     * 拷贝文件nio
+     * 拷贝文件 nio
      *
      * @param srcPath 原文件路径
      * @param newPath 目标文件路径
      */
-    public static void copyFiles(String srcPath, String newPath) {
+    public static void copyFilesNio(String srcPath, String newPath) {
         File srcFile = new File(srcPath);
         File newFile = new File(newPath);
         if (!srcFile.exists()) {
@@ -144,6 +154,19 @@ public class FileController {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * 移动文件 nio
+     */
+    public static void moveFilesNio(String srcPath, String newPath) {
+        Path sPath = Paths.get(srcPath);
+        Path nPath = Paths.get(newPath);
+        try {
+            Files.move(sPath, nPath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -180,6 +203,44 @@ public class FileController {
         }
     }
 
+    /**
+     * 读取文件 nio
+     *
+     * @throws IOException
+     */
+    public static void getFilesNio(String srcPath) {
+        List<Record> tabList = new ArrayList<>();
+        List<Record> phoList = new ArrayList<>();
+        List<Record> gwyList = new ArrayList<>();
+        Path path = Paths.get(srcPath);
+        Stream<Path> stream = null;
+        try {
+            stream = Files.walk(path, FileVisitOption.FOLLOW_LINKS);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assert stream != null;
+        for (Path p : stream.collect(Collectors.toList())) {
+            File file = new File(p.toUri());
+            if (file.isFile()) {
+                Record record = new Record();
+                Path fileName = p.getFileName();
+                record.set("fileName", fileName);
+                record.set("filePath", p);
+                if (p.toString().contains("Table")) {
+                    tabList.add(record);
+                } else if (p.toString().contains("Photos")) {
+                    phoList.add(record);
+                } else {
+                    gwyList.add(record);
+                }
+            }
+        }
+        System.out.println(tabList);
+        System.out.println(phoList);
+        System.out.println(gwyList);
+    }
+
 
     /**
      * 删除文件目录
@@ -202,4 +263,19 @@ public class FileController {
             dir.delete();
         }
     }
+
+    /**
+     * 删除文件 nio
+     *
+     * @param srcPath
+     */
+    public static void delFilesNio(String srcPath) {
+        Path path = Paths.get(srcPath);
+        try {
+            Files.delete(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
