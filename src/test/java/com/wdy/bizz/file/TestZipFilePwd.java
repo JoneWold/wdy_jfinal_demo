@@ -12,6 +12,10 @@ import org.junit.Test;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 import java.util.zip.ZipException;
 
 
@@ -121,5 +125,11 @@ public class TestZipFilePwd {
         zipFile.addFile(new File("D:\\wdy\\wdy_jfinal_demo\\download\\testF\\gwyinfo.xml"), parameters);
     }
 
+    @Test
+    public void getFiles() throws IOException {
+        Path path = Paths.get("D:\\wdy\\wdy_jfinal_demo\\target\\testF");
+        Stream<Path> stream = Files.find(path, 2, (p, basicFileAttributes) -> String.valueOf(p).endsWith("xml"));
+        stream.map(Path::getFileName).forEach(System.out::println);
+    }
 
 }
