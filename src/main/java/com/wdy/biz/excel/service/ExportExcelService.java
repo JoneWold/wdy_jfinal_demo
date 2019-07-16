@@ -130,7 +130,7 @@ public class ExportExcelService {
                         sonSonList.add("小计");
                         map.put(parent.getStr("CODE_NAME"), sonSonList);
                     } else if (i == 0) {
-                        
+
                         i++;
                     } else {
                         // 获取当前map的value
