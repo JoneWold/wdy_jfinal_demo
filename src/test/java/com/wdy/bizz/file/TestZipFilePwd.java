@@ -132,7 +132,7 @@ public class TestZipFilePwd {
      */
     @Test
     public void getFiles() throws IOException {
-        Path path = Paths.get("D:\\wdy\\wdy_jfinal_demo\\target\\testF");
+        Path path = Paths.get("D:\\wdy\\wdy_jfinal_demo\\download\\testF");
         Stream<Path> stream = Files.find(path, 2, (p, basicFileAttributes) -> String.valueOf(p).endsWith("xml"));
         stream.map(Path::getFileName).forEach(System.out::println);
     }
