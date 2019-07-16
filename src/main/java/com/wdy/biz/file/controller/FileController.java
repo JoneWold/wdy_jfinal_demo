@@ -3,6 +3,7 @@ package com.wdy.biz.file.controller;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.jfinal.kit.LogKit;
 import com.jfinal.kit.PathKit;
 import com.jfinal.plugin.activerecord.Record;
 import com.wdy.common.utils.Logs;
@@ -123,7 +124,7 @@ public class FileController {
             long copy = IoUtil.copy(in, out, IoUtil.DEFAULT_BUFFER_SIZE);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LogKit.error("copy", e);
         }
     }
 
@@ -150,7 +151,7 @@ public class FileController {
                     try {
                         Files.copy(sPath, nPath);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        LogKit.error("copy", e);
                     }
                 }
             }
@@ -166,7 +167,7 @@ public class FileController {
         try {
             Files.move(sPath, nPath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            e.printStackTrace();
+            LogKit.error("move", e);
         }
     }
 
@@ -217,7 +218,7 @@ public class FileController {
         try {
             stream = Files.walk(path, FileVisitOption.FOLLOW_LINKS);
         } catch (IOException e) {
-            e.printStackTrace();
+            LogKit.error("..", e);
         }
         assert stream != null;
         for (Path p : stream.collect(Collectors.toList())) {
@@ -274,7 +275,7 @@ public class FileController {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            e.printStackTrace();
+            LogKit.error("del", e);
         }
     }
 
