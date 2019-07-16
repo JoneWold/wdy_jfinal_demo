@@ -120,6 +120,7 @@ public class ExportExcelService {
         for (Record parent : parentList) {
             String parentCode = parent.getStr("CODE_VALUE");
             Map<String, List<String>> map = new LinkedHashMap<>();
+            int i = 0;
             for (Record son : sonList) {
                 String sonCode = son.getStr("CODE_VALUE");
                 if (sonCode.startsWith(parentCode)) {
@@ -128,6 +129,9 @@ public class ExportExcelService {
                         List<String> sonSonList = new ArrayList<>();
                         sonSonList.add("小计");
                         map.put(parent.getStr("CODE_NAME"), sonSonList);
+                    } else if (i == 0) {
+                        
+                        i++;
                     } else {
                         // 获取当前map的value
                         List<String> value = map.entrySet().iterator().next().getValue();
