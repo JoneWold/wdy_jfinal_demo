@@ -160,6 +160,9 @@ public class TestJavaSkill extends TestBeforeWdyConfig {
         List<Record> list = Db.use(DB_MySQL).find("SELECT * FROM blog");
         Map<String, Record> map = list.stream().collect(Collectors.toMap(e -> e.getStr("id"), v -> v, (e, v) -> e));
         System.out.println(map);
+        // 最小值
+        Optional<Record> min = list.stream().min((v, x) -> v.getStr("B0111").length() - x.getStr("B0111").length());
+        System.out.println(min);
     }
 
 }
