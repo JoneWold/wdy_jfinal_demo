@@ -122,9 +122,12 @@ public class FileController {
             FileInputStream in = new FileInputStream(file);
             BufferedOutputStream out = FileUtil.getOutputStream(filePath + SEPARATOR + FILEPATH_PHOTOS + SEPARATOR + fileName + ".jpg");
             long copy = IoUtil.copy(in, out, IoUtil.DEFAULT_BUFFER_SIZE);
-
+            out.close();
+            in.close();
         } catch (IOException e) {
             LogKit.error("copy", e);
+            //TODO 这里抛出异常，则程序停止
+            throw new RuntimeException();
         }
     }
 
