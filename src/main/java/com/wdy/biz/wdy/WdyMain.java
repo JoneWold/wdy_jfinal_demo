@@ -106,6 +106,7 @@ public class WdyMain {
         num.setMaximumFractionDigits(2);
         String ss = num.format((float) 1 / (float) 12 * 100);
         System.out.println("百分比：" + ss);
+        System.out.println(String.format("百分比：%s", ss));
 
         // 进度百分比
         double d1 = (2645 / 23);
