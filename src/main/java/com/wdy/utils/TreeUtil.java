@@ -1,4 +1,4 @@
-package com.wdy.common.utils;
+package com.wdy.utils;
 
 
 import com.wdy.vo.TreeNodeVo;

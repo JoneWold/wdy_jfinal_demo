@@ -1,4 +1,4 @@
-package com.wdy.common.utils;
+package com.wdy.utils;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.LocalDate;

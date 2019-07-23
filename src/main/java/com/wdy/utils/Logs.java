@@ -1,4 +1,4 @@
-package com.wdy.common.utils;
+package com.wdy.utils;
 
 /**
  * Created by hdy on 2018/4/17.

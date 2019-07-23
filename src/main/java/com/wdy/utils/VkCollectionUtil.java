@@ -1,4 +1,4 @@
-package com.wdy.common.utils;
+package com.wdy.utils;
 
 import cn.hutool.core.util.StrUtil;
 import com.jfinal.plugin.activerecord.Record;

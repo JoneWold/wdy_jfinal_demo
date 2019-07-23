@@ -6,7 +6,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.jfinal.kit.LogKit;
 import com.jfinal.kit.PathKit;
 import com.jfinal.plugin.activerecord.Record;
-import com.wdy.common.utils.Logs;
+import com.wdy.utils.Logs;
 
 import java.io.*;
 import java.nio.file.*;

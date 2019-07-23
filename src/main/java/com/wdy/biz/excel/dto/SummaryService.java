@@ -8,7 +8,7 @@ import com.jfinal.aop.Aop;
 import com.jfinal.plugin.activerecord.Record;
 import com.wdy.biz.base.BaseService;
 import com.wdy.biz.dictionary.service.DictionaryService;
-import com.wdy.common.utils.VkCollectionUtil;
+import com.wdy.utils.VkCollectionUtil;
 import com.wdy.message.OutMessage;
 import com.wdy.message.Status;
 

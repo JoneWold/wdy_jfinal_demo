@@ -1,4 +1,4 @@
-package com.wdy.common.utils.download;
+package com.wdy.utils.download;
 
 import com.jfinal.render.RenderException;
 
