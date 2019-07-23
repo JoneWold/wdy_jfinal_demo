@@ -83,7 +83,7 @@ public class TestJavaSkill extends TestBeforeWdyConfig {
         System.out.println("joinStr-->" + joinStr);
         System.out.println("length3-->" + length3);
 
-        // 2、sorted 方法用于对流进行排序
+        // 2、sorted 方法用于对流进行倒叙排序
         List<String> sorted = strList.stream().sorted(Comparator.comparing(String::length).reversed()).collect(Collectors.toList());
         System.out.println("sorted-->" + sorted);
 
@@ -125,7 +125,7 @@ public class TestJavaSkill extends TestBeforeWdyConfig {
         List<String> list2 = Stream.of("001.002", "001.002.003", "001.001.002").collect(toList());
         System.out.println(list2);
 
-        // e表示参数，花括号中相当于函数体，且JVM会根据->右侧语句的返回结果自动判断返回值类型
+        // 1、e表示参数，花括号中相当于函数体，且JVM会根据->右侧语句的返回结果自动判断返回值类型
         list1.forEach(System.out::println);
         Arrays.asList("1", "2", "3").forEach(e -> {
             System.out.print(e);
@@ -133,9 +133,30 @@ public class TestJavaSkill extends TestBeforeWdyConfig {
             System.out.println();
         });
 
-        // 输出了5个随机数，排序默认升序
+        // 2、输出了5个随机数，排序默认升序
         Random random = new Random();
         random.ints().limit(5).sorted().forEach(System.out::println);
+
+        // 3、skip() 方法
+        // 跳过stream中的前n个元素，n不能为负值。如果n大于stream的大小，则返回空stream。
+        System.out.println("获取流中的偶数，并跳过前两个-->>>");
+        Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).filter(i -> i % 2 == 0).skip(2).forEach(i -> System.out.print(i + " "));
+
+        // 4、limit() 对于将无限的数字流 截断为有限流非常有用
+        Stream.iterate(0, i -> i + 1).filter(i -> i % 2 == 0).limit(10).forEach(i -> System.out.print(i + " "));
+
+        // 5、对流进行分页
+        List<Integer> evenNumbers = getEvenNumbers(2, 10);
+        System.out.println(evenNumbers);
+
+    }
+
+    private static List<Integer> getEvenNumbers(int offset, int limit) {
+        return Stream.iterate(0, i -> i + 1)
+                .filter(i -> i % 2 == 0)
+                .skip(offset)
+                .limit(limit)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -162,6 +183,7 @@ public class TestJavaSkill extends TestBeforeWdyConfig {
         System.out.println(map);
         // 最小值
         Optional<Record> min = list.stream().min((v, x) -> v.getStr("B0111").length() - x.getStr("B0111").length());
+        Optional<Record> min2 = list.stream().min(Comparator.comparingInt(v -> v.getStr("B0111").length()));
         System.out.println(min);
     }
 
