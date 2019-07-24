@@ -74,17 +74,17 @@ public class FileDownloadUtils {
 
             userAgent = userAgent.toLowerCase();
             // IE浏览器，只能采用URLEncoder编码
-            if (userAgent.indexOf("msie") != -1) {
+            if (userAgent.contains("msie")) {
                 return "filename=\"" + encodedFileName + "\"";
             }
 
             // Opera浏览器只能采用filename*
-            if (userAgent.indexOf("opera") != -1) {
+            if (userAgent.contains("opera")) {
                 return "filename*=UTF-8''" + encodedFileName;
             }
 
             // Safari浏览器，只能采用ISO编码的中文输出,Chrome浏览器，只能采用MimeUtility编码或ISO编码的中文输出
-            if (userAgent.indexOf("safari") != -1 || userAgent.indexOf("applewebkit") != -1 || userAgent.indexOf("chrome") != -1) {
+            if (userAgent.contains("safari") || userAgent.contains("applewebkit") || userAgent.contains("chrome")) {
                 return "filename=\"" + new String(fileName.getBytes("UTF-8"), "ISO8859-1") + "\"";
             }
 
