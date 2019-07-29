@@ -16,7 +16,6 @@ public class WdyMain {
         System.out.println(Fribonacci(5));
         wdy.wdyOrgCode();
         wdy.getNodeCode();
-        wdy.md5();
         wdy.getSQL();
         wdy.wdyStringBuffer();
         wdy.progressBar();
@@ -57,11 +56,6 @@ public class WdyMain {
         }
     }
 
-    // md5
-    private void md5() {
-        String md5Hex = DigestUtil.md5Hex("123456");
-        System.out.println(md5Hex);
-    }
 
     // 分割字符串SQL语句
     private void getSQL() {
