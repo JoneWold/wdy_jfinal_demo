@@ -156,4 +156,27 @@ public class TestHelloController extends TestBeforeWdyConfig {
         object.fluentPut("1", "A").fluentPut("2", "B");
     }
 
+    /**
+     * 迭代器循环删除元素
+     */
+    @Test
+    public void testRemoveList() {
+        Record record = new Record().set("id", "1");
+        Record record1 = new Record().set("id", "2");
+        Record record2 = new Record().set("id", "3");
+        List<Record> list = new ArrayList<>();
+        list.add(record);
+        list.add(record1);
+        list.add(record2);
+        List<String> other = Arrays.asList("1", "3", "5");
+        Iterator<Record> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            String fileId = iterator.next().getStr("id");
+            if (!other.contains(fileId)) {
+                iterator.remove();
+            }
+        }
+        System.out.println(list);
+    }
+
 }
