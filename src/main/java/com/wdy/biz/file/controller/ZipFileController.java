@@ -1,9 +1,10 @@
 package com.wdy.biz.file.controller;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import cn.hutool.core.util.ObjectUtil;
+import org.apache.commons.compress.archivers.sevenz.SevenZArchiveEntry;
+import org.apache.commons.compress.archivers.sevenz.SevenZOutputFile;
+
+import java.io.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -16,20 +17,21 @@ import static com.wdy.constant.CommonConstant.SEPARATOR;
  */
 public class ZipFileController {
 
-    public static void main(String[] args) {
-        zipFile(new File("D:\\wdy\\wdy_jfinal_demo\\download\\testF"), new File("D:\\wdy\\wdy_jfinal_demo\\target\\testF.zip"));
-
+    public static void main(String[] args) throws IOException {
+        String filePath = "D:\\wdy\\wdy_jfinal_demo\\download\\testF";
+        zipFile(filePath + ".zip", new File(filePath));
+        HzbFile(filePath + ".hzb", new File(filePath));
     }
 
     /**
      * 压缩文件
      *
-     * @param srcFile 源文件路径
-     * @param zipFile 目标文件路径
+     * @param toPath  目标文件路径
+     * @param srcFile 源文件
      */
-    public static void zipFile(File srcFile, File zipFile) {
+    public static void zipFile(String toPath, File srcFile) {
         try {
-            ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile));
+            ZipOutputStream out = new ZipOutputStream(new FileOutputStream(new File(toPath)));
             compress(out, srcFile, "");
             out.close();
         } catch (Exception e) {
@@ -40,9 +42,9 @@ public class ZipFileController {
     /**
      * 压缩文件 递归
      *
-     * @param out
-     * @param sourceFile
-     * @param base
+     * @param out        压缩输出流
+     * @param sourceFile 源文件
+     * @param base       文件路径
      */
     public static void compress(ZipOutputStream out, File sourceFile, String base) {
         try {
@@ -75,6 +77,54 @@ public class ZipFileController {
                 out.closeEntry();
                 fos.close();
                 bis.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 7z 压缩
+     *
+     * @param toPath 目标文件路径
+     * @param scFile 原文件
+     * @throws IOException
+     */
+    public static void HzbFile(String toPath, File scFile) throws IOException {
+        try (SevenZOutputFile out = new SevenZOutputFile(new File(toPath))) {
+            compress(out, scFile, "");
+        }
+    }
+
+    private static void compress(SevenZOutputFile out, File file, String dir) {
+        try {
+            if (file.isDirectory()) {
+                File[] files = file.listFiles();
+                if (ObjectUtil.isNotNull(files)) {
+                    if (files.length == 0) {
+                        out.putArchiveEntry(out.createArchiveEntry(new File(dir), dir + SEPARATOR));
+                    } else {
+                        for (int i = 0; i < files.length; i++) {
+                            if ("Table".equals(dir) || "Photos".equals(dir)) {
+                                compress(out, files[i], dir + SEPARATOR + files[i].getName());
+                            } else {
+                                compress(out, files[i], files[i].getName());
+                            }
+                        }
+                    }
+                }
+            } else {
+                SevenZArchiveEntry entry = out.createArchiveEntry(file, dir);
+                out.putArchiveEntry(entry);
+
+                FileInputStream in = new FileInputStream(file);
+                byte[] b = new byte[2048];
+                int len;
+                while ((len = in.read(b)) > 0) {
+                    out.write(b, 0, len);
+                }
+                out.closeArchiveEntry();
+                in.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
