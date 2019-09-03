@@ -2,6 +2,7 @@ package com.wdy.bizz.hello;
 
 import cn.hutool.core.util.StrUtil;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.wdy.bizz.TestBeforeWdyConfig;
 import org.junit.Test;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.wdy.constant.DBConstant.DB_MySQL;
+import static com.wdy.constant.DBConstant.DB_PGSQL;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -181,10 +183,32 @@ public class TestJavaSkill extends TestBeforeWdyConfig {
         List<Record> list = Db.use(DB_MySQL).find("SELECT * FROM blog");
         Map<String, Record> map = list.stream().collect(Collectors.toMap(e -> e.getStr("id"), v -> v, (e, v) -> e));
         System.out.println(map);
+        // 分页
+        Page<Record> page = this.getJava8Page(1, 10, list);
+        System.out.println(page);
+    }
+
+    private Page<Record> getJava8Page(int pageNum, int pageSize, List<Record> list) {
+        Page<Record> page = new Page<>();
+        List<Record> collect = list.stream().skip((pageNum - 1) * pageSize).limit(pageSize).collect(toList());
+        page.setList(collect);
+        page.setPageNumber(pageNum);
+        page.setPageSize(pageSize);
+        page.setTotalRow(collect.size());
+        page.setTotalPage(collect.size() % pageSize == 0 ? collect.size() / pageSize : collect.size() / pageSize + 1);
+        return page;
+    }
+
+    @Test
+    public void getJava8Min() {
+        List<Record> list = Db.use(DB_PGSQL).find("select * from \"b01\" limit 100");
         // 最小值
         Optional<Record> min = list.stream().min((v, x) -> v.getStr("B0111").length() - x.getStr("B0111").length());
         Optional<Record> min2 = list.stream().min(Comparator.comparingInt(v -> v.getStr("B0111").length()));
-        System.out.println(min);
+        if (min2.isPresent()) {
+            Record record = min2.get();
+            System.out.println(record.getStr("B0111"));
+        }
     }
 
 }
