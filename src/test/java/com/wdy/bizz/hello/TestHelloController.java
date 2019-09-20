@@ -3,6 +3,8 @@ package com.wdy.bizz.hello;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Aop;
 import com.jfinal.plugin.activerecord.Record;
@@ -177,6 +179,30 @@ public class TestHelloController extends TestBeforeWdyConfig {
             }
         }
         System.out.println(list);
+    }
+
+    /**
+     * JSON 格式转换
+     */
+    @Test
+    public void testJSON() {
+        String value = "[{\"doc\":\"/upload/123.doc\"},{\"pdf\":\"/upload/123.pdf\"}]";
+        List<JSONObject> list = JSON.parseArray(value, JSONObject.class);
+        String doc = list.get(0).getString("doc");
+        String pdf = list.get(1).getString("pdf");
+        System.out.println("doc：" + doc);
+        System.out.println("pdf：" + pdf);
+
+        // 循环map类型的数据
+        String value2 = "[{\"doc\":\"/upload/123.doc\"}]";
+        JSONArray array = JSON.parseArray(value2);
+        JSONObject jb = JSONObject.parseObject(array.get(0).toString());
+        for (Map.Entry<String, Object> entry : jb.entrySet()) {
+            String key = entry.getKey();
+            String s = entry.getValue().toString();
+            System.out.println("map的key：" + key);
+            System.out.println("map的value：" + s);
+        }
     }
 
 }
