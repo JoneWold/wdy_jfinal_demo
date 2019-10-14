@@ -57,15 +57,17 @@ public class TestJavaSkill extends TestBeforeWdyConfig {
 
         Map<String, List<Record>> map = recordList.stream().collect(Collectors.groupingBy(TestJavaSkill::apply));
         Map<String, List<Record>> map1 = recordList.stream().collect(Collectors.groupingBy(b -> b.getStr("A0000")));
-
+        // 分组 统计
+        Map<String, Long> map2 = recordList.stream().collect(Collectors.groupingBy(e -> e.getStr("A0000"), Collectors.counting()));
 
         // 遍历map集合
-        for (Map.Entry<String, List<Record>> entry : map1.entrySet()) {
+        for (Map.Entry<String, List<Record>> entry : map.entrySet()) {
             String key = entry.getKey();
             List<Record> values = entry.getValue();
             System.out.println(key + ">>>" + values);
         }
-        System.out.println(map);
+        System.out.println(map1);
+        System.out.println(map2);
     }
 
     /**

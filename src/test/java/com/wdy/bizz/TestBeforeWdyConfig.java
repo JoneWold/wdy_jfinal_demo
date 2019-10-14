@@ -28,7 +28,10 @@ public class TestBeforeWdyConfig {
     public static void init() {
         Prop p = PropKit.use("jfinal.properties");
         // mysql
-        DruidPlugin mysqldp = new DruidPlugin(p.get("jfinal.MySQL.jdbcUrl"), p.get("jfinal.MySQL.user"), p.get("jfinal.MySQL.password").trim());
+        DruidPlugin mysqldp = new DruidPlugin(
+                p.get("jfinal.MySQL.jdbcUrl"),
+                p.get("jfinal.MySQL.user"),
+                p.get("jfinal.MySQL.password").trim());
         ActiveRecordPlugin arpMysql = new ActiveRecordPlugin(DB_MySQL, mysqldp);
         com.wdy.generator.mysql.model._MappingKit.mapping(arpMysql);
         arpMysql.addSqlTemplate("sql/jfinal_demo.sql");
@@ -37,8 +40,10 @@ public class TestBeforeWdyConfig {
         arpMysql.start();
         // pg
         DruidPlugin dp = new DruidPlugin(
-                p.get("jfinal.postgreSQL.url"), p.get("jfinal.postgreSQL.user"),
-                p.get("jfinal.postgreSQL.password"), p.get("jfinal.postgreSQL.driverClass"));
+                p.get("jfinal.postgreSQL.url"),
+                p.get("jfinal.postgreSQL.user"),
+                p.get("jfinal.postgreSQL.password"),
+                p.get("jfinal.postgreSQL.driverClass"));
         ActiveRecordPlugin arp = new ActiveRecordPlugin(DB_PGSQL, dp);
         arp.setShowSql(true);
         arp.setDialect(new PostgreSqlDialect());

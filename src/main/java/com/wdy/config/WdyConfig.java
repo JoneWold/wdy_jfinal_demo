@@ -106,7 +106,10 @@ public class WdyConfig extends JFinalConfig {
          * MYSQL数据库
          */
         // 配置 druid 数据库连接池插件（数据源）
-        mysqldp = new DruidPlugin(p.get("jfinal.MySQL.jdbcUrl"), p.get("jfinal.MySQL.user"), p.get("jfinal.MySQL.password").trim());
+        mysqldp = new DruidPlugin(
+                p.get("jfinal.MySQL.jdbcUrl"),
+                p.get("jfinal.MySQL.user"),
+                p.get("jfinal.MySQL.password").trim());
         me.add(mysqldp);
 
         // 配置ActiveRecord 数据库访问插件
@@ -119,7 +122,11 @@ public class WdyConfig extends JFinalConfig {
         /**
          * PostgreSQL数据库
          */
-        postgreSQLdp = new DruidPlugin(p.get("jfinal.postgreSQL.url"), p.get("jfinal.postgreSQL.user"), p.get("jfinal.postgreSQL.password"), p.get("jfinal.postgreSQL.driverClass").trim());
+        postgreSQLdp = new DruidPlugin(
+                p.get("jfinal.postgreSQL.url"),
+                p.get("jfinal.postgreSQL.user"),
+                p.get("jfinal.postgreSQL.password"),
+                p.get("jfinal.postgreSQL.driverClass").trim());
         me.add(postgreSQLdp);
         arpPostgreSQL = new ActiveRecordPlugin("postgreSQL", postgreSQLdp);
         com.wdy.generator.postgreSQL.model._MappingKit.mapping(arpPostgreSQL);
