@@ -1,6 +1,7 @@
 package com.wdy.biz.file.controller;
 
 import com.jfinal.kit.PathKit;
+import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Record;
 import com.wdy.biz.file.model.Book;
 import org.dom4j.*;
@@ -32,6 +33,7 @@ public class XmlDOM4JTest {
         String a01Path = "D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\book\\A01.xml";
 //        ArrayList<Book> xmlData = getXmlData(bookPath);
 //        System.out.println(xmlData);
+        testJL();
         List<Record> a01XmlData = getA01XmlData(a01Path);
         System.out.println(a01XmlData);
 //        testDoc();
@@ -198,14 +200,37 @@ public class XmlDOM4JTest {
         xmlWriter.close();
     }
 
+
+    public static void testJL() {
+        String value = "2005.09--2009.07  重庆邮电大学\n" +
+                "2009.07--2010.09  四川省成都市成都昊晟好利来食品厂\n" +
+                "2010.09--2015.01  四川省广安市武胜县新型农村合作医疗管理中心（其间：2011.03--2014.07福建师范大学在职本科财务管理专业学习）\n" +
+                "2015.01--2015.06  重庆市车管所四分所员工\n" +
+                "2015.06--2016.08  待业\n" +
+                "2016.08--2017.08  重庆市万州区甘宁镇财政所试用期人员（其间：2015.09——  重庆工商大学在职研究生工商管理专业）\n" +
+                "2017.08--        重庆市万州区甘宁镇财政所科员";
+
+        String value2 = "1994.09--1997.07   重庆第一财贸学校财会专业学习；\n" +
+                "1997.07--1997.10   待业\n" +
+                "1997.10--2001.04   潼南县药品检验所工作（其间借调到潼南县卫生局任会计,1999年05月助理会计师）；\n" +
+                "2001.04--2003.11   潼南县药品监督管理局\n" +
+                "2003.11--2010.01   食品药品监督管理局（2009.03起副厅局级）潼南县分局（其间:2003.06取得重庆工商大学金融专业自学考试专科学历,2006.02--2009.01重庆工商大学会计专业学习,2006.07副主任科员）\n" +
+                "2010.01--2014.12   食品药品监督管理局（2013.12起厅局级）规划财务处主任科员\n" +
+                "2014.12--        食品药品监督管理局规划财务处副调研员";
+
+        String a1701 = setFormatA1701("A1701", value);
+        System.out.println(a1701);
+    }
+
     /**
      * 格式化简历
      */
     public static String setFormatA1701(String name, String value) {
-        if ("A1701".equals(name)) {
+        if ("A1701".equals(name) && StrKit.notBlank(value)) {
             char[] chars = value.toCharArray();
             StringBuilder builder = new StringBuilder();
             int index = 0;
+            List<Integer> indexList = new ArrayList<>();
             for (int i = 1; i < chars.length - 4; i++) {
                 StringBuilder sb = new StringBuilder();
                 char aChar0 = chars[i - 1];
@@ -213,12 +238,33 @@ public class XmlDOM4JTest {
                 char aChar1 = chars[i + 1];
                 char aChar2 = chars[i + 2];
                 char aChar3 = chars[i + 3];
-                // 前一位是空格，当前及后面三位是数字
-                if (aChar0 == 32 && aChar >= 48 && aChar <= 57 && aChar1 >= 48 && aChar1 <= 57
+                // 前一位是空格，当前及后面三位是数字（index最后一次赋值及最后一行的第一个字符的序号）
+                if ((aChar0 == 32 || aChar0 == 10) && aChar >= 48 && aChar <= 57 && aChar1 >= 48 && aChar1 <= 57
                         && aChar2 >= 48 && aChar2 <= 57 && aChar3 >= 48 && aChar3 <= 57) {
                     sb.append(value, index, i - 1).append("\n");
                     index = i;
                     builder.append(sb);
+                    indexList.add(index);
+                }
+            }
+            // 倒数第二段
+            int sameSpace = 0;
+            if (indexList.size() > 2) {
+                String secondStr = value.substring(indexList.get(indexList.size() - 2), index);
+                char[] array = secondStr.toCharArray();
+                int num = 0;
+                for (int i = 0; i < array.length - 2; i++) {
+                    if (array[i] == 45 && array[i + 1] == 45) {
+                        num = i + 2;
+                        for (int k = num; k < array.length - 2; k++) {
+                            if (array[k] == 32) {
+                                sameSpace++;
+                            }
+                            if (k - num > 9) {
+                                break;
+                            }
+                        }
+                    }
                 }
             }
             // 最后一段 2015.12--         药品不良反应监测中心 副主任科员
@@ -244,6 +290,14 @@ public class XmlDOM4JTest {
             }
             if (space == 7) {
                 endStr = value.substring(index, index + 9) + " " + " " + value.substring(index + 9);
+            } else {
+                if (space == 8) {
+                    if (sameSpace == 2) {
+                        endStr = value.substring(index, index + 9) + " " + value.substring(index + 9);
+                    } else if (sameSpace == 3) {
+                        endStr = value.substring(index, index + 9) + " " + " " + value.substring(index + 9);
+                    }
+                }
             }
             builder.append(endStr);
             value = builder.toString();
