@@ -1,4 +1,4 @@
-var TestUserService = Java.type("com.b1809.young.user.TestUserService");
+var TestJS = Java.type("com.wdy.bizz.js.TestJS");
 var ArrayList = Java.type('java.util.ArrayList');
 var HashMap = Java.type('java.util.HashMap');
 
@@ -13,7 +13,7 @@ var fun2 = function (object) {
 };
 
 var fun3 = function () {
-    var say = TestUserService.say("少时诵诗书所所所所所所所");
+    var say = TestJS.say("少时诵诗书所所所所所所所");
     print(say);
 };
 
