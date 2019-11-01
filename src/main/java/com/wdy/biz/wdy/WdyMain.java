@@ -86,7 +86,7 @@ public class WdyMain {
     /**
      * String  适用于少量的字符串操作的情况
      * StringBuilder 适用于单线程下在字符缓冲区进行大量操作的情况 (线程不安全)
-     * StringBuffer  适用多线程下在字符缓冲区进行大量操作的情况 (线程安全)
+     * StringBuffer  适用于多线程下在字符缓冲区进行大量操作的情况 (线程安全)
      */
     // 从性能、速度方面：StringBuilder > StringBuffer > String
     private void testStr() {
