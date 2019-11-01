@@ -17,6 +17,7 @@ public class WdyMain {
         wdy.getNodeCode();
         wdy.getSQL();
         wdy.wdyStringBuffer();
+        wdy.testStr();
         wdy.progressBar();
     }
 
@@ -61,7 +62,7 @@ public class WdyMain {
         String str = "select a01.\"A0000\",a01.\"A0101\",a01.\"A0192\" as \"A0215A\" ,(select string_agg(a02.\"A0215B\",'、') from \"a02\" where \"A0000\" = a01.\"A0000\" group by \"A0000\") as \"A0215B\",(select string_agg ( to_char ( a02.\"A0243\", 'YYYY.MM' ), '、' ) from \"a02\" where \"A0000\" =a01.\"A0000\" group by \"A0000\") AS \"A0243\",a01.\"A0192C\",a01.\"A0104\",a01.\"A0117\",to_char(a01.\"A0107\",'YYYY.MM') as \"A0107\",a01.\"A0111A\",a01.\"QRZZS\",a01.\"ZZZS\",a01.\"A0196\",to_char(a01.\"A0134\",'YYYY.MM') as \"A0134\",to_char(a01.\"A0144\",'YYYY.MM') as \"A0140\",string_agg(a02.\"mark\",'、') as \"mark\",concat(a01.\"XGR\",to_char(a01.\"XGSJ\",'YYYY.MM')) as \"XGRANDXGSJ\",a01.\"A0198\"\tfrom \"a01\" left join \"a02\" on a01.\"A0000\" = a02.\"A0000\" left join \"b01\" on a02.\"A0201B\" = b01.\"id\" left join \"a08\" on a08.\"A0000\" = a01.\"A0000\" where  b01.\"B0111\" like 'null%' group by a01.\"A0000\"";
         String sql = str.substring(0, str.lastIndexOf("from"));
         System.out.println(sql);
-        System.out.println("================");
+        System.out.println("=======================");
         String from = str.substring(str.lastIndexOf("from"));
         System.out.println(from);
     }
@@ -80,6 +81,43 @@ public class WdyMain {
         if ("1.00".equals(record.getStr("id"))) {
             System.out.println("啦啦啦啦啦啦啦啦");
         }
+    }
+
+    /**
+     * String  适用于少量的字符串操作的情况
+     * StringBuilder 适用于单线程下在字符缓冲区进行大量操作的情况 (线程不安全)
+     * StringBuffer  适用多线程下在字符缓冲区进行大量操作的情况 (线程安全)
+     */
+    // 从性能、速度方面：StringBuilder > StringBuffer > String
+    private void testStr() {
+        System.out.println("=======================");
+        Long start1 = System.currentTimeMillis();//获取开始时间
+        for (int i = 0; i < 100000; i++)//重复10万次进行String变量加操作
+        {
+            String str = "a";
+            str += "b";
+        }
+        Long end1 = System.currentTimeMillis();//获取结束时间
+        System.out.println("String花费时间：" + (end1 - start1));//打印出花费的时间
+
+        Long start2 = System.currentTimeMillis();
+        for (int i = 0; i < 100000; i++)//重复10万次进行StringBuilder变量加操作
+        {
+            StringBuilder str2 = new StringBuilder("a");
+            str2.append("b");
+        }
+        Long end2 = System.currentTimeMillis();
+        System.out.println("StringBuilder花费时间：" + (end2 - start2));
+
+        Long start3 = System.currentTimeMillis();
+        for (int i = 0; i < 100000; i++)//重复10万次进行StringBuffer变量加操作
+        {
+            StringBuffer str2 = new StringBuffer("a");
+            str2.append("b");
+        }
+        Long end3 = System.currentTimeMillis();
+        System.out.println("StringBuffer花费时间：" + (end3 - start3));
+        System.out.println("=======================");
     }
 
     /**
