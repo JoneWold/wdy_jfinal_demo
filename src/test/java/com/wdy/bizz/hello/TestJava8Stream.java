@@ -120,5 +120,80 @@ public class TestJava8Stream {
         System.out.println(booMap);
     }
 
+    // 并行流 多线程异步任务
+    @Test
+    public void parallelStream() {
+        List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+        // Stream 的强大之处在于其原型链的设计，使得它可以对遍历处理后的数据进行再处理
+        List<String> toStrList = list.stream().map(e -> Integer.toString(++e)).collect(Collectors.toList());
+        System.err.println("\n1、使用parallelStream后，结果并不按照集合原有顺序输出-->>>");
+        list.parallelStream().forEach(System.out::print);
+        System.err.println("\n2、打印出线程信息-->>>");
+        list.parallelStream().forEach(e -> System.out.println(Thread.currentThread().getName() + "-->>>" + e));
+        // TODO 我们可以通过虚拟机启动参数 来设置worker的数量。
+        // -Djava.util.concurrent.ForkJoinPool.common.parallelism=N
+
+        System.err.println("\n获取虚拟机中所有线程的StackTraceElement对象，可以查看堆栈--->>>");
+        Map<Thread, StackTraceElement[]> traces = Thread.getAllStackTraces();
+        for (Map.Entry<Thread, StackTraceElement[]> entry : traces.entrySet()) {
+            Thread thread = entry.getKey();
+            StackTraceElement[] value = entry.getValue();
+            if (thread.equals(Thread.currentThread())) {
+                System.err.println("当前线程：" + thread.getName());
+                continue;
+            }
+            System.out.println("线程：" + thread.getName());
+        }
+    }
+
+    @Test
+    public void testParallelStream() {
+        // 并行流 陷阱
+        // 1、线程安全
+        // 由于并行流使用多线程，则一切线程安全问题都应该是需要考虑的问题，如：资源竞争、死锁、事务、可见性等等。
+        // 2、线程消费
+        // 在虚拟机启动时，我们指定了worker线程的数量，整个程序的生命周期都将使用这些工作线程；这必然存在任务生产和消费的问题，如果某个生产者生产了许多重量级的任务（耗时很长），那么其他任务毫无疑问将会没有工作线程可用；更可怕的事情是这些工作线程正在进行IO阻塞。
+        // 本应利用并行加速处理的业务，因为工作者不够反而会额外增加处理时间，使得系统性能在某一时刻大打折扣。而且这一类问题往往是很难排查的。我们并不知道一个重量级项目中的哪一个框架、哪一个模块在使用并行流。
+        Thread thread = new Thread(this::streamTest);
+        Thread thread1 = new Thread(this::streamTest2);
+        thread.start();
+        thread1.start();
+        try {
+            thread1.join();
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // 通过示例我们会发现，第一个并行流率先获得worker线程的使用权，第二个并行流变为串行；直到第一个并行流处理完毕，第二个并行流获取worker线程，开始并行处理。
+
+        // 串行流：适合存在线程安全问题、阻塞任务、重量级任务，以及需要使用同一事务的逻辑。
+        // 并行流：适合没有线程安全问题、较单纯的数据处理任务。
+    }
+
+    public void streamTest() {
+        List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        list.parallelStream().forEach(e -> {
+            System.out.println("第一次请求并行：" + Thread.currentThread().getName() + "-->>" + e);
+            try {
+                Thread.sleep(5000L);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+    }
+
+    public void streamTest2() {
+        List<Integer> list = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        list.parallelStream().forEach(e -> {
+            System.err.println("再次请求并行：" + Thread.currentThread().getName() + "-->>" + e);
+            try {
+                Thread.sleep(5000L);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+        });
+
+    }
 
 }
