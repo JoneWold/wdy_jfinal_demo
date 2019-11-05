@@ -326,7 +326,8 @@ public class XmlDOM4JTest {
         List<Record> colleges = new ArrayList<>();
         while (iterator.hasNext()) {
             Element next = iterator.next();
-            String orgXz = next.attributes().get(0).getValue();
+            List<Attribute> attributes = next.attributes();
+            String orgXz = attributes.get(0).getValue();
             Iterator<Element> xz = next.elementIterator();
             while (xz.hasNext()) {
                 Element nextChild = xz.next();
