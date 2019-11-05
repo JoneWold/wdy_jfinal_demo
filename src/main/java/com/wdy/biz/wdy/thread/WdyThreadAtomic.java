@@ -1,4 +1,4 @@
-package com.wdy.utils;
+package com.wdy.biz.wdy.thread;
 
 import cn.hutool.core.thread.ThreadUtil;
 
@@ -9,10 +9,10 @@ import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author wgch
- * @Description 线程工具类
+ * @Description 线程 原子方式
  * @date 2019/7/17 16:59
  */
-public class WdyThreadUtil {
+public class WdyThreadAtomic {
 
     private static ExecutorService executorService = ThreadUtil.newExecutor();
 
@@ -28,7 +28,7 @@ public class WdyThreadUtil {
         // 多线程运行速度
 //        betweenTime();
         // 原子方式更新对象引用：1000个线程，对一个Integer累加1，直到1000
-        new WdyThreadUtil().atomic();
+        new WdyThreadAtomic().atomic();
     }
 
     private static void betweenTime() {

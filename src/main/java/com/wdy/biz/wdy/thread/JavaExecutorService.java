@@ -1,4 +1,4 @@
-package com.wdy.biz.wdy;
+package com.wdy.biz.wdy.thread;
 
 import cn.hutool.core.thread.ThreadUtil;
 
