@@ -1,4 +1,4 @@
-package com.wdy.biz.wdy;
+package com.wdy.biz.wdy.java8;
 
 import java.time.Duration;
 import java.time.Instant;
