@@ -426,6 +426,23 @@ ADD CONSTRAINT "OrgCheck_pkey" PRIMARY KEY ("id");
 
 
 
+alter table "a01" add column "A0123" varchar(8);
+
+-- 如果A0223不是int类型就执行这条
+-- UPDATE a02 set "A0223"=null where "A0223"='';
+alter table "a02" alter COLUMN "A0223" type int2 using "A0223"::int2;
+
+alter table a05 add column "A0528B" varchar(8);
+alter table a05 add column "A0530" varchar(8);
+alter table a05 add column "A0532" varchar(8);
+
+alter table b01 add column "B0164" TIMESTAMP;
+alter table b01 add column "B0167" varchar(255);
+alter table b01 add column "B0268" TIMESTAMP;
+alter table b01 add column "B0269" varchar(255);
+
+alter table a99z1 add column "A99Z195" varchar(24);
+
 
 
 
