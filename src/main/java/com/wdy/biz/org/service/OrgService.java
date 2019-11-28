@@ -137,7 +137,8 @@ public class OrgService {
                         message.append(value.get(k).getStr("B0101")).append(" ");
                     }
                     if (k == value.size() - 1) {
-                        message.append("机构编码重复（").append(record.getStr("B0114")).append("）");
+                        String b0114 = record.getStr("B0114");
+                        message.append("机构编码重复（").append(StrKit.isBlank(b0114) ? "无" : b0114).append("）");
                     }
                 }
                 orgVoList.add(this.getSubVo(record, message.toString(), "1"));
@@ -170,7 +171,8 @@ public class OrgService {
                         message.append(value.get(k).getStr("A0101")).append(" ");
                     }
                     if (k == value.size() - 1) {
-                        message.append("身份证重复（").append(record.getStr("A0184")).append("）");
+                        String a0184 = record.getStr("A0184");
+                        message.append("身份证重复（").append(StrKit.isBlank(a0184) ? "无" : a0184).append("）");
                     }
                 }
                 memVoList.add(this.getSubVo(record, message.toString(), "2"));
