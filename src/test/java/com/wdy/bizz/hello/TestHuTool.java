@@ -23,7 +23,7 @@ import java.util.concurrent.CountDownLatch;
 
 /**
  * @author wgch
- * @Description
+ * @Description HuTool
  * @date 2019/12/5
  */
 public class TestHuTool {
