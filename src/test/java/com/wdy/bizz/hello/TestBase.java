@@ -25,17 +25,19 @@ import java.util.concurrent.CountDownLatch;
 public class TestBase {
 
     /**
-     * CountDownLatch：阻塞观察定时任务运行结果
+     * 启动定时任务
      */
     @Test
-    public void timerTest() throws InterruptedException {
+    public void testCron() throws InterruptedException {
         //设置Cron表达式匹配到秒，不然使用的是Linux的crontab表达式，最小单位是分钟
         CronUtil.setMatchSecond(true);
         CronUtil.start();
         //可以手动停止定时任务
         //CronUtil.stop();
-        CountDownLatch countDownLatch = new CountDownLatch(1);
-        countDownLatch.await();
+        // CountDownLatch：阻塞观察定时任务运行结果
+        CountDownLatch latch = new CountDownLatch(1);
+        latch.await();
+
     }
 
     @Test

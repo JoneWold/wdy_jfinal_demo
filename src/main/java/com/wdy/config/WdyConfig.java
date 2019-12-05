@@ -9,6 +9,7 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.activerecord.dialect.PostgreSqlDialect;
+import com.jfinal.plugin.cron4j.Cron4jPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.template.Engine;
@@ -31,7 +32,9 @@ import live.autu.plugin.jfinal.swagger.model.SwaggerDoc;
 public class WdyConfig extends JFinalConfig {
     static Prop p;
 
-    //数据库插件
+    /**
+     * 数据库插件
+     */
     private DruidPlugin mysqldp;
     private ActiveRecordPlugin arpMysql;
 
@@ -155,6 +158,10 @@ public class WdyConfig extends JFinalConfig {
                 .setInfo(new SwaggerApiInfo("jfinal swagger demo", "1.0", "jfinal swagger", ""))));
 
         AlarmThreadController.getInstance().start();
+
+        // todo 任务调度插件Cron4jPlugin
+        Cron4jPlugin cp = new Cron4jPlugin(p, "cron4j");
+        me.add(cp);
     }
 
     public static DruidPlugin createDruidPluginMySQL() {
