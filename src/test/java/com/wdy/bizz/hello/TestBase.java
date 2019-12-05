@@ -1,5 +1,6 @@
 package com.wdy.bizz.hello;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.cron.CronUtil;
@@ -8,9 +9,14 @@ import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
+import cn.hutool.extra.qrcode.QrCodeUtil;
+import cn.hutool.extra.qrcode.QrConfig;
+import com.jfinal.kit.PathKit;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.awt.*;
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +29,28 @@ import java.util.concurrent.CountDownLatch;
  * @date 2019/11/30
  */
 public class TestBase {
+
+    /**
+     * 二维码
+     */
+    @Test
+    public void testQrCode() {
+        QrConfig config = new QrConfig(300, 300);
+        // 设置边距，既二维码和背景之间的边距
+        config.setMargin(3);
+        // 设置前景色，既二维码颜色（青色）
+        config.setForeColor(Color.CYAN.getRGB());
+        // 设置背景色（灰色）
+        config.setBackColor(Color.GRAY.getRGB());
+        String toFileName = "qrCode" + System.currentTimeMillis() + ".jpg";
+        File file = FileUtil.file(PathKit.getWebRootPath() + "/download/" + toFileName);
+        // 生成二维码到文件，也可以到流
+        QrCodeUtil.generate("http://hutool.cn/", config, file);
+        // 将文本内容编码为二维码
+        QrCodeUtil.encode("这是一个二维码", config);
+        // 附带logo小图标
+        QrCodeUtil.generate("1153540212", QrConfig.create().setImg(PathKit.getWebRootPath() + "/download/123.jpg"), file);
+    }
 
     /**
      * 启动定时任务
