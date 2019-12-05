@@ -19,6 +19,9 @@ import org.junit.Test;
 
 import java.awt.*;
 import java.io.File;
+import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -96,11 +99,15 @@ public class TestHuTool {
     }
 
     /**
-     * 文件下载
+     * 文件下载：带下载进度百分比
      */
     @Test
-    public void fileDownload() {
+    public void fileDownload() throws Exception {
         String fileUrl = "http://mirrors.sohu.com/centos/filelist.gz";
+        URL url = new URL(fileUrl);
+        // 文件总大小：根据响应获取文件大小
+        HttpURLConnection urlCon = (HttpURLConnection) url.openConnection();
+        int contentLength = urlCon.getContentLength();
         //带进度显示的文件下载
         long size = HttpUtil.downloadFile(fileUrl, FileUtil.file(PathKit.getWebRootPath() + "/download/"), new StreamProgress() {
             @Override
@@ -110,7 +117,15 @@ public class TestHuTool {
 
             @Override
             public void progress(long progressSize) {
-                System.out.printf("已下载：%s\n", FileUtil.readableFileSize(progressSize));
+                // 文件下载进度百分比
+                if (contentLength != 0) {
+                    float percent = (float) progressSize / contentLength;
+                    BigDecimal decimal = new BigDecimal(percent * 100).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    System.out.printf("已下载：%s\n", decimal + "%");
+                }
+
+                // 已下载文件可读的文件大小
+//                System.out.printf("已下载：%s\n", FileUtil.readableFileSize(progressSize));
             }
 
             @Override
@@ -122,5 +137,14 @@ public class TestHuTool {
 
     }
 
+
+    public static void main(String[] args) {
+        float sss = (float) 99;
+        System.out.println(sss);
+        float ss = (float) 99 / 100;
+        System.out.println(ss);
+
+
+    }
 
 }
