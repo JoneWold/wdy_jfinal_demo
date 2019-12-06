@@ -15,6 +15,13 @@ import java.util.Objects;
 public class TestBase {
 
     @Test
+    public void test() {
+
+
+    }
+
+
+    @Test
     public void testBigDecimal() {
         float a = 1.0f - 0.9f;
         float b = 0.9f - 0.8f;
