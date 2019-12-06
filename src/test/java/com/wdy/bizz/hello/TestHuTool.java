@@ -14,6 +14,7 @@ import cn.hutool.extra.qrcode.QrCodeUtil;
 import cn.hutool.extra.qrcode.QrConfig;
 import cn.hutool.http.Header;
 import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import com.google.zxing.common.BitMatrix;
 import com.jfinal.kit.PathKit;
@@ -25,6 +26,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -146,7 +148,34 @@ public class TestHuTool {
      */
     @Test
     public void testHttp() {
-        HttpRequest.get("https://www.baidu.com/").header(Header.USER_AGENT, "");
+        String url = "https://www.baidu.com/";
+        //可以单独传入http参数，这样参数会自动做URL编码，拼接在URL中
+        String content = HttpUtil.get(url, CharsetUtil.CHARSET_UTF_8);
+        //文件上传只需将参数中的键指定（默认file），值设为文件对象即可，对于使用者来说，文件上传与普通表单提交并无区别
+        HashMap<String, Object> map = new HashMap<>();
+        File file = FileUtil.file(PathKit.getWebRootPath() + "/download/123.jpg");
+        map.put("file", file);
+        String post = HttpUtil.post(url, map);
+
+        // 链式构建请求
+        String hutoolHttp = HttpRequest.post(url)
+                //头信息，多个头信息多次调用此方法即可
+                .header(Header.USER_AGENT, "Hutool http")
+                //表单内容
+                .form(map)
+                //超时，毫秒
+                .timeout(20000)
+                .execute()
+                .body();
+        System.out.println("hutoolHttp--->>" + hutoolHttp);
+
+        HttpResponse response = HttpRequest.post(url).execute();
+        System.out.println("status--->>" + response.getStatus());
+        // 预定义的头像
+        System.out.println("header--->>" + response.header(Header.CONTENT_ENCODING));
+        // 自定义头消息
+        System.out.println(response.header("Content-Disposition"));
+
 
     }
 
