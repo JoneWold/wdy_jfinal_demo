@@ -13,6 +13,7 @@ import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import cn.hutool.extra.qrcode.QrCodeUtil;
 import cn.hutool.extra.qrcode.QrConfig;
 import cn.hutool.http.HttpUtil;
+import com.google.zxing.common.BitMatrix;
 import com.jfinal.kit.PathKit;
 import org.junit.Assert;
 import org.junit.Test;
@@ -43,14 +44,15 @@ public class TestHuTool {
         config.setForeColor(Color.CYAN.getRGB());
         // 设置背景色（灰色）
         config.setBackColor(Color.GRAY.getRGB());
-        String toFileName = "qrCode" + System.currentTimeMillis() + ".jpg";
-        File file = FileUtil.file(PathKit.getWebRootPath() + "/download/" + toFileName);
+        config.setImg(PathKit.getWebRootPath() + "/download/123.jpg");
         // 生成二维码到文件，也可以到流
+        File file = FileUtil.file(PathKit.getWebRootPath() + "/logs/qrCode1.jpg");
         QrCodeUtil.generate("http://hutool.cn/", config, file);
         // 将文本内容编码为二维码
-        QrCodeUtil.encode("这是一个二维码", config);
+        BitMatrix matrix = QrCodeUtil.encode("这是一个二维码", config);
         // 附带logo小图标
-        QrCodeUtil.generate("1153540212", QrConfig.create().setImg(PathKit.getWebRootPath() + "/download/123.jpg"), file);
+        File file2 = FileUtil.file(PathKit.getWebRootPath() + "/logs/qrCode3.jpg");
+        QrCodeUtil.generate("https://www.baidu.com/", QrConfig.create().setImg(PathKit.getWebRootPath() + "/download/123.jpg"), file2);
     }
 
     /**
