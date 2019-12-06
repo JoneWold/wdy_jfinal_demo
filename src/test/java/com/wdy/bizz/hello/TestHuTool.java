@@ -12,6 +12,8 @@ import cn.hutool.crypto.symmetric.AES;
 import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import cn.hutool.extra.qrcode.QrCodeUtil;
 import cn.hutool.extra.qrcode.QrConfig;
+import cn.hutool.http.Header;
+import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpUtil;
 import com.google.zxing.common.BitMatrix;
 import com.jfinal.kit.PathKit;
@@ -136,6 +138,15 @@ public class TestHuTool {
             }
         });
         System.out.println("Download size: " + size);
+
+    }
+
+    /**
+     * Http客户端
+     */
+    @Test
+    public void testHttp() {
+        HttpRequest.get("https://www.baidu.com/").header(Header.USER_AGENT, "");
 
     }
 
