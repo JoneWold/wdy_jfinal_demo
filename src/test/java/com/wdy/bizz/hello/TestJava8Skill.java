@@ -21,7 +21,7 @@ import static java.util.stream.Collectors.toList;
  * @description java技术测试
  * @date 2019/6/6 11:02
  */
-public class TestJavaSkill extends TestBeforeWdyConfig {
+public class TestJava8Skill extends TestBeforeWdyConfig {
 
 
     private static String apply(Record d) {
@@ -55,7 +55,7 @@ public class TestJavaSkill extends TestBeforeWdyConfig {
         recordList.add(record3);
         recordList.add(record4);
 
-        Map<String, List<Record>> map = recordList.stream().collect(Collectors.groupingBy(TestJavaSkill::apply));
+        Map<String, List<Record>> map = recordList.stream().collect(Collectors.groupingBy(TestJava8Skill::apply));
         Map<String, List<Record>> map1 = recordList.stream().collect(Collectors.groupingBy(b -> b.getStr("A0000")));
         // 分组 统计
         Map<String, Long> map2 = recordList.stream().collect(Collectors.groupingBy(e -> e.getStr("A0000"), Collectors.counting()));
