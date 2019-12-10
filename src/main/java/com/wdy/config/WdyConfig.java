@@ -14,6 +14,7 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.template.Engine;
 import com.jfinal.template.source.ClassPathSourceFactory;
+import com.wdy.biz.dictionary.service.DictionaryService;
 import com.wdy.biz.progress.jfinal.MobSdController;
 import com.wdy.biz.progress.websocket.AlarmThreadController;
 import com.wdy.biz.progress.websocket.WebSocketController;
@@ -202,6 +203,8 @@ public class WdyConfig extends JFinalConfig {
     @Override
     public void onStart() {
         super.onStart();
+        //加载字典表
+        DictionaryService.loadDict();
     }
 
     @Override

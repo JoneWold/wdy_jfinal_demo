@@ -20,7 +20,7 @@ public class ImageController {
         String imageToBase64 = imageToBase64(path);
         System.out.println(imageToBase64);
 
-        String image = base64ToImage(imageToBase64, PathKit.getWebRootPath() + SEPARATOR + "download" + SEPARATOR + "123.jpg");
+        String image = base64ToImage(imageToBase64, SEPARATOR + "download" + SEPARATOR + "123.jpg");
         System.out.println(image);
 
     }
@@ -67,7 +67,7 @@ public class ImageController {
                     b[i] += 256;
                 }
             }
-            OutputStream out = new FileOutputStream(imagePath);
+            OutputStream out = new FileOutputStream(PathKit.getWebRootPath() + imagePath);
             out.write(b);
             out.flush();
             out.close();

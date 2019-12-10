@@ -129,4 +129,28 @@ public abstract class BaseA05<M extends BaseA05<M>> extends Model<M> implements 
 		return getStr("A0525");
 	}
 
+	public void setA0528B(java.lang.String A0528B) {
+		set("A0528B", A0528B);
+	}
+	
+	public java.lang.String getA0528B() {
+		return getStr("A0528B");
+	}
+
+	public void setA0530(java.lang.String A0530) {
+		set("A0530", A0530);
+	}
+	
+	public java.lang.String getA0530() {
+		return getStr("A0530");
+	}
+
+	public void setA0532(java.lang.String A0532) {
+		set("A0532", A0532);
+	}
+	
+	public java.lang.String getA0532() {
+		return getStr("A0532");
+	}
+
 }

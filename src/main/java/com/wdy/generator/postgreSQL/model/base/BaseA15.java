@@ -107,4 +107,46 @@ public abstract class BaseA15<M extends BaseA15<M>> extends Model<M> implements 
 		return getInt("A1599");
 	}
 
+	/**
+	 * 上传word名称
+	 */
+	public void setA15Z101(java.lang.String A15Z101) {
+		set("A15Z101", A15Z101);
+	}
+	
+	/**
+	 * 上传word名称
+	 */
+	public java.lang.String getA15Z101() {
+		return getStr("A15Z101");
+	}
+
+	/**
+	 * 上传wordurl
+	 */
+	public void setA15Z102(java.lang.String A15Z102) {
+		set("A15Z102", A15Z102);
+	}
+	
+	/**
+	 * 上传wordurl
+	 */
+	public java.lang.String getA15Z102() {
+		return getStr("A15Z102");
+	}
+
+	/**
+	 * 上传wordurl2
+	 */
+	public void setA15Z103(java.lang.String A15Z103) {
+		set("A15Z103", A15Z103);
+	}
+	
+	/**
+	 * 上传wordurl2
+	 */
+	public java.lang.String getA15Z103() {
+		return getStr("A15Z103");
+	}
+
 }

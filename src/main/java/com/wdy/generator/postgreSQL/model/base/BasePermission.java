@@ -93,4 +93,18 @@ public abstract class BasePermission<M extends BasePermission<M>> extends Model<
 		return getStr("name");
 	}
 
+	/**
+	 * 0有子级，1无子级
+	 */
+	public void setIsLeaf(java.lang.Integer isLeaf) {
+		set("isLeaf", isLeaf);
+	}
+	
+	/**
+	 * 0有子级，1无子级
+	 */
+	public java.lang.Integer getIsLeaf() {
+		return getInt("isLeaf");
+	}
+
 }

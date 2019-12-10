@@ -52,8 +52,8 @@ public class BaseController extends Controller {
      */
     @NotAction
     protected List<JSONObject> getCurrOrgArray() {
-        JSONArray orgArray = (JSONArray) this.getCurrUser().getUserRolePermission().getOrgArray();
-        return orgArray.toJavaList(JSONObject.class);
+        JSONArray orgArray = this.getCurrUser().getUserRolePermission().getOrgArray();
+        return orgArray == null ? new ArrayList<>() : orgArray.toJavaList(JSONObject.class);
     }
 
     /**

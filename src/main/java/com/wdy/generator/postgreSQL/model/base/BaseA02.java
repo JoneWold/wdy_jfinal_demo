@@ -124,15 +124,15 @@ public abstract class BaseA02<M extends BaseA02<M>> extends Model<M> implements 
 	/**
 	 * 职务排序   等
 	 */
-	public void setA0223(java.lang.String A0223) {
+	public void setA0223(java.lang.Integer A0223) {
 		set("A0223", A0223);
 	}
 	
 	/**
 	 * 职务排序   等
 	 */
-	public java.lang.String getA0223() {
-		return getStr("A0223");
+	public java.lang.Integer getA0223() {
+		return getInt("A0223");
 	}
 
 	/**
@@ -200,14 +200,14 @@ public abstract class BaseA02<M extends BaseA02<M>> extends Model<M> implements 
 	}
 
 	/**
-	 * 任职状态   等
+	 * 任职状态   等 1在任，0免任
 	 */
 	public void setA0255(java.lang.String A0255) {
 		set("A0255", A0255);
 	}
 	
 	/**
-	 * 任职状态   等
+	 * 任职状态   等 1在任，0免任
 	 */
 	public java.lang.String getA0255() {
 		return getStr("A0255");
@@ -771,6 +771,70 @@ public abstract class BaseA02<M extends BaseA02<M>> extends Model<M> implements 
 	 */
 	public java.lang.String getMark() {
 		return getStr("mark");
+	}
+
+	public void setA0243Str(java.lang.String A0243Str) {
+		set("A0243Str", A0243Str);
+	}
+	
+	public java.lang.String getA0243Str() {
+		return getStr("A0243Str");
+	}
+
+	/**
+	 * 备注时间
+	 */
+	public void setMarkTime(java.util.Date markTime) {
+		set("markTime", markTime);
+	}
+	
+	/**
+	 * 备注时间
+	 */
+	public java.util.Date getMarkTime() {
+		return get("markTime");
+	}
+
+	/**
+	 * 任职说明(对应全息系统)
+	 */
+	public void setA02Z101(java.lang.String A02Z101) {
+		set("A02Z101", A02Z101);
+	}
+	
+	/**
+	 * 任职说明(对应全息系统)
+	 */
+	public java.lang.String getA02Z101() {
+		return getStr("A02Z101");
+	}
+
+	/**
+	 * 流动方式(对应全息系统)
+	 */
+	public void setA02Z102(java.lang.String A02Z102) {
+		set("A02Z102", A02Z102);
+	}
+	
+	/**
+	 * 流动方式(对应全息系统)
+	 */
+	public java.lang.String getA02Z102() {
+		return getStr("A02Z102");
+	}
+
+	/**
+	 * 任职岗位id(对应全息系统)
+	 */
+	public void setA02Z103(java.lang.String A02Z103) {
+		set("A02Z103", A02Z103);
+	}
+	
+	/**
+	 * 任职岗位id(对应全息系统)
+	 */
+	public java.lang.String getA02Z103() {
+		return getStr("A02Z103");
 	}
 
 }

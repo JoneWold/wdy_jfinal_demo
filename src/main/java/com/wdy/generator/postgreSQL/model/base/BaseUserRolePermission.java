@@ -1,5 +1,7 @@
 package com.wdy.generator.postgreSQL.model.base;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.jfinal.plugin.activerecord.Model;
 import com.jfinal.plugin.activerecord.IBean;
 
@@ -9,130 +11,144 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseUserRolePermission<M extends BaseUserRolePermission<M>> extends Model<M> implements IBean {
 
-	/**
-	 * uuid不能为null
-	 */
-	public void setId(java.lang.String id) {
-		set("id", id);
-	}
-	
-	/**
-	 * uuid不能为null
-	 */
-	public java.lang.String getId() {
-		return getStr("id");
-	}
+    /**
+     * uuid不能为null
+     */
+    public void setId(java.lang.String id) {
+        set("id", id);
+    }
 
-	/**
-	 * 用户id不能为null
-	 */
-	public void setUserID(java.lang.String userID) {
-		set("userID", userID);
-	}
-	
-	/**
-	 * 用户id不能为null
-	 */
-	public java.lang.String getUserID() {
-		return getStr("userID");
-	}
+    /**
+     * uuid不能为null
+     */
+    public java.lang.String getId() {
+        return getStr("id");
+    }
 
-	/**
-	 * 角色id不能为null
-	 */
-	public void setRoleID(java.lang.String roleID) {
-		set("roleID", roleID);
-	}
-	
-	/**
-	 * 角色id不能为null
-	 */
-	public java.lang.String getRoleID() {
-		return getStr("roleID");
-	}
+    /**
+     * 用户id不能为null
+     */
+    public void setUserID(java.lang.String userID) {
+        set("userID", userID);
+    }
 
-	/**
-	 * 权限码不能为null,第一次创建权限码为角色默认权限码
-	 */
-	public void setPermission(java.lang.String permission) {
-		set("permission", permission);
-	}
-	
-	/**
-	 * 权限码不能为null,第一次创建权限码为角色默认权限码
-	 */
-	public java.lang.String getPermission() {
-		return getStr("permission");
-	}
+    /**
+     * 用户id不能为null
+     */
+    public java.lang.String getUserID() {
+        return getStr("userID");
+    }
 
-	/**
-	 * 组织配置数组,例如:[{'orgId':'xxx','isReadOnly':0}]
-	 */
-	public void setOrgArray(java.lang.Object orgArray) {
-		set("orgArray", orgArray);
-	}
-	
-	/**
-	 * 组织配置数组,例如:[{'orgId':'xxx','isReadOnly':0}]
-	 */
-	public java.lang.Object getOrgArray() {
-		return get("orgArray");
-	}
+    /**
+     * 角色id不能为null
+     */
+    public void setRoleID(java.lang.String roleID) {
+        set("roleID", roleID);
+    }
 
-	/**
-	 * 创建时间不能为null
-	 */
-	public void setCreateTime(java.util.Date createTime) {
-		set("createTime", createTime);
-	}
-	
-	/**
-	 * 创建时间不能为null
-	 */
-	public java.util.Date getCreateTime() {
-		return get("createTime");
-	}
+    /**
+     * 角色id不能为null
+     */
+    public java.lang.String getRoleID() {
+        return getStr("roleID");
+    }
 
-	/**
-	 * 更新时间不能为null,默认为createTime
-	 */
-	public void setUpdateTime(java.util.Date updateTime) {
-		set("updateTime", updateTime);
-	}
-	
-	/**
-	 * 更新时间不能为null,默认为createTime
-	 */
-	public java.util.Date getUpdateTime() {
-		return get("updateTime");
-	}
+    /**
+     * 权限码不能为null,第一次创建权限码为角色默认权限码
+     */
+    public void setPermission(java.lang.String permission) {
+        set("permission", permission);
+    }
 
-	/**
-	 * 角色名称不能为null
-	 */
-	public void setRoleName(java.lang.String roleName) {
-		set("roleName", roleName);
-	}
-	
-	/**
-	 * 角色名称不能为null
-	 */
-	public java.lang.String getRoleName() {
-		return getStr("roleName");
-	}
+    /**
+     * 权限码不能为null,第一次创建权限码为角色默认权限码
+     */
+    public java.lang.String getPermission() {
+        return getStr("permission");
+    }
 
-	/**
-	 * 角色是否内建0 非内建 1内建
-	 */
-	public void setIsBuilt(java.lang.Integer isBuilt) {
-		set("isBuilt", isBuilt);
-	}
-	
-	/**
-	 * 角色是否内建0 非内建 1内建
-	 */
-	public java.lang.Integer getIsBuilt() {
-		return getInt("isBuilt");
-	}
+    /**
+     * 组织配置数组,例如:[{'orgId':'xxx','isReadOnly':0}]
+     */
+    public void setOrgArray(JSONArray jsonArray) {
+        set("orgArray", jsonArray.toJSONString());
+    }
+
+    /**
+     * 组织配置数组,例如:[{'orgId':'xxx','isReadOnly':0}]
+     */
+    public JSONArray getOrgArray() {
+        return JSON.parseArray(getStr("orgArray"));
+    }
+
+    /**
+     * 创建时间不能为null
+     */
+    public void setCreateTime(java.util.Date createTime) {
+        set("createTime", createTime);
+    }
+
+    /**
+     * 创建时间不能为null
+     */
+    public java.util.Date getCreateTime() {
+        return get("createTime");
+    }
+
+    /**
+     * 更新时间不能为null,默认为createTime
+     */
+    public void setUpdateTime(java.util.Date updateTime) {
+        set("updateTime", updateTime);
+    }
+
+    /**
+     * 更新时间不能为null,默认为createTime
+     */
+    public java.util.Date getUpdateTime() {
+        return get("updateTime");
+    }
+
+    /**
+     * 角色名称不能为null
+     */
+    public void setRoleName(java.lang.String roleName) {
+        set("roleName", roleName);
+    }
+
+    /**
+     * 角色名称不能为null
+     */
+    public java.lang.String getRoleName() {
+        return getStr("roleName");
+    }
+
+    /**
+     * 角色是否内建0 非内建 1内建
+     */
+    public void setIsBuilt(java.lang.Integer isBuilt) {
+        set("isBuilt", isBuilt);
+    }
+
+    /**
+     * 角色是否内建0 非内建 1内建
+     */
+    public java.lang.Integer getIsBuilt() {
+        return getInt("isBuilt");
+    }
+
+    /**
+     * 全息系统管理单位([{"isReadOnly":"","orgId":""}])
+     */
+    public void setOrgArrayQx(JSONArray jsonArray) {
+        set("orgArrayQx", jsonArray.toJSONString());
+    }
+
+    /**
+     * 全息系统管理单位([{"isReadOnly":"","orgId":""}])
+     */
+    public JSONArray getOrgArrayQx() {
+        return JSONArray.parseArray(getStr("orgArrayQx"));
+    }
 
 }

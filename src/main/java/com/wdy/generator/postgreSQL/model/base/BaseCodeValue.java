@@ -219,4 +219,18 @@ public abstract class BaseCodeValue<M extends BaseCodeValue<M>> extends Model<M>
 		return getStr("STOP_DATE");
 	}
 
+	/**
+	 * 是否是自定义的字典 (1:就是自定义的字典)
+	 */
+	public void setTYPE(java.lang.String TYPE) {
+		set("TYPE", TYPE);
+	}
+	
+	/**
+	 * 是否是自定义的字典 (1:就是自定义的字典)
+	 */
+	public java.lang.String getTYPE() {
+		return getStr("TYPE");
+	}
+
 }

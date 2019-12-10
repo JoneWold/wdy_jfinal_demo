@@ -16,39 +16,46 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 public class _MappingKit {
 	
 	public static void mapping(ActiveRecordPlugin arp) {
-		arp.addMapping("JobInfo", "id", JobInfo.class);
-		arp.addMapping("SysLoginLog", "id", LoginLog.class);
-		arp.addMapping("SysOperateLog", "id", OperateLog.class);
+		arp.addMapping("QxVerifyMsg", "id", QxVerifyMsg.class);
+		arp.addMapping("QxVerifyRule", "id", QxVerifyRule.class);
 		arp.addMapping("SysPermission", "id", Permission.class);
-		arp.addMapping("SysRole", "id", Role.class);
-		arp.addMapping("SysUser", "id", User.class);
+		arp.addMapping("SysUserB01Permission", "id", UserB01Permission.class);
 		arp.addMapping("SysUserRolePermission", "id", UserRolePermission.class);
 		arp.addMapping("TempJob", "id", TempJob.class);
+		arp.addMapping("UploadInfo", "id", UploadInfo.class);
+		arp.addMapping("WzAnnualDuty", "id", WzAnnualDuty.class);
+		arp.addMapping("WzHonorAward", "id", WzHonorAward.class);
 		arp.addMapping("a01", "A0000", A01.class);
+		// Composite Primary Key order: impId,A0000
+		arp.addMapping("a01_temp", "impId,A0000", A01Temp.class);
 		arp.addMapping("a02", "A0200", A02.class);
+		arp.addMapping("a02_temp", "A0200", A02Temp.class);
 		arp.addMapping("a05", "A0500", A05.class);
+		arp.addMapping("a05_temp", "A0500", A05Temp.class);
 		arp.addMapping("a06", "A0600", A06.class);
+		arp.addMapping("a06_temp", "A0600", A06Temp.class);
 		arp.addMapping("a08", "A0800", A08.class);
-		arp.addMapping("a11", "A1100", A11.class);
-		arp.addMapping("a14", "A1400", A14.class);
+		arp.addMapping("a08_temp", "A0800", A08Temp.class);
+		arp.addMapping("a14_temp", "A1400", A14Temp.class);
 		arp.addMapping("a15", "A1500", A15.class);
-		arp.addMapping("a31", "A0000", A31.class);
-		arp.addMapping("a32", "USERID", A32.class);
-		arp.addMapping("a36", "A3600", A36.class);
-		arp.addMapping("a37", "A0000", A37.class);
-		arp.addMapping("a41", "A4100", A41.class);
-		arp.addMapping("a53", "A5300", A53.class);
-		arp.addMapping("a57", "A0000", A57.class);
-		arp.addMapping("a60", "A0000", A60.class);
-		arp.addMapping("a61", "A0000", A61.class);
-		arp.addMapping("a62", "A0000", A62.class);
-		arp.addMapping("a63", "A0000", A63.class);
-		arp.addMapping("a64", "A6400", A64.class);
-		arp.addMapping("a71", "A7100", A71.class);
-		arp.addMapping("a99z1", "A99Z100", A99z1.class);
+		arp.addMapping("a15_temp", "A1500", A15Temp.class);
+		arp.addMapping("a30", "A3000", A30.class);
+		arp.addMapping("a30_temp", "A3000", A30Temp.class);
+		arp.addMapping("a33", "A3300", A33.class);
+		arp.addMapping("a36_temp", "A3600", A36Temp.class);
+		// Composite Primary Key order: A0000,impId
+		arp.addMapping("a57_temp", "A0000,impId", A57Temp.class);
+		arp.addMapping("a99z1_temp", "A99Z100", A99z1Temp.class);
 		arp.addMapping("b01", "id", B01.class);
-		arp.addMapping("code_table", "TABLE_CODE", CodeTable.class);
 		arp.addMapping("code_value", "CODE_VALUE_SEQ", CodeValue.class);
+		arp.addMapping("impFile", "fileId", ImpFile.class);
+		arp.addMapping("selectCadre", "id", SelectCadre.class);
+		arp.addMapping("selectUniversity", "id", SelectUniversity.class);
+		arp.addMapping("verify_rule", "VRU009", VerifyRule.class);
+		arp.addMapping("youngCadre", "id", YoungCadre.class);
+		arp.addMapping("youngFouMust", "id", YoungFouMust.class);
+		arp.addMapping("youngReport", "id", YoungReport.class);
+		arp.addMapping("youngStudy", "id", YoungStudy.class);
 	}
 }
 

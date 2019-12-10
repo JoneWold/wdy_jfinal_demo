@@ -9,6 +9,7 @@ import com.wdy.constant.CacheConstant;
 import com.wdy.generator.postgreSQL.model.CodeValue;
 import com.wdy.message.OutMessage;
 import com.wdy.message.Status;
+import com.wdy.utils.VkCollectionUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 /**
  * 字典表的service
+ *
  * @author 刘浩然
  * @date 2019/03/18
  */
@@ -65,11 +67,12 @@ public class DictionaryService {
 
     /**
      * 根据字典类型获取数据
+     *
      * @param codeType
      * @return
      */
     public List<CodeValue> getDictionaryListByCode(String codeType) {
-        return  dictionaryDao.findByCodeType(codeType);
+        return dictionaryDao.findByCodeType(codeType);
     }
 
     /**
@@ -80,13 +83,14 @@ public class DictionaryService {
      * @return
      */
     public CodeValue getDictionaryByParent(String codeType, String parentValue) {
-        return dictionaryDao.getDictionaryByParent(codeType,parentValue);
-    }
-    public List<CodeValue> getDictionaryList1(String codeType){
-        return  dictionaryDao.findByCodeType(codeType);
+        return dictionaryDao.getDictionaryByParent(codeType, parentValue);
     }
 
-    public List<String> getDictionaryValue(String codeType){
+    public List<CodeValue> getDictionaryList1(String codeType) {
+        return dictionaryDao.findByCodeType(codeType);
+    }
+
+    public List<String> getDictionaryValue(String codeType) {
         List<String> result = new ArrayList<>();
         List<Record> records = CacheKit.get(CacheConstant.DICT_CACHE_NAME, CacheConstant.DICT_CACHE_PREFIX + codeType);
         for (Record record : records) {
@@ -94,5 +98,14 @@ public class DictionaryService {
             result.add(codeValue);
         }
         return result;
+    }
+
+    public Map<String, String> getDictionaryMap(String codeType) {
+        return VkCollectionUtil.listRecordToMap(this.getDictionaryList(codeType));
+    }
+
+
+    public Map<String, String> getDictionaryMapName(String codeType) {
+        return VkCollectionUtil.listRecordToMapName(this.getDictionaryList(codeType));
     }
 }

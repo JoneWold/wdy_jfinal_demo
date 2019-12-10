@@ -490,15 +490,15 @@ public abstract class BaseA01<M extends BaseA01<M>> extends Model<M> implements 
 	/**
 	 * 公务员登记时间   多
 	 */
-	public void setA2949(java.lang.String A2949) {
+	public void setA2949(java.util.Date A2949) {
 		set("A2949", A2949);
 	}
 	
 	/**
 	 * 公务员登记时间   多
 	 */
-	public java.lang.String getA2949() {
-		return getStr("A2949");
+	public java.util.Date getA2949() {
+		return get("A2949");
 	}
 
 	/**
@@ -1284,15 +1284,15 @@ public abstract class BaseA01<M extends BaseA01<M>> extends Model<M> implements 
 	/**
 	 * 该人在基层工作的年月   将年月计算成月份存储
 	 */
-	public void setA0194(java.lang.Integer A0194) {
+	public void setA0194(java.math.BigDecimal A0194) {
 		set("A0194", A0194);
 	}
 	
 	/**
 	 * 该人在基层工作的年月   将年月计算成月份存储
 	 */
-	public java.lang.Integer getA0194() {
-		return getInt("A0194");
+	public java.math.BigDecimal getA0194() {
+		return get("A0194");
 	}
 
 	/**
@@ -1445,6 +1445,168 @@ public abstract class BaseA01<M extends BaseA01<M>> extends Model<M> implements 
 	 */
 	public java.lang.String getA0155A() {
 		return getStr("A0155A");
+	}
+
+	/**
+	 * 任职时间字符串(对应全息系统)
+	 */
+	public void setA0243Str(java.lang.String A0243Str) {
+		set("A0243Str", A0243Str);
+	}
+	
+	/**
+	 * 任职时间字符串(对应全息系统)
+	 */
+	public java.lang.String getA0243Str() {
+		return getStr("A0243Str");
+	}
+
+	/**
+	 * 任职岗位代码(对应全息系统)
+	 */
+	public void setA01Z101(java.lang.String A01Z101) {
+		set("A01Z101", A01Z101);
+	}
+	
+	/**
+	 * 任职岗位代码(对应全息系统)
+	 */
+	public java.lang.String getA01Z101() {
+		return getStr("A01Z101");
+	}
+
+	/**
+	 * 任职说明(对应全息系统)
+	 */
+	public void setA01Z102(java.lang.String A01Z102) {
+		set("A01Z102", A01Z102);
+	}
+	
+	/**
+	 * 任职说明(对应全息系统)
+	 */
+	public java.lang.String getA01Z102() {
+		return getStr("A01Z102");
+	}
+
+	/**
+	 * 流动方式(对应全息系统)
+	 */
+	public void setA01Z103(java.lang.String A01Z103) {
+		set("A01Z103", A01Z103);
+	}
+	
+	/**
+	 * 流动方式(对应全息系统)
+	 */
+	public java.lang.String getA01Z103() {
+		return getStr("A01Z103");
+	}
+
+	/**
+	 * 工作熟悉领域(对应全息系统)
+	 */
+	public void setA01Z104(java.lang.String A01Z104) {
+		set("A01Z104", A01Z104);
+	}
+	
+	/**
+	 * 工作熟悉领域(对应全息系统)
+	 */
+	public java.lang.String getA01Z104() {
+		return getStr("A01Z104");
+	}
+
+	/**
+	 * 历任重要职务标示(对应全息系统)
+	 */
+	public void setA01Z105(java.lang.String A01Z105) {
+		set("A01Z105", A01Z105);
+	}
+	
+	/**
+	 * 历任重要职务标示(对应全息系统)
+	 */
+	public java.lang.String getA01Z105() {
+		return getStr("A01Z105");
+	}
+
+	/**
+	 * 熟悉领域
+	 */
+	public void setFamiliar(java.lang.String familiar) {
+		set("familiar", familiar);
+	}
+	
+	/**
+	 * 熟悉领域
+	 */
+	public java.lang.String getFamiliar() {
+		return getStr("familiar");
+	}
+
+	/**
+	 * 历任经历
+	 */
+	public void setLiren(java.lang.String liren) {
+		set("liren", liren);
+	}
+	
+	/**
+	 * 历任经历
+	 */
+	public java.lang.String getLiren() {
+		return getStr("liren");
+	}
+
+	/**
+	 * 人员最近考核时间(用于分析查询)
+	 */
+	public void setA01Z106(java.util.Date A01Z106) {
+		set("A01Z106", A01Z106);
+	}
+	
+	/**
+	 * 人员最近考核时间(用于分析查询)
+	 */
+	public java.util.Date getA01Z106() {
+		return get("A01Z106");
+	}
+
+	/**
+	 * 是否近3年考核优秀
+	 */
+	public void setA01Z107(java.lang.String A01Z107) {
+		set("A01Z107", A01Z107);
+	}
+	
+	/**
+	 * 是否近3年考核优秀
+	 */
+	public java.lang.String getA01Z107() {
+		return getStr("A01Z107");
+	}
+
+	/**
+	 * 是否近5年考核优秀
+	 */
+	public void setA01Z108(java.lang.String A01Z108) {
+		set("A01Z108", A01Z108);
+	}
+	
+	/**
+	 * 是否近5年考核优秀
+	 */
+	public java.lang.String getA01Z108() {
+		return getStr("A01Z108");
+	}
+
+	public void setA0123(java.lang.String A0123) {
+		set("A0123", A0123);
+	}
+	
+	public java.lang.String getA0123() {
+		return getStr("A0123");
 	}
 
 }

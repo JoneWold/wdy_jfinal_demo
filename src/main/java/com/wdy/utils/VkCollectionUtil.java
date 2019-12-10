@@ -43,6 +43,15 @@ public class VkCollectionUtil {
         return map;
     }
 
+    public static Map<String, String> listRecordToMapName(List<Record> collection) {
+        Map<String, String> map = new HashMap<>();
+
+        collection.forEach(record -> {
+            map.put(record.getStr("CODE_NAME"), record.getStr("CODE_VALUE"));
+        });
+        return map;
+    }
+
     /**
      * 拼接ids
      *

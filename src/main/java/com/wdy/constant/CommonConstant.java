@@ -1,5 +1,9 @@
 package com.wdy.constant;
 
+import org.jooq.DSLContext;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
+
 import java.io.File;
 
 /**
@@ -9,6 +13,10 @@ import java.io.File;
  * @date 2019/3/20 17:54
  */
 public class CommonConstant {
+    /***
+     * DSL 上下文
+     * */
+    public static final DSLContext DSL_CONTEXT = DSL.using(SQLDialect.POSTGRES);
     /**
      * /
      */

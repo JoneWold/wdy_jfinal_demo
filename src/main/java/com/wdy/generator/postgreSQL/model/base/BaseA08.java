@@ -96,43 +96,43 @@ public abstract class BaseA08<M extends BaseA08<M>> extends Model<M> implements 
 	/**
 	 * 入学日期   等
 	 */
-	public void setA0804(java.lang.String A0804) {
+	public void setA0804(java.util.Date A0804) {
 		set("A0804", A0804);
 	}
 	
 	/**
 	 * 入学日期   等
 	 */
-	public java.lang.String getA0804() {
-		return getStr("A0804");
+	public java.util.Date getA0804() {
+		return get("A0804");
 	}
 
 	/**
 	 * 毕（肄）业日期   等
 	 */
-	public void setA0807(java.lang.String A0807) {
+	public void setA0807(java.util.Date A0807) {
 		set("A0807", A0807);
 	}
 	
 	/**
 	 * 毕（肄）业日期   等
 	 */
-	public java.lang.String getA0807() {
-		return getStr("A0807");
+	public java.util.Date getA0807() {
+		return get("A0807");
 	}
 
 	/**
 	 * 学位授予日期   等
 	 */
-	public void setA0904(java.lang.String A0904) {
+	public void setA0904(java.util.Date A0904) {
 		set("A0904", A0904);
 	}
 	
 	/**
 	 * 学位授予日期   等
 	 */
-	public java.lang.String getA0904() {
-		return getStr("A0904");
+	public java.util.Date getA0904() {
+		return get("A0904");
 	}
 
 	/**
