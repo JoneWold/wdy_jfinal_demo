@@ -36,7 +36,7 @@ import static org.jooq.impl.DSL.*;
 public class ReadRmbService {
 
 
-    public void readTxtLrm(String path) throws Exception {
+    public List<Object> readTxtLrm(String path, String impId) throws Exception {
         File file = FileUtil.file(path);
         InputStreamReader reader = new InputStreamReader(new FileInputStream(file), "GBK");
         BufferedReader br = new BufferedReader(reader);
@@ -53,6 +53,10 @@ public class ReadRmbService {
         A01Temp a01Temp = new A01Temp();
 
 
+        List<Object> list = new ArrayList<>();
+        list.add(a01Temp);
+
+        return list;
     }
 
     public List<Object> readXmlLrmx(String path, String impId) throws Exception {
