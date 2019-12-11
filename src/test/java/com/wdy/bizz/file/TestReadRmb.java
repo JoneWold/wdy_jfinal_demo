@@ -26,5 +26,11 @@ public class TestReadRmb extends TestBeforeWdyConfig {
         System.out.println(xmlLrmx);
     }
 
+    @Test
+    public void testRegex() {
+        boolean matches = "大专#".matches(".+#");
+        System.out.println(matches);
+
+    }
 
 }

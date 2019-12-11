@@ -6,10 +6,10 @@ import com.jfinal.kit.LogKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
-import com.wdy.utils.ImageBase64Util;
 import com.wdy.generator.postgreSQL.model.A01Temp;
 import com.wdy.generator.postgreSQL.model.A36Temp;
 import com.wdy.generator.postgreSQL.model.A57Temp;
+import com.wdy.utils.ImageBase64Util;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -35,12 +35,15 @@ import static org.jooq.impl.DSL.*;
  */
 public class ReadRmbService {
 
+    private Map<String, String> xbMap = this.getDictNameToCode(XB_TYPE);
+    private Map<String, String> mzMap = this.getDictNameToCode(MZ_TYPE);
+    private Map<String, String> zzmmMap = this.getDictNameToCode(ZZMM_TYPE);
 
     public List<Object> readTxtLrm(String path, String impId) throws Exception {
         File file = FileUtil.file(path);
         InputStreamReader reader = new InputStreamReader(new FileInputStream(file), "GBK");
         BufferedReader br = new BufferedReader(reader);
-        // 存储字符串
+        // 读取文本数据以字符串形式存储
         StringBuilder sb = new StringBuilder();
         String temp;
         while ((temp = br.readLine()) != null) {
@@ -48,9 +51,68 @@ public class ReadRmbService {
         }
         br.close();
         reader.close();
-//        System.out.println(sb);
+        //字符串排列规则：, 每一项大的标题  # 单元格中换行  @ 单元格外换行
         String[] split = sb.toString().split(",");
+        // a01_temp
         A01Temp a01Temp = new A01Temp();
+        String a0000 = StrKit.getRandomUUID();
+        a01Temp.setImpId(impId);
+        a01Temp.setA0000(a0000);
+        int index = 0;
+        for (String value : split) {
+            if (StrKit.notBlank(value)) {
+                // 去掉每一项字段的引号
+                value = value.replaceAll("\"", "");
+            }
+            if (index == 0) a01Temp.setA0101(value);
+            if (index == 1) a01Temp.setA0104(xbMap.get(value));
+            if (index == 2) a01Temp.setA0107(this.getXmlTime(value));
+            if (index == 3) a01Temp.setA0117(mzMap.get(value));
+            if (index == 4) a01Temp.setA0111A(value);
+            if (index == 5) a01Temp.setA0140(value);
+            if (index == 6) a01Temp.setA0128(value);
+            if (index == 7) a01Temp.setA0114A(value);
+            if (index == 8) a01Temp.setA0134(this.getXmlTime(value));
+            if (index == 9) {
+                String[] xlxw = value.split("@");
+                for (int i = 0; i < xlxw.length; i++) {
+                    // 全日制教育
+                    if (i == 0) {
+                        String[] qrz = xlxw[i].split("#");
+                        if (qrz.length == 1) {
+                            if (xlxw[i].matches(".+#")) {
+                                a01Temp.setQRZXL(qrz[0]);
+                            } else {
+                                a01Temp.setQRZXW(qrz[0]);
+                            }
+                        } else if (qrz.length == 2) {
+                            a01Temp.setQRZXL(qrz[0]);
+                            a01Temp.setQRZXW(qrz[1]);
+                        }
+                        // 在职教育
+                    } else if (i == 1) {
+                        String[] zz = xlxw[1].split("#");
+                        if (zz.length == 1) {
+                            if (xlxw[i].matches(".+#")) {
+                                a01Temp.setZZXL(zz[0]);
+                            } else {
+                                a01Temp.setZZXW(zz[0]);
+                            }
+                        } else if (zz.length == 2) {
+                            a01Temp.setZZXL(zz[0]);
+                            a01Temp.setZZXW(zz[1]);
+                        }
+                    }
+                }
+            }
+            if (index == 10) {
+                String[] xlxw = value.split("@");
+
+            }
+
+
+            index++;
+        }
 
 
         List<Object> list = new ArrayList<>();
@@ -60,9 +122,6 @@ public class ReadRmbService {
     }
 
     public List<Object> readXmlLrmx(String path, String impId) throws Exception {
-        Map<String, String> xbMap = this.getDictNameToCode(XB_TYPE);
-        Map<String, String> mzMap = this.getDictNameToCode(MZ_TYPE);
-        Map<String, String> zzmmMap = this.getDictNameToCode(ZZMM_TYPE);
         File file = FileUtil.file(path);
         SAXReader reader = new SAXReader();
         Document document = reader.read(file);
