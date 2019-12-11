@@ -1,6 +1,6 @@
 package com.wdy.bizz.file;
 
-import com.wdy.biz.file.util.XmlZipFileUtil;
+import com.wdy.utils.XmlZipFileUtil;
 import lombok.val;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.model.ZipParameters;

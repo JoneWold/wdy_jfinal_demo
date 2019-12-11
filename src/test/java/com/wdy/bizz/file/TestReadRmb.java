@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * @author wgch
- * @Description
+ * @Description lrm lrmx
  * @date 2019/12/10
  */
 public class TestReadRmb extends TestBeforeWdyConfig {
@@ -20,6 +20,8 @@ public class TestReadRmb extends TestBeforeWdyConfig {
         String lrm = "D:\\wdy\\wdy_jfinal_demo\\download\\rmb\\岑邦青.lrm";
         String lrmx = "D:\\wdy\\wdy_jfinal_demo\\download\\rmb\\陈卫星.lrmx";
         rmbService.readTxtLrm(lrm);
+
+
         List<Object> xmlLrmx = rmbService.readXmlLrmx(lrmx, "123");
         System.out.println(xmlLrmx);
     }

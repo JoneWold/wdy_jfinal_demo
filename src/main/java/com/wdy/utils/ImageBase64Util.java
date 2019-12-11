@@ -1,4 +1,4 @@
-package com.wdy.biz.file.controller;
+package com.wdy.utils;
 
 import com.jfinal.kit.PathKit;
 import sun.misc.BASE64Decoder;
@@ -13,14 +13,14 @@ import static com.wdy.constant.CommonConstant.SEPARATOR;
  * @Description 图片文件 base64
  * @date 2019/5/13 17:23
  */
-public class ImageController {
+public class ImageBase64Util {
 
     public static void main(String[] args) {
         String path = "D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\book\\20190512.jpg";
         String imageToBase64 = imageToBase64(path);
         System.out.println(imageToBase64);
 
-        String image = base64ToImage(imageToBase64, SEPARATOR + "download" + SEPARATOR + "123.jpg");
+        String image = base64ToImage(imageToBase64, SEPARATOR + "download" + SEPARATOR + System.currentTimeMillis() + ".jpg");
         System.out.println(image);
 
     }
@@ -32,12 +32,12 @@ public class ImageController {
      * @return
      */
     public static String imageToBase64(String imagePath) {
-        InputStream inputStream = null;
-        byte[] data = null;
+        InputStream inputStream;
+        byte[] data = new byte[1];
         try {
             inputStream = new FileInputStream(imagePath);
             data = new byte[inputStream.available()];
-            inputStream.read(data);
+            int read = inputStream.read(data);
             inputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -49,7 +49,7 @@ public class ImageController {
 
     /**
      * @param imgBase64Str base64编码字符串
-     * @param imagePath    图片路径-具体到文件
+     * @param imagePath    图片路径-具体到文件(相对路径)
      * @return
      * @Description: 将base64编码字符串转换为图片
      */
@@ -72,7 +72,7 @@ public class ImageController {
             out.flush();
             out.close();
             return imagePath;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

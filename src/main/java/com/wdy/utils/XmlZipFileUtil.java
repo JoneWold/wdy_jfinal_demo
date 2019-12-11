@@ -1,4 +1,4 @@
-package com.wdy.biz.file.util;
+package com.wdy.utils;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.jfinal.kit.LogKit;

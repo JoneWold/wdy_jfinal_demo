@@ -23,7 +23,7 @@ import java.util.zip.ZipOutputStream;
  * @Description 文件操作
  * @date 2019/4/10 9:19
  */
-public class FileController {
+public class FileNioController {
     private static final String SEPARATOR = File.separator;
     private final static String FILEPATH_PHOTOS = "wdyPhotos";
     private final static String PATH_DOWNLOAD = PathKit.getWebRootPath() + SEPARATOR + "download";

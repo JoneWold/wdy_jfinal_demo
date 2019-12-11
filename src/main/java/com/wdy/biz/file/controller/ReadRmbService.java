@@ -6,8 +6,10 @@ import com.jfinal.kit.LogKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.wdy.utils.ImageBase64Util;
 import com.wdy.generator.postgreSQL.model.A01Temp;
 import com.wdy.generator.postgreSQL.model.A36Temp;
+import com.wdy.generator.postgreSQL.model.A57Temp;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -62,7 +64,7 @@ public class ReadRmbService {
         Document document = reader.read(file);
         // Person
         Element root = document.getRootElement();
-        // 组装数据
+        // a01_temp组装数据
         A01Temp a01Temp = new A01Temp();
         String a0000 = StrKit.getRandomUUID();
         a01Temp.setImpId(impId);
@@ -100,7 +102,7 @@ public class ReadRmbService {
         a01Temp.setA14Z101(root.elementText("JiangChengQingKuang"));
         a01Temp.setA15Z101(root.elementText("NianDuKaoHeJieGuo"));
         a01Temp.setRMLY(root.elementText("RenMianLiYou"));
-        List<A36Temp> a36temps = new ArrayList<>();
+        List<A36Temp> a36TempList = new ArrayList<>();
         Iterator jTCYList = root.elementIterator("JiaTingChengYuan");
         while (jTCYList.hasNext()) {
             Element next = (Element) jTCYList.next();
@@ -113,6 +115,7 @@ public class ReadRmbService {
                 String chuShengRiQi = element.elementText("ChuShengRiQi");
                 String zhengZhiMianMao = element.elementText("ZhengZhiMianMao");
                 String gongZuoDanWeiJiZhiWu = element.elementText("GongZuoDanWeiJiZhiWu");
+                // a36_temp
                 A36Temp a36Temp = new A36Temp();
                 a36Temp.setImpId(impId);
                 a36Temp.setA0000(a0000);
@@ -127,7 +130,8 @@ public class ReadRmbService {
                 a36Temp.setA3627(zzmmCode);
                 a36Temp.setA3611(gongZuoDanWeiJiZhiWu);
                 a36Temp.setSORTID(sort);
-                a36temps.add(a36Temp);
+                a36Temp.setA3699(1);
+                a36TempList.add(a36Temp);
                 sort++;
 
             }
@@ -138,18 +142,36 @@ public class ReadRmbService {
         a01Temp.setTBR(root.elementText("TianBiaoRen"));
         a01Temp.setA0184(root.elementText("ShenFenZheng"));
         String zhaoPian = root.elementText("ZhaoPian");
+
+        StringBuilder fileName = new StringBuilder();
         String toPath = SEPARATOR + "download" + SEPARATOR + a0000 + ".jpg";
         // 将base64编码字符串转换为图片，存入图片路径
-        a01Temp.setA0198(ImageController.base64ToImage(zhaoPian, toPath));
+        String a0198 = ImageBase64Util.base64ToImage(zhaoPian, toPath);
+        if (StrKit.notBlank(a0198)) {
+            fileName.append(a0000).append(".jpg");
+        }
+        a01Temp.setA0198(a0198);
+        // a57_temp
+        A57Temp a57Temp = new A57Temp();
+        a57Temp.setImpId(impId);
+        a57Temp.setA0000(a0000);
+        a57Temp.setA5714(fileName.toString());
+        a57Temp.setUPDATED("1");
+        a57Temp.setPHOTODATA(zhaoPian);
+        a57Temp.setPHOTONAME(fileName.toString());
+        a57Temp.setPHOTSTYPE("jpg");
+        // 返回结果
         List<Object> list = new ArrayList<>();
         list.add(a01Temp);
-        list.add(a36temps);
+        list.add(a36TempList);
+        list.add(a57Temp);
         return list;
     }
 
 
     private Map<String, String> getDictNameToCode(String type) {
-        SelectConditionStep records = DSL_CONTEXT.select().from(table(name("code_value")))
+        SelectConditionStep records = DSL_CONTEXT.select()
+                .from(table(name("code_value")))
                 .where(field(name("CODE_TYPE"), String.class).eq(type));
         List<Record> recordList = Db.use(DB_PGSQL).find(records.getSQL(), records.getBindValues().toArray());
         return recordList.stream().collect(Collectors.toMap(k -> k.getStr("CODE_NAME"), v -> v.getStr("CODE_VALUE"), (k, v) -> k));

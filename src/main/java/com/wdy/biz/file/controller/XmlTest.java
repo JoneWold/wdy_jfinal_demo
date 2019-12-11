@@ -13,7 +13,7 @@ import java.util.List;
  * @Description xml 操作
  * @date 2019/7/26 12:16
  */
-public class XmlController {
+public class XmlTest {
     public static final String a01Path = "D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\book\\A01.xml";
 
     public static void main(String[] args) {

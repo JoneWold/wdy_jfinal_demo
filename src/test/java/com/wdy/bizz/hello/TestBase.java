@@ -67,5 +67,15 @@ public class TestBase {
 
     }
 
+    @Test
+    public void spider() throws Exception {
+        String path = "https://tieba.baidu.com/index.html";
+//        URL url = new URL(path);
+//        InputStream stream = url.openStream();
+//        HttpClient client = new HttpClient();
+
+
+    }
+
 
 }
