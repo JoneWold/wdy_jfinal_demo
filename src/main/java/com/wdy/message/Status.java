@@ -31,7 +31,6 @@ public enum Status {
     NOT_NULL_ERROR(1002, "请检查参数是否正确"),
 
 
-
     /**
      * 用户未登录
      */
@@ -60,7 +59,6 @@ public enum Status {
      * 该用户已经被冻结24小时候后在登录
      */
     USERNAME_LOCK(1106, "该用户已经被冻结24小时候后在登录"),
-
 
 
     /**
@@ -97,7 +95,6 @@ public enum Status {
     PARENTID_ERROR(1207, "父角色不能是自身!"),
 
 
-
     /**
      * token认证失败
      */
@@ -128,7 +125,10 @@ public enum Status {
      */
     PERMISSION_length(1306, "权限数据错误"),
 
-
+    /**
+     * 文件格式错误
+     */
+    FILE_FORMAT_ERROR(2000, "文件格式错误"),
 
     /**
      * 该对象在数据库存不存在,不能修改

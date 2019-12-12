@@ -46,6 +46,7 @@ public class ReadRmbService {
     private static final String POINT_LRM = ".lrm";
     private static final String POINT_PIC = ".pic";
     private static final String POINT_LRMX = ".lrmx";
+    private static final String POINT_ZIP = ".zip";
     private Map<String, String> xbMap = this.getDictNameToCode(XB_TYPE);
     private Map<String, String> mzMap = this.getDictNameToCode(MZ_TYPE);
     private Map<String, String> zzmmMap = this.getDictNameToCode(ZZMM_TYPE);
@@ -60,18 +61,26 @@ public class ReadRmbService {
             File file = uploadFile.getFile();
             String fileName = file.getName();
             String suffix = fileName.substring(fileName.lastIndexOf("."));
-            // lrm
-            if (POINT_LRM.equals(suffix)) {
-                this.readTxtLrm(file, impId, a01TempList, a36TempList);
-                FileUtil.del(file);
-                // lrmx
-            } else if (POINT_LRMX.equals(suffix)) {
-                this.readXmlLrmx(file, impId, a01TempList, a36TempList, a57TempList);
-                FileUtil.del(file);
-                // pic
-            } else if (POINT_PIC.equals(suffix)) {
-                this.readPic(file, impId, a57TempList);
-                FileUtil.del(file);
+            switch (suffix) {
+                case POINT_LRM:
+                    this.readTxtLrm(file, impId, a01TempList, a36TempList);
+                    FileUtil.del(file);
+                    break;
+                case POINT_LRMX:
+                    this.readXmlLrmx(file, impId, a01TempList, a36TempList, a57TempList);
+                    FileUtil.del(file);
+                    break;
+                case POINT_PIC:
+                    this.readPic(file, impId, a57TempList);
+                    FileUtil.del(file);
+                    break;
+                case POINT_ZIP:
+                    FileUtil.del(file);
+                    break;
+                default:
+                    // 如果存在 类型不匹配的文件，清理掉当前批次的所有文件。
+                    files.forEach(uploadFile1 -> FileUtil.del(uploadFile1.getFile()));
+                    return new OutMessage<>(Status.FILE_FORMAT_ERROR, fileName);
             }
         }
         // 2 完善数据（lrm 文件需要与pic 文件配合使用）
