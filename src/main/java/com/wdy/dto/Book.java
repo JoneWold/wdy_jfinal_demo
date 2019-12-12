@@ -1,4 +1,4 @@
-package com.wdy.biz.file.model;
+package com.wdy.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

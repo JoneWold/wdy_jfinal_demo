@@ -3,7 +3,7 @@ package com.wdy.biz.file.controller;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Record;
-import com.wdy.biz.file.model.Book;
+import com.wdy.dto.Book;
 import org.dom4j.*;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;

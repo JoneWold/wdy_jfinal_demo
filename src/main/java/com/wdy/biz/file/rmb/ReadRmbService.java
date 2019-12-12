@@ -1,4 +1,4 @@
-package com.wdy.biz.file.controller;
+package com.wdy.biz.file.rmb;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
@@ -8,9 +8,13 @@ import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.ehcache.CacheKit;
+import com.jfinal.upload.UploadFile;
 import com.wdy.generator.postgreSQL.model.A01Temp;
 import com.wdy.generator.postgreSQL.model.A36Temp;
 import com.wdy.generator.postgreSQL.model.A57Temp;
+import com.wdy.generator.postgreSQL.model.base.BaseA57Temp;
+import com.wdy.message.OutMessage;
+import com.wdy.message.Status;
 import com.wdy.utils.ImageBase64Util;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -39,13 +43,61 @@ import static org.jooq.impl.DSL.*;
  * @date 2019/12/10 15:20
  */
 public class ReadRmbService {
-
+    private static final String POINT_LRM = ".lrm";
+    private static final String POINT_PIC = ".pic";
+    private static final String POINT_LRMX = ".lrmx";
     private Map<String, String> xbMap = this.getDictNameToCode(XB_TYPE);
     private Map<String, String> mzMap = this.getDictNameToCode(MZ_TYPE);
     private Map<String, String> zzmmMap = this.getDictNameToCode(ZZMM_TYPE);
 
-    public List<Object> readTxtLrm(String path, String impId) throws Exception {
-        File file = FileUtil.file(path);
+
+    public OutMessage importRmb(List<UploadFile> files, String impId) throws Exception {
+        List<A01Temp> a01TempList = new ArrayList<>();
+        List<A36Temp> a36TempList = new ArrayList<>();
+        List<A57Temp> a57TempList = new ArrayList<>();
+        // 1 读取文件数据
+        for (UploadFile uploadFile : files) {
+            File file = uploadFile.getFile();
+            String fileName = file.getName();
+            String suffix = fileName.substring(fileName.lastIndexOf("."));
+            // lrm
+            if (POINT_LRM.equals(suffix)) {
+                this.readTxtLrm(file, impId, a01TempList, a36TempList);
+                FileUtil.del(file);
+                // lrmx
+            } else if (POINT_LRMX.equals(suffix)) {
+                this.readXmlLrmx(file, impId, a01TempList, a36TempList, a57TempList);
+                FileUtil.del(file);
+                // pic
+            } else if (POINT_PIC.equals(suffix)) {
+                this.readPic(file, impId, a57TempList);
+                FileUtil.del(file);
+            }
+        }
+        // 2 完善数据（lrm 文件需要与pic 文件配合使用）
+        Map<String, String> a57Map = a57TempList.stream().collect(Collectors.toMap(BaseA57Temp::getA0000, BaseA57Temp::getA5714, (k, v) -> k));
+        for (A01Temp a01Temp : a01TempList) {
+            String a0000 = a01Temp.getA0000();
+            String a0198 = a01Temp.getA0198();
+            if (StrKit.isBlank(a0198) && a57Map.containsKey(a0000)) {
+                String path = "/upload/" + a57Map.get(a0000);
+                File file = new File(PathKit.getWebRootPath() + path);
+                if (file.exists()) {
+                    a01Temp.setA0198(path);
+                }
+            }
+        }
+        // 3 写入数据 （a01_temp 需要根据身份证、姓名和出生年月 判断该人员是否存在，a36_temp和a57_temp可以直接插入）
+        int[] a36s = Db.use(DB_PGSQL).batchSave(a36TempList, 100);
+        int[] a57s = Db.use(DB_PGSQL).batchSave(a57TempList, 100);
+
+        StringBuilder sb = new StringBuilder("数据写入成功：");
+        sb.append("a36_temp ->").append(a36s.length).append("条。");
+        sb.append("a57_temp ->").append(a57s.length).append("条。");
+        return new OutMessage<>(Status.SUCCESS, sb);
+    }
+
+    public void readTxtLrm(File file, String impId, List<A01Temp> a01TempList, List<A36Temp> a36TempList) throws Exception {
         InputStreamReader reader = new InputStreamReader(new FileInputStream(file), "GBK");
         BufferedReader br = new BufferedReader(reader);
         // 读取文本数据以字符串形式存储
@@ -184,8 +236,9 @@ public class ReadRmbService {
             else if (index > 32) a01Temp.setA0184(value);
             index++;
         }
+        a01TempList.add(a01Temp);
+
         // a36_temp
-        List<A36Temp> a36TempList = new ArrayList<>();
         for (int i = 0; i < chengWei.length; i++) {
             A36Temp a36Temp = new A36Temp();
             a36Temp.setImpId(impId);
@@ -202,14 +255,10 @@ public class ReadRmbService {
             a36TempList.add(a36Temp);
         }
 
-        List<Object> list = new ArrayList<>();
-        list.add(a01Temp);
-        list.add(a36TempList);
-        return list;
     }
 
-    public List<Object> readPic(String path, String impId) throws Exception {
-        File file = FileUtil.file(path);
+    public void readPic(File file, String impId, List<A57Temp> a57TempList) throws Exception {
+        String path = file.getPath();
         String a0000;
         // 在缓存中获取人员标识符
         String fileName = file.getName().substring(0, file.getName().lastIndexOf("."));
@@ -233,13 +282,10 @@ public class ReadRmbService {
         a57Temp.setPHOTONAME(toFile.getName());
         a57Temp.setPHOTSTYPE(".jpg");
 
-        List<Object> list = new ArrayList<>();
-        list.add(a57Temp);
-        return list;
+        a57TempList.add(a57Temp);
     }
 
-    public List<Object> readXmlLrmx(String path, String impId) throws Exception {
-        File file = FileUtil.file(path);
+    public void readXmlLrmx(File file, String impId, List<A01Temp> a01TempList, List<A36Temp> a36TempList, List<A57Temp> a57TempList) throws Exception {
         SAXReader reader = new SAXReader();
         Document document = reader.read(file);
         // Person
@@ -282,7 +328,7 @@ public class ReadRmbService {
         a01Temp.setA14Z101(root.elementText("JiangChengQingKuang"));
         a01Temp.setA15Z101(root.elementText("NianDuKaoHeJieGuo"));
         a01Temp.setRMLY(root.elementText("RenMianLiYou"));
-        List<A36Temp> a36TempList = new ArrayList<>();
+        // 家庭成员
         Iterator jTCYList = root.elementIterator("JiaTingChengYuan");
         while (jTCYList.hasNext()) {
             Element next = (Element) jTCYList.next();
@@ -321,7 +367,7 @@ public class ReadRmbService {
         String zhaoPian = root.elementText("ZhaoPian");
 
         StringBuilder fileName = new StringBuilder();
-        String toPath = SEPARATOR + "download" + SEPARATOR + a0000 + ".jpg";
+        String toPath = SEPARATOR + "upload" + SEPARATOR + a0000 + ".jpg";
         // 将base64编码字符串转换为图片，存入图片路径
         String a0198 = ImageBase64Util.base64ToImage(zhaoPian, toPath);
         if (StrKit.notBlank(a0198)) {
@@ -338,11 +384,8 @@ public class ReadRmbService {
         a57Temp.setPHOTONAME(fileName.toString());
         a57Temp.setPHOTSTYPE("jpg");
         // 返回结果
-        List<Object> list = new ArrayList<>();
-        list.add(a01Temp);
-        list.add(a36TempList);
-        list.add(a57Temp);
-        return list;
+        a01TempList.add(a01Temp);
+        a57TempList.add(a57Temp);
     }
 
 

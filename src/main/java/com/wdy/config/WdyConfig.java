@@ -2,6 +2,7 @@ package com.wdy.config;
 
 import com.jfinal.config.*;
 import com.jfinal.core.Const;
+import com.jfinal.core.paragetter.ParaProcessorBuilder;
 import com.jfinal.json.FastJsonFactory;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Prop;
@@ -15,13 +16,17 @@ import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.template.Engine;
 import com.jfinal.template.source.ClassPathSourceFactory;
 import com.wdy.biz.dictionary.service.DictionaryService;
+import com.wdy.biz.file.rmb.ImportRmbController;
 import com.wdy.biz.progress.jfinal.MobSdController;
 import com.wdy.biz.progress.websocket.AlarmThreadController;
 import com.wdy.biz.progress.websocket.WebSocketController;
-import com.wdy.biz.progress.websocket.WebSocketHandler;
 import com.wdy.biz.wdy.JaxRsController;
 import com.wdy.generator.mysql.model._MappingKit;
+import com.wdy.interceptor.ParameterInterceptor;
 import com.wdy.interceptor.jfinal.AdminRoutes;
+import com.wdy.message.InMessage;
+import com.wdy.message.InMessageParaGetter;
+import com.wdy.message.OutMessageInterceptor;
 import live.autu.plugin.jfinal.swagger.config.SwaggerPlugin;
 import live.autu.plugin.jfinal.swagger.config.routes.SwaggerRoutes;
 import live.autu.plugin.jfinal.swagger.model.SwaggerApiInfo;
@@ -73,6 +78,7 @@ public class WdyConfig extends JFinalConfig {
         me.setJsonDatePattern("yyyy-MM--dd");
         // 文件默认上传大小 10485760字节 10M
         me.setMaxPostSize(10 * Const.DEFAULT_MAX_POST_SIZE);
+        ParaProcessorBuilder.me.regist(InMessage.class, InMessageParaGetter.class, null);
     }
 
     /**
@@ -85,6 +91,7 @@ public class WdyConfig extends JFinalConfig {
         me.add("/jax", JaxRsController.class);
         me.add("/webSocket", WebSocketController.class, "/ws");
         me.add("/mob", MobSdController.class);
+        me.add("/import", ImportRmbController.class);
     }
 
     /**
@@ -176,6 +183,8 @@ public class WdyConfig extends JFinalConfig {
      */
     @Override
     public void configInterceptor(Interceptors me) {
+        me.add(new OutMessageInterceptor());
+        me.add(new ParameterInterceptor());
 //        me.add(new GlobalInterceptor());
 
         // 国际化组件 拦截action请求
@@ -196,7 +205,7 @@ public class WdyConfig extends JFinalConfig {
 
     @Override
     public void configHandler(Handlers handlers) {
-        handlers.add(new WebSocketHandler());
+//        handlers.add(new WebSocketHandler());
 //        handlers.add(new UrlSkipHandler("/ws/socket.ws", false));
     }
 
