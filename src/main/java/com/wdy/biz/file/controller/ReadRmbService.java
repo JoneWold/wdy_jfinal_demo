@@ -213,12 +213,12 @@ public class ReadRmbService {
         String a0000;
         // 在缓存中获取人员标识符
         String fileName = file.getName().substring(0, file.getName().lastIndexOf("."));
-        Object wdyCache = CacheKit.get("wdyCache", fileName);
-        if (wdyCache == null) {
+        String wdyCache = CacheKit.get("wdyCache", fileName);
+        if (StrKit.isBlank(wdyCache)) {
             a0000 = StrKit.getRandomUUID();
             CacheKit.put("wdyCache", fileName, a0000);
         } else {
-            a0000 = (String) wdyCache;
+            a0000 = wdyCache;
         }
         String toPath = PathKit.getWebRootPath() + "/upload/" + a0000 + ".jpg";
         Files.copy(Paths.get(path), Paths.get(toPath), StandardCopyOption.REPLACE_EXISTING);
