@@ -59,28 +59,34 @@ public class ReadRmbService {
         a01Temp.setImpId(impId);
         a01Temp.setA0000(a0000);
         int index = 0;
+        // a36_temp
+        String[] chengWei = new String[]{};
+        String[] xingMing = new String[]{};
+        String[] birthday = new String[]{};
+        String[] zzMmName = new String[]{};
+        String[] gzdwjzw = new String[]{};
         for (String value : split) {
             if (StrKit.notBlank(value)) {
                 // 去掉每一项字段的引号
                 value = value.replaceAll("\"", "");
             }
             if (index == 0) a01Temp.setA0101(value);
-            if (index == 1) a01Temp.setA0104(xbMap.get(value));
-            if (index == 2) a01Temp.setA0107(this.getXmlTime(value));
-            if (index == 3) a01Temp.setA0117(mzMap.get(value));
-            if (index == 4) a01Temp.setA0111A(value);
-            if (index == 5) a01Temp.setA0140(value);
-            if (index == 6) a01Temp.setA0128(value);
-            if (index == 7) a01Temp.setA0114A(value);
-            if (index == 8) a01Temp.setA0134(this.getXmlTime(value));
-            if (index == 9) {
-                String[] xlxw = value.split("@");
-                for (int i = 0; i < xlxw.length; i++) {
+            else if (index == 1) a01Temp.setA0104(xbMap.get(value));
+            else if (index == 2) a01Temp.setA0107(this.getXmlTime(value));
+            else if (index == 3) a01Temp.setA0117(mzMap.get(value));
+            else if (index == 4) a01Temp.setA0111A(value);
+            else if (index == 5) a01Temp.setA0140(value);
+            else if (index == 6) a01Temp.setA0128(value);
+            else if (index == 7) a01Temp.setA0114A(value);
+            else if (index == 8) a01Temp.setA0134(this.getXmlTime(value));
+            else if (index == 9) {
+                String[] xlXw = value.split("@");
+                for (int i = 0; i < xlXw.length; i++) {
                     // 全日制教育
                     if (i == 0) {
-                        String[] qrz = xlxw[i].split("#");
+                        String[] qrz = xlXw[i].split("#");
                         if (qrz.length == 1) {
-                            if (xlxw[i].matches(".+#")) {
+                            if (xlXw[i].matches(".+#")) {
                                 a01Temp.setQRZXL(qrz[0]);
                             } else {
                                 a01Temp.setQRZXW(qrz[0]);
@@ -91,9 +97,9 @@ public class ReadRmbService {
                         }
                         // 在职教育
                     } else if (i == 1) {
-                        String[] zz = xlxw[1].split("#");
+                        String[] zz = xlXw[1].split("#");
                         if (zz.length == 1) {
-                            if (xlxw[i].matches(".+#")) {
+                            if (xlXw[i].matches(".+#")) {
                                 a01Temp.setZZXL(zz[0]);
                             } else {
                                 a01Temp.setZZXW(zz[0]);
@@ -104,20 +110,83 @@ public class ReadRmbService {
                         }
                     }
                 }
-            }
-            if (index == 10) {
-                String[] xlxw = value.split("@");
-
-            }
-
+            } else if (index == 10) {
+                String[] xlXw = value.split("@");
+                for (int i = 0; i < xlXw.length; i++) {
+                    String[] byYx = xlXw[i].split("#");
+                    // 全日制学历学位 毕业院校及专业
+                    if (i == 0) {
+                        if (byYx.length == 1) {
+                            if (xlXw[i].matches(".+#")) {
+                                a01Temp.setQRZXLXX(byYx[0]);
+                            } else {
+                                a01Temp.setQRZXWXX(byYx[0]);
+                            }
+                        } else if (byYx.length == 2) {
+                            a01Temp.setQRZXLXX(byYx[0]);
+                            a01Temp.setQRZXWXX(byYx[1]);
+                        }
+                        // 在职学历学位 毕业院校及专业
+                    } else if (i == 1) {
+                        if (byYx.length == 1) {
+                            if (xlXw[i].matches(".+#")) {
+                                a01Temp.setZZXLXX(byYx[0]);
+                            } else {
+                                a01Temp.setZZXWXX(byYx[0]);
+                            }
+                        } else if (byYx.length == 2) {
+                            a01Temp.setZZXLXX(byYx[0]);
+                            a01Temp.setZZXWXX(byYx[1]);
+                        }
+                    }
+                }
+            } else if (index == 11) a01Temp.setA0196(value);
+            else if (index == 12) ;
+            else if (index == 13) ;
+            else if (index == 14) ;
+            else if (index == 15) ;
+            else if (index == 16) a01Temp.setA0187A(value);
+            else if (index == 17) a01Temp.setA1701(value);
+            else if (index == 18) a01Temp.setA14Z101(value);
+            else if (index == 19) a01Temp.setA15Z101(value);
+                // 家庭成员
+            else if (index == 20) chengWei = value.split("@");
+            else if (index == 21) xingMing = value.split("@");
+            else if (index == 22) birthday = value.split("@");
+            else if (index == 23) zzMmName = value.split("@");
+            else if (index == 24) gzdwjzw = value.split("@");
+            else if (index == 25) a01Temp.setA0192(value);
+            else if (index == 26) a01Temp.setNRZW(value);
+            else if (index == 27) a01Temp.setNMZW(value);
+            else if (index == 28) a01Temp.setRMLY(value);
+            else if (index == 29) a01Temp.setCBDW(value);
+            else if (index == 30) a01Temp.setJSNLSJ(this.getXmlTime(value));
+            else if (index == 31) a01Temp.setTBR(value);
+            else if (index == 32) a01Temp.setTBSJ(this.getXmlTime(value));
 
             index++;
         }
-
+        // a36_temp
+        List<A36Temp> a36TempList = new ArrayList<>();
+        for (int i = 0; i < chengWei.length; i++) {
+            A36Temp a36Temp = new A36Temp();
+            a36Temp.setImpId(impId);
+            a36Temp.setA0000(a0000);
+            a36Temp.setA3600(StrKit.getRandomUUID());
+            a36Temp.setA3604A(chengWei[i]);
+            a36Temp.setA3601(xingMing[i]);
+            a36Temp.setA3607(this.getXmlTime(birthday[i]));
+            String zzMmCode = zzmmMap.get(zzMmName[i]);
+            a36Temp.setA3627(StrKit.isBlank(zzMmCode) ? zzMmName[i] : zzMmCode);
+            a36Temp.setA3611(gzdwjzw[i]);
+            a36Temp.setSORTID(i + 1);
+            a36Temp.setA3699(1);
+            a36TempList.add(a36Temp);
+        }
 
         List<Object> list = new ArrayList<>();
         list.add(a01Temp);
-
+        list.add(a36TempList);
         return list;
     }
 
@@ -187,10 +256,7 @@ public class ReadRmbService {
                 a36Temp.setA3601(xingMing);
                 a36Temp.setA3607(this.getXmlTime(chuShengRiQi));
                 String zzmmCode = zzmmMap.get(zhengZhiMianMao);
-                if (StrKit.isBlank(zzmmCode)) {
-                    zzmmCode = zhengZhiMianMao;
-                }
-                a36Temp.setA3627(zzmmCode);
+                a36Temp.setA3627(StrKit.isBlank(zzmmCode) ? zhengZhiMianMao : zzmmCode);
                 a36Temp.setA3611(gongZuoDanWeiJiZhiWu);
                 a36Temp.setSORTID(sort);
                 a36Temp.setA3699(1);
