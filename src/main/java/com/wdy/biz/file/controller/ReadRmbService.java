@@ -146,8 +146,12 @@ public class ReadRmbService {
             else if (index == 14) ;
             else if (index == 15) ;
             else if (index == 16) a01Temp.setA0187A(value);
-            else if (index == 17) a01Temp.setA1701(value);
-            else if (index == 18) a01Temp.setA14Z101(value);
+            else if (index == 17) {
+                if (StrKit.notBlank(value)) {
+                    value = value.replaceAll("\n", "<br>");
+                }
+                a01Temp.setA1701(value);
+            } else if (index == 18) a01Temp.setA14Z101(value);
             else if (index == 19) a01Temp.setA15Z101(value);
                 // 家庭成员
             else if (index == 20) chengWei = value.split("@");
@@ -163,7 +167,7 @@ public class ReadRmbService {
             else if (index == 30) a01Temp.setJSNLSJ(this.getXmlTime(value));
             else if (index == 31) a01Temp.setTBR(value);
             else if (index == 32) a01Temp.setTBSJ(this.getXmlTime(value));
-
+            else if (index > 32) a01Temp.setA0184(value);
             index++;
         }
         // a36_temp
