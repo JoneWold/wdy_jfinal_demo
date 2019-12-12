@@ -3,9 +3,11 @@ package com.wdy.biz.file.controller;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import com.jfinal.kit.LogKit;
+import com.jfinal.kit.PathKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.plugin.ehcache.CacheKit;
 import com.wdy.generator.postgreSQL.model.A01Temp;
 import com.wdy.generator.postgreSQL.model.A36Temp;
 import com.wdy.generator.postgreSQL.model.A57Temp;
@@ -19,6 +21,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -55,7 +60,16 @@ public class ReadRmbService {
         String[] split = sb.toString().split(",");
         // a01_temp
         A01Temp a01Temp = new A01Temp();
-        String a0000 = StrKit.getRandomUUID();
+        String a0000;
+        // 在缓存中获取人员标识符
+        String fileName = file.getName().substring(0, file.getName().lastIndexOf("."));
+        Object wdyCache = CacheKit.get("wdyCache", fileName);
+        if (wdyCache == null) {
+            a0000 = StrKit.getRandomUUID();
+            CacheKit.put("wdyCache", fileName, a0000);
+        } else {
+            a0000 = (String) wdyCache;
+        }
         a01Temp.setImpId(impId);
         a01Temp.setA0000(a0000);
         int index = 0;
@@ -191,6 +205,36 @@ public class ReadRmbService {
         List<Object> list = new ArrayList<>();
         list.add(a01Temp);
         list.add(a36TempList);
+        return list;
+    }
+
+    public List<Object> readPic(String path, String impId) throws Exception {
+        File file = FileUtil.file(path);
+        String a0000;
+        // 在缓存中获取人员标识符
+        String fileName = file.getName().substring(0, file.getName().lastIndexOf("."));
+        Object wdyCache = CacheKit.get("wdyCache", fileName);
+        if (wdyCache == null) {
+            a0000 = StrKit.getRandomUUID();
+            CacheKit.put("wdyCache", fileName, a0000);
+        } else {
+            a0000 = (String) wdyCache;
+        }
+        String toPath = PathKit.getWebRootPath() + "/upload/" + a0000 + ".jpg";
+        Files.copy(Paths.get(path), Paths.get(toPath), StandardCopyOption.REPLACE_EXISTING);
+        File toFile = FileUtil.file(toPath);
+        // a57_temp
+        A57Temp a57Temp = new A57Temp();
+        a57Temp.setImpId(impId);
+        a57Temp.setA0000(a0000);
+        a57Temp.setA5714(toFile.getName());
+        a57Temp.setUPDATED("1");
+        a57Temp.setPHOTODATA(ImageBase64Util.imgToB64(toPath));
+        a57Temp.setPHOTONAME(toFile.getName());
+        a57Temp.setPHOTSTYPE(".jpg");
+
+        List<Object> list = new ArrayList<>();
+        list.add(a57Temp);
         return list;
     }
 

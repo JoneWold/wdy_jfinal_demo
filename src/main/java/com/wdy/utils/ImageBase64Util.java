@@ -1,10 +1,15 @@
 package com.wdy.utils;
 
+import cn.hutool.core.io.IoUtil;
+import com.jfinal.kit.Base64Kit;
 import com.jfinal.kit.PathKit;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 import static com.wdy.constant.CommonConstant.SEPARATOR;
 
@@ -17,6 +22,8 @@ public class ImageBase64Util {
 
     public static void main(String[] args) {
         String path = "D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\book\\20190512.jpg";
+        String imgToB64 = imgToB64(path);
+
         String imageToBase64 = imageToBase64(path);
         System.out.println(imageToBase64);
 
@@ -26,10 +33,25 @@ public class ImageBase64Util {
     }
 
     /**
+     * jFinal图片 转 base64
+     */
+    public static String imgToB64(String path) {
+        InputStream inputStream;
+        try {
+            inputStream = Files.newInputStream(Paths.get(path), StandardOpenOption.READ);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        byte[] bytes = IoUtil.readBytes(inputStream);
+        return Base64Kit.encode(bytes);
+    }
+
+    /**
      * 图片 转 base64
      *
-     * @param imagePath
-     * @return
+     * @param imagePath 图片路径绝对路径
+     * @return base64编码字符串
      */
     public static String imageToBase64(String imagePath) {
         InputStream inputStream;

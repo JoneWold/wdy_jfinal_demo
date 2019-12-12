@@ -18,9 +18,12 @@ public class TestReadRmb extends TestBeforeWdyConfig {
     @Test
     public void testRmb() throws Exception {
         String lrm = "D:\\wdy\\wdy_jfinal_demo\\download\\rmb\\岑邦青.lrm";
+        String pic = "D:\\wdy\\wdy_jfinal_demo\\download\\rmb\\岑邦青.pic";
         String lrmx = "D:\\wdy\\wdy_jfinal_demo\\download\\rmb\\陈卫星.lrmx";
         List<Object> txtLrm = rmbService.readTxtLrm(lrm, "123456");
         System.out.println(txtLrm);
+
+        List<Object> readPic = rmbService.readPic(pic, "123456");
 
         List<Object> xmlLrmx = rmbService.readXmlLrmx(lrmx, "123");
         System.out.println(xmlLrmx);
