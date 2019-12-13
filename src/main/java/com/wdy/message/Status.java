@@ -128,7 +128,7 @@ public enum Status {
     /**
      * 文件格式错误
      */
-    FILE_FORMAT_ERROR(2000, "文件格式错误"),
+    FILE_FORMAT_ERROR(2000, "文件格式错误，任免表导入仅支持lrm,lrmx,pic,zip类型文件"),
 
     /**
      * 该对象在数据库存不存在,不能修改
