@@ -1,6 +1,7 @@
 package com.wdy.biz.file.rmb.service;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import com.jfinal.aop.Aop;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.StrKit;
@@ -32,6 +33,12 @@ public class ImportRmbService {
     private ReadRmbService readRmbService = Aop.get(ReadRmbService.class);
 
     public OutMessage importRmb(List<UploadFile> files, String impId) throws Exception {
+        List<String> fileSuffix = this.checkFileSuffix(files);
+        if (fileSuffix.size() > 0) {
+            // 如果存在 类型不匹配的文件，清理掉当前批次的所有文件。
+            files.forEach(uploadFile1 -> FileUtil.del(uploadFile1.getFile()));
+            return new OutMessage<>(Status.FILE_FORMAT_ERROR, fileSuffix);
+        }
         List<A01Temp> a01TempList = new ArrayList<>();
         List<A36Temp> a36TempList = new ArrayList<>();
         List<A57Temp> a57TempList = new ArrayList<>();
@@ -57,8 +64,6 @@ public class ImportRmbService {
                     FileUtil.del(file);
                     break;
                 default:
-                    // 如果存在 类型不匹配的文件，清理掉当前批次的所有文件。
-                    files.forEach(uploadFile1 -> FileUtil.del(uploadFile1.getFile()));
                     return new OutMessage<>(Status.FILE_FORMAT_ERROR, fileName);
             }
         }
@@ -85,5 +90,19 @@ public class ImportRmbService {
         return new OutMessage<>(Status.SUCCESS, sb);
     }
 
+    /**
+     * 效验文件格式
+     */
+    private List<String> checkFileSuffix(List<UploadFile> files) {
+        List<String> list = new ArrayList<>();
+        for (UploadFile uploadFile : files) {
+            String fileName = uploadFile.getFile().getName();
+            String suffix = fileName.substring(fileName.lastIndexOf("."));
+            if (!StrUtil.equalsAny(suffix, POINT_LRM, POINT_LRMX, POINT_PIC, POINT_ZIP)) {
+                list.add(fileName);
+            }
+        }
+        return list;
+    }
 
 }
