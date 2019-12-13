@@ -2,7 +2,7 @@ package com.wdy.bizz.file;
 
 import cn.hutool.core.io.FileUtil;
 import com.jfinal.aop.Aop;
-import com.wdy.biz.file.rmb.ReadRmbService;
+import com.wdy.biz.file.rmb.service.ReadRmbService;
 import com.wdy.bizz.TestBeforeWdyConfig;
 import com.wdy.generator.postgreSQL.model.A01Temp;
 import com.wdy.generator.postgreSQL.model.A36Temp;
@@ -33,7 +33,7 @@ public class TestReadRmb extends TestBeforeWdyConfig {
 
         rmbService.readPic(FileUtil.file(pic), "123456", a57TempList);
 
-        rmbService.readXmlLrmx(FileUtil.file(lrmx), "123", a01TempList, a36TempList, a57TempList);
+        rmbService.readXmlLrmx(FileUtil.file(lrmx), "123456", a01TempList, a36TempList, a57TempList);
 
         System.out.println(a01TempList);
         System.out.println(a36TempList);

@@ -119,6 +119,11 @@ public class CommonConstant {
      */
     public static final String POINT = ".";
 
+    public static final String POINT_LRM = ".lrm";
+    public static final String POINT_PIC = ".pic";
+    public static final String POINT_LRMX = ".lrmx";
+    public static final String POINT_ZIP = ".zip";
+
     /**
      * π
      */

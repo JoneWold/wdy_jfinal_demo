@@ -16,7 +16,7 @@ import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.template.Engine;
 import com.jfinal.template.source.ClassPathSourceFactory;
 import com.wdy.biz.dictionary.service.DictionaryService;
-import com.wdy.biz.file.rmb.ImportRmbController;
+import com.wdy.biz.file.rmb.controller.ImportRmbController;
 import com.wdy.biz.progress.jfinal.MobSdController;
 import com.wdy.biz.progress.websocket.AlarmThreadController;
 import com.wdy.biz.progress.websocket.WebSocketController;
