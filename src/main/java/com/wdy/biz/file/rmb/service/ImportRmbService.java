@@ -75,19 +75,22 @@ public class ImportRmbService {
         }
         // 2 完善数据（lrm 文件需要与pic 文件配合使用）
         Map<String, String> a57Map = a57TempList.stream().collect(Collectors.toMap(BaseA57Temp::getA0000, BaseA57Temp::getA5714, (k, v) -> k));
-        a01TempList = this.getA01TempList(a01TempList, a57Map);
+        List<A01Temp> a01TempNewList = this.getA01TempList(a01TempList, a57Map);
         a36TempList.forEach(e -> e.setType("1"));
         a57TempList.forEach(e -> e.setType("1"));
 
         // 3 写入数据 （a01_temp 需要根据身份证、姓名和出生年月 判断该人员是否存在，a36_temp和a57_temp可以直接插入）
-        int[] a01s = Db.use(DB_PGSQL).batchSave(a01TempList, 100);
-        int[] a36s = Db.use(DB_PGSQL).batchSave(a36TempList, 100);
-        int[] a57s = Db.use(DB_PGSQL).batchSave(a57TempList, 100);
-
         StringBuilder sb = new StringBuilder("数据写入成功：");
-        sb.append("a01_temp ->").append(a01s.length).append("条。");
-        sb.append("a36_temp ->").append(a36s.length).append("条。");
-        sb.append("a57_temp ->").append(a57s.length).append("条。");
+        Db.tx(() -> {
+            int[] a01s = Db.use(DB_PGSQL).batchSave(a01TempNewList, 100);
+            int[] a36s = Db.use(DB_PGSQL).batchSave(a36TempList, 100);
+            int[] a57s = Db.use(DB_PGSQL).batchSave(a57TempList, 100);
+
+            sb.append("a01_temp ->").append(a01s.length).append("条。");
+            sb.append("a36_temp ->").append(a36s.length).append("条。");
+            sb.append("a57_temp ->").append(a57s.length).append("条。");
+            return true;
+        });
         return new OutMessage<>(Status.SUCCESS, sb);
     }
 
@@ -110,7 +113,7 @@ public class ImportRmbService {
 
 
     /**
-     * 组合a01_temp数据
+     * 完善a01_temp数据
      */
     public List<A01Temp> getA01TempList(List<A01Temp> a01TempList, Map<String, String> a57Map) {
         if (a01TempList.size() > 0) {
