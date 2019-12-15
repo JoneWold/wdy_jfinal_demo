@@ -14,14 +14,14 @@ import java.util.List;
  * @date 2019/12/12
  */
 public class ImportRmbController extends Controller {
-    private ImportRmbService rmbService = Aop.get(ImportRmbService.class);
+    private ImportRmbService service = Aop.get(ImportRmbService.class);
 
     /**
      * 导入任免表
      */
     public OutMessage addAppointmemt(String impId) throws Exception {
         List<UploadFile> files = this.getFiles();
-        return rmbService.importRmb(files, impId);
+        return service.importRmb(files, impId);
     }
 
 }

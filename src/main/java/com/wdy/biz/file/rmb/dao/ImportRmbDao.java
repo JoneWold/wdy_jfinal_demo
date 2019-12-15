@@ -1,6 +1,7 @@
 package com.wdy.biz.file.rmb.dao;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
@@ -39,13 +40,13 @@ public class ImportRmbDao {
         // 在任人员
         HashSet<String> zzRecord = this.getZzRecord();
         // 组装结果集 key身份证 value身份证对应的人员信息
-        Map<String, List<RmbOldMemInfoDto>> result = new HashMap<>();
+        Map<String, List<RmbOldMemInfoDto>> result = new HashMap<>(a0184Map.size());
         for (Map.Entry<String, List<Record>> entry : a0184Map.entrySet()) {
             String a0184 = entry.getKey();
-            List<RmbOldMemInfoDto> infoDtos = new ArrayList<>();
+            List<RmbOldMemInfoDto> memInfoDtoList = new ArrayList<>();
             // 类型转换
-            entry.getValue().forEach(e -> infoDtos.add(this.setMemInfoDto(e, zzRecord)));
-            result.put(a0184, infoDtos);
+            entry.getValue().forEach(e -> memInfoDtoList.add(this.setMemInfoDto(e, zzRecord)));
+            result.put(a0184, memInfoDtoList);
         }
         return result;
     }
@@ -56,12 +57,12 @@ public class ImportRmbDao {
      * @param a0101 姓名
      * @param a0107 出生年月
      */
-    public List<RmbOldMemInfoDto> findA01ByA0101(String a0101, String a0107) {
+    public List<RmbOldMemInfoDto> findA01ByA0101(String a0101, Date a0107) {
         List<RmbOldMemInfoDto> memInfoDtoList = new ArrayList<>();
-        if (StrKit.isBlank(a0101) || StrKit.isBlank(a0107)) {
+        if (StrKit.isBlank(a0101) || ObjectUtil.isEmpty(a0107)) {
             return memInfoDtoList;
         }
-        List<Record> records = Db.use(DB_PGSQL).find("SELECT * FROM \"a01\" where \"A0101\"=? and \"A0107\"=?", a0101, DateUtil.parse(a0107));
+        List<Record> records = Db.use(DB_PGSQL).find("SELECT * FROM \"a01\" where \"A0101\"=? and \"A0107\"=?", a0101, a0107);
         // 在任人员
         HashSet<String> zzRecord = this.getZzRecord();
         for (Record record : records) {

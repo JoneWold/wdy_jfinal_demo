@@ -1571,7 +1571,7 @@ public abstract class BaseA01Temp<M extends BaseA01Temp<M>> extends Model<M> imp
     /**
      * 原人员数据信息，例如：[{"A0000":"123","A0184":"身份证","A0192":"现任职务","A0107":"出生日期","A0101":"姓名","A0255":"是否在任"}]
      */
-    public M setOldDataArray(JSONArray oldDataArray) throws SQLException {
+    public M setOldDataArray(JSONArray oldDataArray) {
 //		JSON.toJSONString(oldDataArray);
 //		PGobject pGobject = new PGobject();
 //		pGobject.setType("json");
