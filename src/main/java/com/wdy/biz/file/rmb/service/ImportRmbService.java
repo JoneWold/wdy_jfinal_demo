@@ -75,7 +75,7 @@ public class ImportRmbService {
         }
         // 2 完善数据（lrm 文件需要与pic 文件配合使用）
         Map<String, String> a57Map = a57TempList.stream().collect(Collectors.toMap(BaseA57Temp::getA0000, BaseA57Temp::getA5714, (k, v) -> k));
-        List<A01Temp> a01TempNewList = this.getA01TempList(a01TempList, a57Map);
+        List<A01Temp> a01TempNewList = this.groupA01TempList(a01TempList, a57Map);
         a36TempList.forEach(e -> e.setType("1"));
         a57TempList.forEach(e -> e.setType("1"));
 
@@ -115,7 +115,7 @@ public class ImportRmbService {
     /**
      * 完善a01_temp数据
      */
-    public List<A01Temp> getA01TempList(List<A01Temp> a01TempList, Map<String, String> a57Map) {
+    public List<A01Temp> groupA01TempList(List<A01Temp> a01TempList, Map<String, String> a57Map) {
         if (a01TempList.size() > 0) {
             Map<String, List<RmbOldMemInfoDto>> a01ByA0184 = dao.findA01ByA0184();
             a01TempList.forEach(a01Temp -> {
