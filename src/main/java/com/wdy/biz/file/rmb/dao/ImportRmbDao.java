@@ -1,11 +1,13 @@
 package com.wdy.biz.file.rmb.dao;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.jfinal.aop.Aop;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.wdy.dto.RmbOldMemInfoDto;
+import com.wdy.generator.postgreSQL.model.A01Temp;
 import org.jooq.SelectConditionStep;
 
 import java.util.*;
@@ -21,6 +23,7 @@ import static org.jooq.impl.DSL.*;
  * @date 2019/12/13
  */
 public class ImportRmbDao {
+    A01Temp a01Temp = Aop.get(A01Temp.class);
 
     public Map<String, String> getDictNameToCode(String type) {
         SelectConditionStep records = DSL_CONTEXT.select()
@@ -96,6 +99,31 @@ public class ImportRmbDao {
     private HashSet<String> getZzRecord() {
         List<String> list = Db.use(DB_PGSQL).query("select \"A0000\" from \"a02\" where \"A0255\"=? GROUP BY \"A0000\"", "1");
         return new HashSet<>(list);
+    }
+
+    /**
+     * 获取对比列表
+     */
+    public Page<A01Temp> getList(int pageNum, int pageSize, String impId) {
+        SelectConditionStep count = DSL_CONTEXT.selectCount().from(table(name("a01_temp")))
+                .where(field(name("impId"), String.class).eq(impId));
+        SelectConditionStep record8s = DSL_CONTEXT.select(field(name("A0000"))
+                , field(name("A0101"))
+                , field(name("A0107"))
+                , field(name("A0184"))
+                , field(name("A0192"))
+                , field(name("oldDataArray"))
+                , field(name("toA0000"))
+                , field(name("result"))
+        ).from(table(name("a01_temp"))).where(field(name("impId"), String.class).eq(impId));
+        return a01Temp.paginateByFullSql(pageNum, pageSize, count.getSQL(), record8s.getSQL(), record8s.getBindValues().toArray());
+    }
+
+    /**
+     * 更新匹配到的原人员数据
+     */
+    public int update(String a0000, String toA0000, String impId) {
+        return Db.use(DB_PGSQL).update("update \"a01_temp\" set \"toA0000\"=? where \"impId\"=? and \"A0000\"=?", toA0000, impId, a0000);
     }
 
 

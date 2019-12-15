@@ -8,6 +8,7 @@ import com.jfinal.aop.Aop;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 import com.wdy.biz.file.rmb.dao.ImportRmbDao;
 import com.wdy.dto.RmbOldMemInfoDto;
@@ -37,7 +38,7 @@ public class ImportRmbService {
     private ImportRmbDao dao = Aop.get(ImportRmbDao.class);
     private ReadRmbService readRmbService = Aop.get(ReadRmbService.class);
 
-    public OutMessage importRmb(List<UploadFile> files, String impId) throws Exception {
+    public OutMessage uploadRmb(List<UploadFile> files, String impId) throws Exception {
         List<String> fileSuffix = this.checkFileSuffix(files);
         if (fileSuffix.size() > 0) {
             // 如果存在 类型不匹配的文件，清理掉当前批次的所有文件。
@@ -89,6 +90,24 @@ public class ImportRmbService {
         sb.append("a57_temp ->").append(a57s.length).append("条。");
         return new OutMessage<>(Status.SUCCESS, sb);
     }
+
+
+    public OutMessage getList(int pageNum, int pageSize, String impId) {
+        Page<A01Temp> page = dao.getList(pageNum, pageSize, impId);
+        return new OutMessage<>(Status.SUCCESS, page);
+    }
+
+    public OutMessage update(String a0000, String toA0000, String impId) {
+        int update = dao.update(a0000, toA0000, impId);
+        return update == 1 ? new OutMessage(Status.SUCCESS) : new OutMessage(Status.FAIL);
+    }
+
+    public OutMessage importRmb(String orgId, String impId) {
+
+
+        return new OutMessage<>(Status.SUCCESS);
+    }
+
 
     /**
      * 组合a01_temp数据
