@@ -16,6 +16,7 @@ import org.junit.Test;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.wdy.message.Status.SUCCESS;
 import static org.hamcrest.core.Is.is;
@@ -67,7 +68,7 @@ public class TestHelloController extends TestBeforeWdyConfig {
 
     @Test
     public void testJoin() {
-        List<String> list = new ArrayList();
+        List<String> list = new ArrayList<>();
         list.add("a");
         list.add("b");
         list.add("c");
@@ -179,6 +180,27 @@ public class TestHelloController extends TestBeforeWdyConfig {
             }
         }
         System.out.println(list);
+    }
+
+    /**
+     * HashSet.addAll(hashSet)
+     */
+    @Test
+    public void testHashSetAdd() {
+        HashSet<String> set = new HashSet<String>() {{
+            add("1");
+            add("2");
+            add("3");
+        }};
+
+        Map<String, String> map = new HashMap<String, String>() {{
+            put("一", "1");
+            put("五", "5");
+            put("六", "6");
+        }};
+
+        boolean b = set.addAll(map.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toCollection(HashSet::new)));
+        System.out.println(set);
     }
 
     /**

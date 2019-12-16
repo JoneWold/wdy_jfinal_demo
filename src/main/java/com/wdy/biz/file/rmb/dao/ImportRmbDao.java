@@ -110,7 +110,7 @@ public class ImportRmbDao {
      * 单位层级下的在职人员
      * @param b0111 单位层级码
      */
-    public HashSet<String> getZzSet(String b0111) {
+    public HashSet<String> getZzByOrgCode(String b0111) {
         SelectConditionStep record1s = DSL_CONTEXT.select(field(name("A0000")))
                 .from(table(name("a02")))
                 .innerJoin(table(name("b01"))).on(field(name("a02", "A0201B")).eq(field(name("b01", "id"))))

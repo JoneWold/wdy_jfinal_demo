@@ -135,10 +135,11 @@ public class ImportRmbService {
         List<Record> a36TempList = dao.findTempList("a36_temp", impId, "1");
         List<Record> a57TempList = dao.findTempList("a57_temp", impId, "1");
         // 替换a36,a57待更新的主键
-        List<Record> a36List = this.getA36A57List(a36TempList, updateA0000toOld);
-        List<Record> a57List = this.getA36A57List(a57TempList, updateA0000toOld);
+        List<Record> a36List = this.getA36A57List(a36TempList, updateA0000toOld, a01TempNewList);
+        List<Record> a57List = this.getA36A57List(a57TempList, updateA0000toOld, a01TempNewList);
 
         // 清除原表数据
+        saveA0000Set.addAll(updateA0000toOld.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toCollection(HashSet::new)));
         dao.delTableList(saveA0000Set);
         // 写入数据
         int[] a01update = Db.use(DB_PGSQL).batchUpdate(a01UpdateList, 100);
@@ -337,11 +338,11 @@ public class ImportRmbService {
 
     private List<A02> getA02List(List<A01Temp> a01TempNewList, B01 b01) {
         List<A02> a02List = new ArrayList<>();
-        HashSet<String> zzSet = dao.getZzSet(b01.getB0111());
+        HashSet<String> zzList = dao.getZzByOrgCode(b01.getB0111());
         a01TempNewList.forEach(a01Temp -> {
             String a0000 = a01Temp.getA0000();
             // 当前单位下没有在职数据就得新增一条
-            if (!zzSet.contains(a0000)) {
+            if (!zzList.contains(a0000)) {
                 A02 a02 = new A02();
                 a02.setA0000(a0000);
                 a02.setA0200(StrKit.getRandomUUID());
@@ -357,7 +358,11 @@ public class ImportRmbService {
     /**
      * 替换a36,a57待更新的主键
      */
-    private List<Record> getA36A57List(List<Record> tempList, Map<String, String> updateA0000toOld) {
+    private List<Record> getA36A57List(List<Record> tempList, Map<String, String> updateA0000toOld, List<A01Temp> a01TempNewList) {
+        List<Record> tempNewList = new ArrayList<>();
+        // 有效数据 人员标识符
+        HashSet<String> a0000Set = a01TempNewList.stream().map(BaseA01Temp::getA0000).collect(Collectors.toCollection(HashSet::new));
+        // 如果人员基础数据去过重，这里a36,a57也需要去掉那一部分数据，不然主键不一致，导进去也是垃圾数据
         tempList.forEach(temp -> {
             String a0000 = temp.getStr("A0000");
             String toA0000 = updateA0000toOld.get(a0000);
@@ -366,8 +371,13 @@ public class ImportRmbService {
             }
             temp.remove("impId");
             temp.remove("type");
+            // 数据筛选
+            if (a0000Set.contains(temp.getStr("A0000"))) {
+                tempNewList.add(temp);
+            }
         });
-        return tempList;
+
+        return tempNewList;
     }
 
 
