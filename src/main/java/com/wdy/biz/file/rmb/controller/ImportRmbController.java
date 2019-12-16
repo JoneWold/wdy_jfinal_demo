@@ -52,7 +52,8 @@ public class ImportRmbController extends Controller {
      * @param impId 导入批次号
      */
     public OutMessage importRmb(String orgId, String impId) {
-        return service.importRmb(orgId, impId);
+        String system = this.getHeader("system");
+        return service.importRmb(orgId, impId, system);
     }
 
 }

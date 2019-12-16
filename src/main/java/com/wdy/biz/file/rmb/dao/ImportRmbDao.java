@@ -2,14 +2,16 @@ package com.wdy.biz.file.rmb.dao;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.jfinal.aop.Aop;
+import com.jfinal.kit.LogKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.wdy.dto.RmbOldMemInfoDto;
 import com.wdy.generator.postgreSQL.model.A01Temp;
-import com.wdy.generator.postgreSQL.model.A36Temp;
-import com.wdy.generator.postgreSQL.model.A57Temp;
+import com.wdy.generator.postgreSQL.model.YoungCadre;
+import org.jooq.DeleteConditionStep;
+import org.jooq.Record1;
 import org.jooq.SelectConditionStep;
 
 import java.util.*;
@@ -26,8 +28,7 @@ import static org.jooq.impl.DSL.*;
  */
 public class ImportRmbDao {
     private A01Temp a01Temp = Aop.get(A01Temp.class);
-    private A36Temp a36Temp = Aop.get(A36Temp.class);
-    private A57Temp a57Temp = Aop.get(A57Temp.class);
+    private YoungCadre youngCadre = Aop.get(YoungCadre.class);
 
     public Map<String, String> getDictNameToCode(String type) {
         SelectConditionStep records = DSL_CONTEXT.select()
@@ -98,10 +99,24 @@ public class ImportRmbDao {
 
 
     /**
-     * 在任人员
+     * 在任人员A0000集合
      */
     private HashSet<String> getZzRecord() {
         List<String> list = Db.use(DB_PGSQL).query("select \"A0000\" from \"a02\" where \"A0255\"=? GROUP BY \"A0000\"", "1");
+        return new HashSet<>(list);
+    }
+
+    /***
+     * 单位层级下的在职人员
+     * @param b0111 单位层级码
+     */
+    public HashSet<String> getZzSet(String b0111) {
+        SelectConditionStep record1s = DSL_CONTEXT.select(field(name("A0000")))
+                .from(table(name("a02")))
+                .innerJoin(table(name("b01"))).on(field(name("a02", "A0201B")).eq(field(name("b01", "id"))))
+                .where(field(name("A0255"), String.class).eq("1")
+                        .and(field(name("B0111"), String.class).like(b0111 + "%")));
+        List<String> list = Db.use(DB_PGSQL).query(record1s.getSQL(), record1s.getBindValues().toArray());
         return new HashSet<>(list);
     }
 
@@ -137,18 +152,58 @@ public class ImportRmbDao {
         return a01Temp.use(DB_PGSQL).find(records.getSQL(), records.getBindValues().toArray());
     }
 
-    public List<A36Temp> findA36TempList(String impId, String type) {
-        SelectConditionStep records = DSL_CONTEXT.select().from(table(name("a36_temp")))
+    public List<Record> findTempList(String tabName, String impId, String type) {
+        SelectConditionStep records = DSL_CONTEXT.select().from(table(name(tabName)))
                 .where(field(name("impId"), String.class).eq(impId)
                         .and(field(name("type")).eq(type)));
-        return a36Temp.use(DB_PGSQL).find(records.getSQL(), records.getBindValues().toArray());
+        return Db.use(DB_PGSQL).find(records.getSQL(), records.getBindValues().toArray());
     }
 
-    public List<A57Temp> findA57TempList(String impId, String type) {
-        SelectConditionStep records = DSL_CONTEXT.select().from(table(name("a57_temp")))
-                .where(field(name("impId"), String.class).eq(impId)
-                        .and(field(name("type")).eq(type)));
-        return a57Temp.use(DB_PGSQL).find(records.getSQL(), records.getBindValues().toArray());
+    /***
+     * 清除原表数据
+     * @param saveA0000Set 待保存的A0000集合
+     */
+    public void delTableList(HashSet<String> saveA0000Set) {
+        DeleteConditionStep a36Step = DSL_CONTEXT.deleteFrom(table(name("a36"))).where(field(name("A0000")).in(saveA0000Set));
+        DeleteConditionStep a57Step = DSL_CONTEXT.deleteFrom(table(name("a57"))).where(field(name("A0000")).in(saveA0000Set));
+        int a36 = Db.use(DB_PGSQL).delete(a36Step.getSQL(), a36Step.getBindValues().toArray());
+        LogKit.info("清除a36，响应条数：" + a36);
+        int a57 = Db.use(DB_PGSQL).delete(a57Step.getSQL(), a57Step.getBindValues().toArray());
+        LogKit.info("清除a57，响应条数：" + a57);
+    }
+
+
+    /**
+     * 获取优秀年轻干部type=0的人员集合
+     */
+    public List<YoungCadre> findYoungCadreList() {
+        SelectConditionStep records = DSL_CONTEXT.select()
+                .from(table(name("youngCadre")))
+                .where(field(name("type")).eq("0"));
+        return youngCadre.find(records.getSQL(), records.getBindValues().toArray());
+    }
+
+    /***
+     * 机构排序号
+     * @param orgId 机构id
+     * @return 公务员的机构id
+     */
+    public Integer findOrgTreeSortById(String orgId) {
+        SelectConditionStep<Record1<Object>> sqlStr = DSL_CONTEXT.select(field(name("orgTreeSort")))
+                .from(table(name("b01")))
+                .where(field(name("id")).eq(orgId));
+        return Db.use(DB_PGSQL).queryInt(sqlStr.getSQL(), sqlStr.getBindValues().toArray());
+    }
+
+
+    /***
+     * 通过人员标识查询学历信息
+     * @param toA0000
+     */
+    public List<Record> findA08List(String toA0000) {
+        SelectConditionStep records = DSL_CONTEXT.select().from(table(name("a08")))
+                .where(field(name("A0000")).eq(toA0000));
+        return Db.use(DB_PGSQL).find(records.getSQL(), records.getBindValues().toArray());
     }
 
 
