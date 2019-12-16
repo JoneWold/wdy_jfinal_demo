@@ -8,6 +8,8 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.wdy.dto.RmbOldMemInfoDto;
 import com.wdy.generator.postgreSQL.model.A01Temp;
+import com.wdy.generator.postgreSQL.model.A36Temp;
+import com.wdy.generator.postgreSQL.model.A57Temp;
 import org.jooq.SelectConditionStep;
 
 import java.util.*;
@@ -23,7 +25,9 @@ import static org.jooq.impl.DSL.*;
  * @date 2019/12/13
  */
 public class ImportRmbDao {
-    A01Temp a01Temp = Aop.get(A01Temp.class);
+    private A01Temp a01Temp = Aop.get(A01Temp.class);
+    private A36Temp a36Temp = Aop.get(A36Temp.class);
+    private A57Temp a57Temp = Aop.get(A57Temp.class);
 
     public Map<String, String> getDictNameToCode(String type) {
         SelectConditionStep records = DSL_CONTEXT.select()
@@ -124,6 +128,27 @@ public class ImportRmbDao {
      */
     public int update(String a0000, String toA0000, String impId) {
         return Db.use(DB_PGSQL).update("update \"a01_temp\" set \"toA0000\"=? where \"impId\"=? and \"A0000\"=?", toA0000, impId, a0000);
+    }
+
+    public List<A01Temp> findA01TempList(String impId, String type) {
+        SelectConditionStep records = DSL_CONTEXT.select().from(table(name("a01_temp")))
+                .where(field(name("impId"), String.class).eq(impId)
+                        .and(field(name("type")).eq(type)));
+        return a01Temp.use(DB_PGSQL).find(records.getSQL(), records.getBindValues().toArray());
+    }
+
+    public List<A36Temp> findA36TempList(String impId, String type) {
+        SelectConditionStep records = DSL_CONTEXT.select().from(table(name("a36_temp")))
+                .where(field(name("impId"), String.class).eq(impId)
+                        .and(field(name("type")).eq(type)));
+        return a36Temp.use(DB_PGSQL).find(records.getSQL(), records.getBindValues().toArray());
+    }
+
+    public List<A57Temp> findA57TempList(String impId, String type) {
+        SelectConditionStep records = DSL_CONTEXT.select().from(table(name("a57_temp")))
+                .where(field(name("impId"), String.class).eq(impId)
+                        .and(field(name("type")).eq(type)));
+        return a57Temp.use(DB_PGSQL).find(records.getSQL(), records.getBindValues().toArray());
     }
 
 

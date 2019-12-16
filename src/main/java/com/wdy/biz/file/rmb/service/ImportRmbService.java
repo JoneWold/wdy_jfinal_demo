@@ -1,5 +1,6 @@
 package com.wdy.biz.file.rmb.service;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
@@ -9,20 +10,21 @@ import com.jfinal.kit.PathKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.TableMapping;
 import com.jfinal.upload.UploadFile;
 import com.wdy.biz.file.rmb.dao.ImportRmbDao;
 import com.wdy.dto.RmbOldMemInfoDto;
+import com.wdy.generator.postgreSQL.model.A01;
 import com.wdy.generator.postgreSQL.model.A01Temp;
 import com.wdy.generator.postgreSQL.model.A36Temp;
 import com.wdy.generator.postgreSQL.model.A57Temp;
 import com.wdy.generator.postgreSQL.model.base.BaseA57Temp;
 import com.wdy.message.OutMessage;
 import com.wdy.message.Status;
+import com.wdy.vo.RmbA01TempVo;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.wdy.constant.CommonConstant.*;
@@ -106,9 +108,29 @@ public class ImportRmbService {
     }
 
     public OutMessage importRmb(String orgId, String impId) {
+        List<A01Temp> a01TempList = dao.findA01TempList(impId, "1");
+        RmbA01TempVo tempVo = this.getRmbA01TempVo(a01TempList, orgId);
+        // 人员数据去重
+        List<A01Temp> a01TempNewList = tempVo.getA01TempNewList();
+
+        HashSet<String> saveA0000Set = tempVo.getSaveA0000Set();
+        Map<String, String> updateA0000toOld = tempVo.getUpdateA0000toOld();
+
+        List<A01> a01SaveList = new ArrayList<>();
+        List<A01> a01UpdateList = new ArrayList<>();
+        this.getUpdateSaveList(a01TempNewList, saveA0000Set, updateA0000toOld, a01SaveList, a01UpdateList);
 
 
-        return new OutMessage<>(Status.SUCCESS);
+        StringBuilder sb = new StringBuilder("数据导入成功：");
+        Db.tx(() -> {
+            int[] a01update = Db.batchUpdate(a01UpdateList, 100);
+            int[] a01save = Db.batchSave(a01SaveList, 100);
+
+            sb.append("a01 update ->").append(a01update.length).append("条。");
+            sb.append("a01 save ->").append(a01save.length).append("条。");
+            return true;
+        });
+        return new OutMessage<>(Status.SUCCESS, sb);
     }
 
 
@@ -166,6 +188,77 @@ public class ImportRmbService {
             }
         }
         return list;
+    }
+
+    /**
+     * 获取任免表新增、编辑等主键信息
+     */
+    private RmbA01TempVo getRmbA01TempVo(List<A01Temp> a01TempList, String orgId) {
+        HashSet<String> saveA0000Set = new HashSet<>();
+        Map<String, String> updateA0000toOld = new HashMap<>();
+        for (A01Temp a01Temp : a01TempList) {
+            String a0000 = a01Temp.getA0000();
+            JSONArray oldDataArray = a01Temp.getOldDataArray();
+            String toA0000 = a01Temp.getToA0000();
+            String result = a01Temp.getResult();
+            // 统计关系所在单位
+            a01Temp.setA0195(orgId);
+            // 待保存的人员信息
+            if ("系统无此人".equals(result) && oldDataArray.size() == 0) {
+                saveA0000Set.add(a0000);
+            } else if ("与系统一致".equals(result) && oldDataArray.size() == 0) {
+                // 待更新的人员信息，更新该条记录主键
+                a01Temp.setA0000(toA0000);
+                updateA0000toOld.put(a0000, toA0000);
+            } else {
+                // 无对比结果 调用update接口后指定的待更新的人员数据
+                if (StrKit.notBlank(toA0000)) {
+                    // 将当前temp人员标识改为原数据人员标识
+                    a01Temp.setA0000(toA0000);
+                    updateA0000toOld.put(a0000, toA0000);
+                }
+            }
+        }
+        // 组装结果集
+        RmbA01TempVo tempVo = new RmbA01TempVo();
+        tempVo.setA01TempNewList(a01TempList);
+        tempVo.setSaveA0000Set(saveA0000Set);
+        tempVo.setUpdateA0000toOld(updateA0000toOld);
+        return tempVo;
+    }
+
+    /***
+     * 处理a01_temp数据
+     * @param a01TempNewList   a01_temp数据
+     * @param saveA0000Set     待保存的人员标识
+     * @param updateA0000toOld a01_temp中的A0000 -> 匹配到的a01中的A0000
+     * @param a01SaveList      保存到a01的数据
+     * @param a01UpdateList    更新到a01的数据
+     */
+    private void getUpdateSaveList(List<A01Temp> a01TempNewList, HashSet<String> saveA0000Set, Map<String, String> updateA0000toOld
+            , List<A01> a01SaveList, List<A01> a01UpdateList) {
+        Set<String> a01TempColumnNameSet = TableMapping.me().getTable(A01Temp.class).getColumnNameSet();
+        Set<String> a01ColumnNameSet = TableMapping.me().getTable(A01.class).getColumnNameSet();
+        // 存放a01中不包含但a01_temp包含的字段
+        List<String> removeStr = new ArrayList<>();
+        a01TempColumnNameSet.forEach(e -> {
+            if (!a01ColumnNameSet.contains(e)) {
+                removeStr.add(e);
+            }
+        });
+        a01TempNewList.forEach(a01Temp -> {
+            // 清除a01_temp多余字段
+            removeStr.forEach(a01Temp::remove);
+            A01 a01 = new A01();
+            a01._setAttrs(BeanUtil.beanToMap(a01Temp));
+            String a0000 = a01Temp.getA0000();
+            if (saveA0000Set.contains(a0000)) {
+                a01SaveList.add(a01);
+            } else if (updateA0000toOld.containsValue(a0000)) {
+                a01UpdateList.add(a01);
+            }
+        });
+
     }
 
 }
