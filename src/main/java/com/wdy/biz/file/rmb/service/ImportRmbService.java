@@ -218,7 +218,7 @@ public class ImportRmbService {
     }
 
     /**
-     * 获取任免表新增、编辑等主键信息
+     * 获取任免表新增、编辑等 主键信息
      */
     private RmbA01TempVo getRmbA01TempVo(List<A01Temp> a01TempList, String orgId) {
         HashSet<String> saveA0000Set = new HashSet<>();
@@ -364,6 +364,8 @@ public class ImportRmbService {
             if (StrKit.notBlank(toA0000)) {
                 temp.set("A0000", toA0000);
             }
+            temp.remove("impId");
+            temp.remove("type");
         });
         return tempList;
     }
