@@ -302,7 +302,7 @@ public class ImportRmbService {
             A01 a01 = new A01();
             a01._setAttrs(BeanUtil.beanToMap(a01Temp));
             // TODO 补全政治面貌相关字段
-            this.setzZmm(a01, a01Temp, system);
+            this.setZzmm(a01, a01Temp, system);
             if ("1".equals(system)) {
                 // 人员类别 1 公务员
                 a01.setA0160("1");
@@ -416,7 +416,7 @@ public class ImportRmbService {
      * @param a01     原数据人员信息
      * @param a01Temp temp表人员信息
      */
-    private void setzZmm(A01 a01, A01Temp a01Temp, String system) {
+    private void setZzmm(A01 a01, A01Temp a01Temp, String system) {
         Map<String, String> zZmmMap = dao.getDictNameToCode(ZZMM_TYPE);
         String a0140 = a01Temp.getA0140();
         if (StrKit.notBlank(a0140)) {
