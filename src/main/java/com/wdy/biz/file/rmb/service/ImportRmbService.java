@@ -549,7 +549,7 @@ public class ImportRmbService {
         memService.updateA0834Many(saveList.stream()
                 .filter(var -> StrUtil.isNotEmpty(var.getStr("A0000")))
                 .map(var -> var.getStr("A0000")).collect(Collectors.toList()));
-        Map<String, A08MergeDegreeDto> info = memService.mergeDegreeInfo("'" + toA0000 + "'", "");
+        Map<String, A08MergeDegreeDto> info = memService.mergeDegreeInfo(Collections.singletonList(toA0000), "");
         A01 a01 = memDao.findA01ById(toA0000);
         if (a01 != null && info != null) {
             A08MergeDegreeDto merge = info.get(a01.getA0000());

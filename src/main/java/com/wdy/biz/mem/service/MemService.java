@@ -44,19 +44,19 @@ public class MemService {
     /**
      * 组合 学历学位
      *
-     * @param a0000str 人员标识符 逗号分隔
-     * @param impId    temp表标识
+     * @param a0000s 人员标识符集合
+     * @param impId  temp表标识
      * @return
      * @versions 2.0
      */
-    public Map<String, A08MergeDegreeDto> mergeDegreeInfo(String a0000str, String impId) {
+    public Map<String, A08MergeDegreeDto> mergeDegreeInfo(List<String> a0000s, String impId) {
         Map<String, A08MergeDegreeDto> result = new HashMap<>();
-        List<String> idList = new ArrayList<>();
-        if (StrKit.notBlank(a0000str)) {
-            String[] split = a0000str.replaceAll("'", "").split(",");
-            idList = Arrays.asList(split);
-        }
-        Map<String, List<Record>> map = dao.findA08ByA0000s(idList, impId);
+//        List<String> idList = new ArrayList<>();
+//        if (StrKit.notBlank(a0000str)) {
+//            String[] split = a0000str.replaceAll("'", "").split(",");
+//            idList = Arrays.asList(split);
+//        }
+        Map<String, List<Record>> map = dao.findA08ByA0000s(a0000s, impId);
         for (Map.Entry<String, List<Record>> entry : map.entrySet()) {
             String key = entry.getKey();
             List<Record> records = entry.getValue();
