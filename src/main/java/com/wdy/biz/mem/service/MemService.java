@@ -158,9 +158,9 @@ public class MemService {
                 xwdmMap.put(a0901B, a0901B);
                 // 全日制
                 if ("1".equals(a08.getA0837())) {
-                    qrzBuffer.append(value + "\n");
+                    qrzBuffer.append(value).append("\n");
                 } else {
-                    zzBuffer.append(value + "\n");
+                    zzBuffer.append(value).append("\n");
                 }
                 mcDto.setQRZZS(qrzBuffer.toString());
                 mcDto.setZZZS(zzBuffer.toString());

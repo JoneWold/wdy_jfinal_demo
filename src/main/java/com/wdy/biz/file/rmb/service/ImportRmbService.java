@@ -224,6 +224,8 @@ public class ImportRmbService {
     private RmbA01TempVo getRmbA01TempVo(List<A01Temp> a01TempList, String orgId) {
         HashSet<String> saveA0000Set = new HashSet<>();
         Map<String, String> updateA0000toOld = new HashMap<>();
+        // 存放a01_temp有效人员数据
+        List<A01Temp> newList = new ArrayList<>();
         for (A01Temp a01Temp : a01TempList) {
             String a0000 = a01Temp.getA0000();
             JSONArray oldDataArray = a01Temp.getOldDataArray();
@@ -234,22 +236,25 @@ public class ImportRmbService {
             // 待保存的人员信息
             if ("系统无此人".equals(result) && oldDataArray.size() == 0) {
                 saveA0000Set.add(a0000);
-            } else if ("与系统一致".equals(result) && oldDataArray.size() == 0) {
+                newList.add(a01Temp);
+            } else if ("与系统一致".equals(result) && oldDataArray.size() == 1) {
                 // 待更新的人员信息，更新该条记录主键
                 a01Temp.setA0000(toA0000);
                 updateA0000toOld.put(a0000, toA0000);
+                newList.add(a01Temp);
             } else {
                 // 无对比结果 调用update接口后指定的待更新的人员数据
                 if (StrKit.notBlank(toA0000)) {
                     // 将当前temp人员标识改为原数据人员标识
                     a01Temp.setA0000(toA0000);
                     updateA0000toOld.put(a0000, toA0000);
+                    newList.add(a01Temp);
                 }
             }
         }
         // 组装结果集
         RmbA01TempVo tempVo = new RmbA01TempVo();
-        tempVo.setA01TempNewList(a01TempList);
+        tempVo.setA01TempNewList(newList);
         tempVo.setSaveA0000Set(saveA0000Set);
         tempVo.setUpdateA0000toOld(updateA0000toOld);
         return tempVo;
@@ -359,7 +364,7 @@ public class ImportRmbService {
      * 替换a36,a57待更新的主键
      */
     private List<Record> getA36A57List(List<Record> tempList, Map<String, String> updateA0000toOld, List<A01Temp> a01TempNewList) {
-        List<Record> tempNewList = new ArrayList<>();
+        List<Record> newList = new ArrayList<>();
         // 有效数据 人员标识符
         HashSet<String> a0000Set = a01TempNewList.stream().map(BaseA01Temp::getA0000).collect(Collectors.toCollection(HashSet::new));
         // 如果人员基础数据去过重，这里a36,a57也需要去掉那一部分数据，不然主键不一致，导进去也是垃圾数据
@@ -373,11 +378,11 @@ public class ImportRmbService {
             temp.remove("type");
             // 数据筛选
             if (a0000Set.contains(temp.getStr("A0000"))) {
-                tempNewList.add(temp);
+                newList.add(temp);
             }
         });
 
-        return tempNewList;
+        return newList;
     }
 
 
