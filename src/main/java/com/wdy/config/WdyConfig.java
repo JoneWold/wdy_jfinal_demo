@@ -16,6 +16,7 @@ import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.template.Engine;
 import com.jfinal.template.source.ClassPathSourceFactory;
 import com.wdy.biz.dictionary.service.DictionaryService;
+import com.wdy.biz.file.rmb.controller.ExportRmbController;
 import com.wdy.biz.file.rmb.controller.ImportRmbController;
 import com.wdy.biz.progress.jfinal.MobSdController;
 import com.wdy.biz.progress.websocket.AlarmThreadController;
@@ -92,6 +93,7 @@ public class WdyConfig extends JFinalConfig {
         me.add("/webSocket", WebSocketController.class, "/ws");
         me.add("/mob", MobSdController.class);
         me.add("/import", ImportRmbController.class);
+        me.add("/export", ExportRmbController.class);
     }
 
     /**
