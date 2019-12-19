@@ -55,7 +55,7 @@ public class TestOrgService extends TestBeforeWdyConfig {
     public void testField() {
         Record record = new Record().set("id", "123").set("name", "张三");
         Set<String> columnNameSet = TableMapping.me().getTable(B01.class).getColumnNameSet();
-        setRecordField(record, columnNameSet);
+        this.setRecordField(record, columnNameSet);
         System.out.println(record);
     }
 
