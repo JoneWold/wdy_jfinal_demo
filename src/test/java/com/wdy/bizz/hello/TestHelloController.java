@@ -6,6 +6,8 @@ import cn.hutool.core.date.DateUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jfinal.aop.Aop;
 import com.jfinal.plugin.activerecord.Record;
 import com.wdy.biz.hello.service.HelloService;
@@ -226,5 +228,26 @@ public class TestHelloController extends TestBeforeWdyConfig {
             System.out.println("map的value：" + s);
         }
     }
+
+    /**
+     * JackSon JSON 类型转换
+     */
+    @Test
+    public void JackSon() throws Exception {
+        // json -> object
+        String json = "[{\"tableIndex\":\"0-1\",\"cols\":[{\"index\":\"12\",\"fieldName\":\"in_year_assess\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"6\"},\"virtual\":false},{\"index\":\"13\",\"fieldName\":\"in_year_assess\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"7\"},\"virtual\":false},{\"index\":\"1\",\"fieldName\":\"\",\"condition\":{\"@class\":\".MustIncludeFieldsCondition\",\"includes\":[\"job_type\",\"total\",\"grouping\",\"tableIndex\"]},\"virtual\":false},{\"index\":\"2\",\"fieldName\":\"pre_year_assess\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"1\"},\"virtual\":false},{\"index\":\"3\",\"fieldName\":\"pre_year_assess\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"2\"},\"virtual\":false},{\"index\":\"4\",\"fieldName\":\"pre_year_assess\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"3\"},\"virtual\":false},{\"index\":\"5\",\"fieldName\":\"pre_year_assess\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"4\"},\"virtual\":false},{\"index\":\"6\",\"fieldName\":\"pre_year_assess\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"5\"},\"virtual\":false},{\"index\":\"7\",\"fieldName\":\"in_year_assess\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"1\"},\"virtual\":false},{\"index\":\"8\",\"fieldName\":\"in_year_assess\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"2\"},\"virtual\":false},{\"index\":\"9\",\"fieldName\":\"in_year_assess\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"3\"},\"virtual\":false},{\"index\":\"10\",\"fieldName\":\"in_year_assess\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"4\"},\"virtual\":false},{\"index\":\"11\",\"fieldName\":\"in_year_assess\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"5\"},\"virtual\":false}],\"rows\":[{\"index\":\"4\",\"fieldName\":\"job_type\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"1\"},\"tableIndex\":\"0-1\",\"virtual\":false},{\"index\":\"5\",\"fieldName\":\"job_type\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"2\"},\"tableIndex\":\"0-1\",\"virtual\":false}],\"groupByField\":\"job_type\",\"tableName\":\"mem_unit_institution\",\"condition\":\"unit_count_level = '1' and unit_attributes = 4 and unit_type = 42\"},{\"tableIndex\":\"0-2\",\"cols\":[],\"rows\":[{\"index\":\"6\",\"fieldName\":\"job_type\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"1\"},\"tableIndex\":\"0-2\",\"virtual\":false},{\"index\":\"7\",\"fieldName\":\"job_type\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"2\"},\"tableIndex\":\"0-2\",\"virtual\":false}],\"groupByField\":\"job_type\",\"tableName\":\"mem_unit_institution\",\"condition\":\"unit_count_level = '2' and unit_attributes = 4 and unit_type = 41\"},{\"tableIndex\":\"0-3\",\"cols\":[],\"rows\":[{\"index\":\"8\",\"fieldName\":\"job_type\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"1\"},\"tableIndex\":\"0-3\",\"virtual\":false},{\"index\":\"9\",\"fieldName\":\"job_type\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"2\"},\"tableIndex\":\"0-3\",\"virtual\":false}],\"groupByField\":\"job_type\",\"tableName\":\"mem_unit_institution\",\"condition\":\"unit_count_level = '2' and unit_attributes = 4 and unit_type = 42\"},{\"tableIndex\":\"0-4\",\"cols\":[],\"rows\":[{\"index\":\"10\",\"fieldName\":\"job_type\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"1\"},\"tableIndex\":\"0-4\",\"virtual\":false},{\"index\":\"11\",\"fieldName\":\"job_type\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"2\"},\"tableIndex\":\"0-4\",\"virtual\":false}],\"groupByField\":\"job_type\",\"tableName\":\"mem_unit_institution\",\"condition\":\"unit_count_level = '3' and unit_attributes = 4 and unit_type = 41\"},{\"tableIndex\":\"0-5\",\"cols\":[],\"rows\":[{\"index\":\"12\",\"fieldName\":\"job_type\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"1\"},\"tableIndex\":\"0-5\",\"virtual\":false},{\"index\":\"13\",\"fieldName\":\"job_type\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"2\"},\"tableIndex\":\"0-5\",\"virtual\":false}],\"groupByField\":\"job_type\",\"tableName\":\"mem_unit_institution\",\"condition\":\"unit_count_level = '3' and unit_attributes = 4 and unit_type = 42\"},{\"tableIndex\":\"0-6\",\"cols\":[],\"rows\":[{\"index\":\"14\",\"fieldName\":\"job_type\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"1\"},\"tableIndex\":\"0-6\",\"virtual\":false},{\"index\":\"15\",\"fieldName\":\"job_type\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"2\"},\"tableIndex\":\"0-6\",\"virtual\":false}],\"groupByField\":\"job_type\",\"tableName\":\"mem_unit_institution\",\"condition\":\"unit_count_level = '4' and unit_attributes = 4 and unit_type = 41\"},{\"tableIndex\":\"0-7\",\"cols\":[],\"rows\":[{\"index\":\"16\",\"fieldName\":\"job_type\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"1\"},\"tableIndex\":\"0-7\",\"virtual\":false},{\"index\":\"17\",\"fieldName\":\"job_type\",\"condition\":{\"@class\":\".EqCondition\",\"value\":\"2\"},\"tableIndex\":\"0-7\",\"virtual\":false}],\"groupByField\":\"job_type\",\"tableName\":\"mem_unit_institution\",\"condition\":\"unit_count_level = '4' and unit_attributes = 4 and unit_type = 42\"}]";
+        Object readValue = new ObjectMapper().readValue(json, new TypeReference<ArrayList<Object>>() {
+        });
+        System.out.println(readValue);
+
+        // object -> json
+        List<String> list = new ArrayList<String>() {{
+            add("111");
+            add("222");
+        }};
+        String value = new ObjectMapper().writeValueAsString(list);
+        System.out.println(value);
+    }
+
 
 }
