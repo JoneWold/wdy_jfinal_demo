@@ -63,6 +63,7 @@ public class ImageBase64Util {
             inputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
         // 加密
         BASE64Encoder encoder = new BASE64Encoder();
