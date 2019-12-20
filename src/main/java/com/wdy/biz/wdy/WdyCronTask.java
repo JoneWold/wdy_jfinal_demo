@@ -17,7 +17,7 @@ public class WdyCronTask implements Runnable {
 
     @Override
     public void run() {
-        System.out.printf("run 第%d次执行定时任务，当前时间：%s\n", ++count, DateUtil.now());
+        System.out.printf("run 第%d次执行，当前时间：%s\n", ++count, DateUtil.now());
     }
 
     public static void main(String[] args) {

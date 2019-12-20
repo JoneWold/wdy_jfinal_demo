@@ -14,7 +14,7 @@ import com.wdy.message.OutMessage;
  */
 public class ExportRmbController extends Controller {
 
-    ExportRmbService service = Aop.get(ExportRmbService.class);
+    private ExportRmbService service = Aop.get(ExportRmbService.class);
 
     /***
      * 导出任免表 .lrm
@@ -38,7 +38,7 @@ public class ExportRmbController extends Controller {
 
 
     /***
-     * 导出任免表word
+     * 导出任免表 .word
      * @param inMessage 导出人员标识符
      * @return 文件下载路径
      */

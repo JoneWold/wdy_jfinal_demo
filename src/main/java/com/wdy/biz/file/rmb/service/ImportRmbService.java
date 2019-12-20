@@ -456,7 +456,7 @@ public class ImportRmbService {
      * @param a01Temp temp表人员信息
      */
     private void setZzmm(A01 a01, A01Temp a01Temp, String system) {
-        Map<String, String> zZmmMap = dao.getDictNameToCode(ZZMM_TYPE);
+        Map<String, String> zZmmMap = readRmbService.zzmmMap;
         String a0140 = a01Temp.getA0140();
         if (StrKit.notBlank(a0140)) {
             String[] zZmm = a0140.replaceAll("，", ",").replaceAll("、", ",").split(",");

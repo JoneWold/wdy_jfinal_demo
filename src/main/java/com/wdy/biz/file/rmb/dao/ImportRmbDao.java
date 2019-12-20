@@ -38,6 +38,14 @@ public class ImportRmbDao {
         return recordList.stream().collect(Collectors.toMap(k -> k.getStr("CODE_NAME"), v -> v.getStr("CODE_VALUE"), (k, v) -> k));
     }
 
+    public Map<String, String> getDictCode2Name(String type) {
+        SelectConditionStep records = DSL_CONTEXT.select()
+                .from(table(name("code_value")))
+                .where(field(name("CODE_TYPE"), String.class).eq(type));
+        List<Record> recordList = Db.use(DB_PGSQL).find(records.getSQL(), records.getBindValues().toArray());
+        return recordList.stream().collect(Collectors.toMap(k -> k.getStr("CODE_VALUE"), v -> v.getStr("CODE_NAME"), (k, v) -> k));
+    }
+
 
     /**
      * 根据身份证 查询人员
@@ -261,16 +269,16 @@ public class ImportRmbDao {
                 .where(field(name("A0000")).in(tempRecord)).and(field(name("impId")).eq(impId));
         DeleteConditionStep<org.jooq.Record> a99z1SqlStr = DSL_CONTEXT.deleteFrom(table(name("a99z1_temp")))
                 .where(field(name("A0000")).in(tempRecord)).and(field(name("impId")).eq(impId));
-        Db.use(DB_PGSQL).delete(a01SqlStr.getSQL(),a01SqlStr.getBindValues().toArray());
-        Db.use(DB_PGSQL).delete(a02SqlStr.getSQL(),a02SqlStr.getBindValues().toArray());
-        Db.use(DB_PGSQL).delete(a05SqlStr.getSQL(),a05SqlStr.getBindValues().toArray());
-        Db.use(DB_PGSQL).delete(a06SqlStr.getSQL(),a06SqlStr.getBindValues().toArray());
-        Db.use(DB_PGSQL).delete(a08SqlStr.getSQL(),a08SqlStr.getBindValues().toArray());
-        Db.use(DB_PGSQL).delete(a14SqlStr.getSQL(),a14SqlStr.getBindValues().toArray());
-        Db.use(DB_PGSQL).delete(a15SqlStr.getSQL(),a15SqlStr.getBindValues().toArray());
-        Db.use(DB_PGSQL).delete(a30SqlStr.getSQL(),a30SqlStr.getBindValues().toArray());
-        Db.use(DB_PGSQL).delete(a36SqlStr.getSQL(),a36SqlStr.getBindValues().toArray());
-        Db.use(DB_PGSQL).delete(a57SqlStr.getSQL(),a57SqlStr.getBindValues().toArray());
-        Db.use(DB_PGSQL).delete(a99z1SqlStr.getSQL(),a99z1SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a01SqlStr.getSQL(), a01SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a02SqlStr.getSQL(), a02SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a05SqlStr.getSQL(), a05SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a06SqlStr.getSQL(), a06SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a08SqlStr.getSQL(), a08SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a14SqlStr.getSQL(), a14SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a15SqlStr.getSQL(), a15SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a30SqlStr.getSQL(), a30SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a36SqlStr.getSQL(), a36SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a57SqlStr.getSQL(), a57SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a99z1SqlStr.getSQL(), a99z1SqlStr.getBindValues().toArray());
     }
 }

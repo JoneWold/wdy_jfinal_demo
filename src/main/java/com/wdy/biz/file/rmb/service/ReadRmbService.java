@@ -41,7 +41,7 @@ public class ReadRmbService {
     private ImportRmbDao importRmbDao = Aop.get(ImportRmbDao.class);
     private Map<String, String> xbMap = importRmbDao.getDictNameToCode(XB_TYPE);
     private Map<String, String> mzMap = importRmbDao.getDictNameToCode(MZ_TYPE);
-    private Map<String, String> zzmmMap = importRmbDao.getDictNameToCode(ZZMM_TYPE);
+    Map<String, String> zzmmMap = importRmbDao.getDictNameToCode(ZZMM_TYPE);
 
     /**
      * lrm
