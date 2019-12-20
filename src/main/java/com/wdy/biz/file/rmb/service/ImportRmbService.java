@@ -2,6 +2,7 @@ package com.wdy.biz.file.rmb.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -159,6 +160,27 @@ public class ImportRmbService {
         LogKit.info("a36 -->" + a36s.length);
         LogKit.info("a57 -->" + a57s.length);
         return new OutMessage<>(Status.SUCCESS);
+    }
+
+
+    public OutMessage deleteFile(String impId, String fileName) {
+        String fileNamePre = "";
+        if (fileName.lastIndexOf(POINT) != -1) {
+            fileNamePre = fileName.substring(0, fileName.lastIndexOf(POINT));
+        }
+        if (StrUtil.containsAny(fileName, POINT_LRM, POINT_LRMX)) {
+            Record record = dao.findByImpIdName(impId, fileNamePre);
+            if (ObjectUtil.isNull(record)) {
+                return new OutMessage(Status.SUCCESS);
+            }
+            boolean delete = Db.use(DB_PGSQL).delete("a01_temp", "A0000,impId", record);
+            return delete ? new OutMessage(Status.SUCCESS) : new OutMessage(Status.FAIL);
+        } else {
+            //zip格式的删除 直接删除啊 为什么要查询出来在删除
+            List<String> tempRecord = dao.findA01tempByTypeAndImpId(impId);
+            dao.deleteTempByA0000AndImpId(tempRecord, impId);
+            return new OutMessage(Status.SUCCESS);
+        }
     }
 
 

@@ -56,4 +56,14 @@ public class ImportRmbController extends Controller {
         return service.importRmb(orgId, impId, system);
     }
 
+    /***
+     * 删除文件
+     * @param impId    导入批次号
+     * @param fileName 文件名（通过文件名确定文件所对应的数据，文件名相同被视为重复文件）
+     */
+    @NotNull(paras = {"impId", "fileName"}, world = "")
+    public OutMessage deleteFile(String impId, String fileName) {
+        return service.deleteFile(impId, fileName);
+    }
+
 }

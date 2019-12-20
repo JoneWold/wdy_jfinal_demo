@@ -145,6 +145,33 @@ public class ImportRmbDao {
         return Db.use(DB_PGSQL).update("update \"a01_temp\" set \"toA0000\"=? where \"impId\"=? and \"A0000\"=?", toA0000, impId, a0000);
     }
 
+    /**
+     * 根据导入批次号和人员名称获取该人员数据
+     *
+     * @param impId 批次号
+     * @param a0101 姓名
+     */
+    public Record findByImpIdName(String impId, String a0101) {
+        return Db.use(DB_PGSQL).findFirst("select * from \"a01_temp\" where \"impId\"=? and \"A0101\"=?", impId, a0101);
+    }
+
+    /**
+     * 如果是 zip 需要根据批次号 和 zip的包名去查询
+     *
+     * @param impId 文件导入表示
+     * @return 人员A0000
+     */
+    public List<String> findA01tempByTypeAndImpId(String impId) {
+        SelectConditionStep<Record1<Object>> sqlStr = DSL_CONTEXT.select(field(name("A0000")))
+                .from(table(name("a01_temp")))
+                .where(field(name("type")).eq("2"))
+                .and(field(name("impId")).eq(impId));
+        return Db.use(DB_PGSQL).find(sqlStr.getSQL(), sqlStr.getBindValues().toArray())
+                .stream().map(var -> var.getStr("A0000"))
+                .collect(Collectors.toList());
+
+    }
+
     public List<A01Temp> findA01TempList(String impId, String type) {
         SelectConditionStep records = DSL_CONTEXT.select().from(table(name("a01_temp")))
                 .where(field(name("impId"), String.class).eq(impId)
@@ -206,5 +233,44 @@ public class ImportRmbDao {
         return Db.use(DB_PGSQL).find(records.getSQL(), records.getBindValues().toArray());
     }
 
-
+    /***
+     * 删除
+     * @param tempRecord 人员的A0000标识
+     * @param impId 导入唯一键
+     */
+    public void deleteTempByA0000AndImpId(List<String> tempRecord, String impId) {
+        DeleteConditionStep<org.jooq.Record> a01SqlStr = DSL_CONTEXT.deleteFrom(table(name("a01_temp")))
+                .where(field(name("A0000")).in(tempRecord)).and(field(name("impId")).eq(impId));
+        DeleteConditionStep<org.jooq.Record> a02SqlStr = DSL_CONTEXT.deleteFrom(table(name("a02_temp")))
+                .where(field(name("A0000")).in(tempRecord)).and(field(name("impId")).eq(impId));
+        DeleteConditionStep<org.jooq.Record> a05SqlStr = DSL_CONTEXT.deleteFrom(table(name("a05_temp")))
+                .where(field(name("A0000")).in(tempRecord)).and(field(name("impId")).eq(impId));
+        DeleteConditionStep<org.jooq.Record> a06SqlStr = DSL_CONTEXT.deleteFrom(table(name("a06_temp")))
+                .where(field(name("A0000")).in(tempRecord)).and(field(name("impId")).eq(impId));
+        DeleteConditionStep<org.jooq.Record> a08SqlStr = DSL_CONTEXT.deleteFrom(table(name("a08_temp")))
+                .where(field(name("A0000")).in(tempRecord)).and(field(name("impId")).eq(impId));
+        DeleteConditionStep<org.jooq.Record> a14SqlStr = DSL_CONTEXT.deleteFrom(table(name("a14_temp")))
+                .where(field(name("A0000")).in(tempRecord)).and(field(name("impId")).eq(impId));
+        DeleteConditionStep<org.jooq.Record> a15SqlStr = DSL_CONTEXT.deleteFrom(table(name("a15_temp")))
+                .where(field(name("A0000")).in(tempRecord)).and(field(name("impId")).eq(impId));
+        DeleteConditionStep<org.jooq.Record> a30SqlStr = DSL_CONTEXT.deleteFrom(table(name("a30_temp")))
+                .where(field(name("A0000")).in(tempRecord)).and(field(name("impId")).eq(impId));
+        DeleteConditionStep<org.jooq.Record> a36SqlStr = DSL_CONTEXT.deleteFrom(table(name("a36_temp")))
+                .where(field(name("A0000")).in(tempRecord)).and(field(name("impId")).eq(impId));
+        DeleteConditionStep<org.jooq.Record> a57SqlStr = DSL_CONTEXT.deleteFrom(table(name("a57_temp")))
+                .where(field(name("A0000")).in(tempRecord)).and(field(name("impId")).eq(impId));
+        DeleteConditionStep<org.jooq.Record> a99z1SqlStr = DSL_CONTEXT.deleteFrom(table(name("a99z1_temp")))
+                .where(field(name("A0000")).in(tempRecord)).and(field(name("impId")).eq(impId));
+        Db.use(DB_PGSQL).delete(a01SqlStr.getSQL(),a01SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a02SqlStr.getSQL(),a02SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a05SqlStr.getSQL(),a05SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a06SqlStr.getSQL(),a06SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a08SqlStr.getSQL(),a08SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a14SqlStr.getSQL(),a14SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a15SqlStr.getSQL(),a15SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a30SqlStr.getSQL(),a30SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a36SqlStr.getSQL(),a36SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a57SqlStr.getSQL(),a57SqlStr.getBindValues().toArray());
+        Db.use(DB_PGSQL).delete(a99z1SqlStr.getSQL(),a99z1SqlStr.getBindValues().toArray());
+    }
 }
