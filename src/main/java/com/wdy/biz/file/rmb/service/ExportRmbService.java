@@ -51,10 +51,10 @@ public class ExportRmbService {
             List<A36> a36List = dao.findA36List(a01.getA0000());
             // 照片
             String img = ImageBase64Util.imgToB64(PathKit.getWebRootPath() + a01.getA0198());
-
+            // 使用模板引擎
             Engine engine = new Engine();
             engine.setBaseTemplatePath("template");
-            // 设置引擎从 class path 以及 jar 包中加载模板文件
+            // 设置引擎从 class path 以及 jar 包中加载模板文件 rmbLrmx.xml
             engine.setToClassPathSourceFactory();
             engine.addSharedFunction("rmbLrmx.xml");
             engine.addSharedObject("a01", a01);

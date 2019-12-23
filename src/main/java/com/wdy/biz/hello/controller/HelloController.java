@@ -18,8 +18,9 @@ import java.util.List;
  * Created by wgch on 2019/3/5.
  */
 public class HelloController extends Controller {
+    // 此处会注入依赖对象
     @Inject
-    HelloService service;   // 此处会注入依赖对象
+    HelloService service;
 
     /**
      * 在Controller之中定义的public方法称为Action
@@ -31,7 +32,8 @@ public class HelloController extends Controller {
     @ActionKey("/123")
     public void index(String id) {
         System.out.println("controller in......" + id);
-        List<Blog> list = service.getBlogList();   // 调用被注入对象的方法
+        // 调用被注入对象的方法
+        List<Blog> list = service.getBlogList();
         renderJson(list);
     }
 
@@ -45,7 +47,9 @@ public class HelloController extends Controller {
         renderJson(page);
     }
 
-    // CacheKit 工具类
+    /**
+     * CacheKit 工具类
+     */
     public void cacheKit() {
         List<Blog> list = CacheKit.get(CacheConstant.WDY_CACHE, "wkey");
         if (list == null) {
@@ -55,7 +59,9 @@ public class HelloController extends Controller {
         renderJson(list);
     }
 
-    // Ehcache 缓存
+    /**
+     * Ehcache 缓存
+     */
     public void cache() {
         List<Blog> list = service.cache();
         renderJson(list);
@@ -65,20 +71,26 @@ public class HelloController extends Controller {
         return service.getPostgreSQLList();
     }
 
-    // sql模板
+    /**
+     * sql模板
+     */
     public void getBlogs() {
         List<Blog> blogs = service.getBlogList2();
         renderJson(blogs);
     }
 
-    // 生成验证码
+    /**
+     * 生成验证码
+     */
     public void createCode() {
         renderCaptcha();
     }
 
-    // 验证码校验
+    /**
+     * 验证码校验
+     */
     public boolean checkCode() {
-//        boolean validate = CaptchaRender.validate(this, getPara("code"));
+        // boolean validate = CaptchaRender.validate(this, getPara("code"));
         boolean result = validateCaptcha("code");
         if (!result) {
             renderJson("验证码错误");

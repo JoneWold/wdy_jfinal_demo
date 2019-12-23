@@ -41,10 +41,6 @@ public class CacheConstant {
      * 字典表缓存前缀
      * */
     public static final String DICT_CACHE_PREFIX = "dict:";
-    /**
-     * 数字一
-     */
-    public static final String DATA_ONE = "1";
 
     /**
      * 缓存名称

@@ -40,7 +40,9 @@ public class HelloService {
         return page;
     }
 
-    // 事务处理：同时操作多张表
+    /**
+     * 事务处理：同时操作多张表
+     */
     boolean succeed = Db.tx(new IAtom() {
 
         @Override
@@ -51,13 +53,17 @@ public class HelloService {
         }
     });
 
-    // Ehcache 缓存 ？？？
+    /**
+     * Ehcache 缓存 ？？？
+     */
     public List<Blog> cache() {
         List<Blog> blogList = blog.findByCache(CacheConstant.WDY_CACHE, "wkey22", "select * from blog");
         return blogList;
     }
 
-    // 多数据源配置
+    /**
+     * 多数据源配置
+     */
     public OutMessage getPostgreSQLList() {
         // TODO 只有对象才能调用 use() 方法指定数据源，而dao只能用于查询。
         List<Record> listOne = Db.use(DB_PGSQL).find("select * from code_table");
@@ -69,7 +75,9 @@ public class HelloService {
         return new OutMessage<>(Status.SUCCESS, codeTableList);
     }
 
-    // sql 模板
+    /**
+     * sql 模板
+     */
     public List<Blog> getBlogList2() {
         // 对象.find() 里面带值参数，sql里面占位符是 ?
         String sql = blog.getSql("mysql.findBlog");
