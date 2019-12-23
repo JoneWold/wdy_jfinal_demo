@@ -21,7 +21,7 @@ public class ExportRmbController extends Controller {
      * @param inMessage 导出人员标识符
      * @return 文件下载路径
      */
-    public OutMessage exportLrm(InMessage<ExportRmbDto> inMessage) {
+    public OutMessage exportLrm(InMessage<ExportRmbDto> inMessage) throws Exception {
         ExportRmbDto data = inMessage.getData();
         return service.exportLrm(data.getA0000s());
     }
