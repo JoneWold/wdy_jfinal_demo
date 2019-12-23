@@ -263,6 +263,13 @@
             </exclusions>
         </dependency>
 
+        <dependency>
+            <groupId>com.word.rmb</groupId>
+            <artifactId>rmb</artifactId>
+            <version>${rmb.version}</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/rmb-0.1.1.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>

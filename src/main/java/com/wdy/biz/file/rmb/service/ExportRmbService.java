@@ -2,6 +2,12 @@ package com.wdy.biz.file.rmb.service;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
+import com.aspose.words.Document;
+import com.b1809.aspose.rmb.Person;
+import com.b1809.aspose.rmb.PersonFamilyMember;
+import com.b1809.aspose.rmb.ReportRmb;
 import com.jfinal.aop.Aop;
 import com.jfinal.kit.LogKit;
 import com.jfinal.kit.PathKit;
@@ -166,8 +172,30 @@ public class ExportRmbService {
     }
 
 
-    public OutMessage exportWord(List<String> a0000s) {
-        return null;
+    public OutMessage exportWord(List<String> a0000s) throws Exception {
+        List<File> fileList = new ArrayList<>();
+        String toPath = "";
+        List<A01> a01List = dao.findA01List(a0000s);
+        for (A01 a01 : a01List) {
+            List<A36> a36List = dao.findA36List(a01.getA0000());
+            Person person = new Person();
+            // 数据填充
+            this.setPerson(person, a01, a36List);
+            ReportRmb reportRmb = new ReportRmb();
+            Document word = reportRmb.createWord(person);
+            // 生成文件 .doc
+            toPath = "/upload/" + a01.getA0101() + ".doc";
+            File file = FileUtil.file(PathKit.getWebRootPath() + toPath);
+            word.save(file.getPath());
+            fileList.add(file);
+        }
+        if (fileList.size() > 1) {
+            String a0101 = a01List.get(0).getA0101();
+            toPath = "/upload/" + a0101 + "等" + fileList.size() + "人任免表信息" + POINT_ZIP;
+            XmlZipFileUtil.zipFile(fileList, PathKit.getWebRootPath() + toPath);
+            fileList.forEach(FileUtil::del);
+        }
+        return new OutMessage<>(Status.SUCCESS, toPath);
     }
 
 
@@ -183,7 +211,7 @@ public class ExportRmbService {
         String[] columnNames = record.getColumnNames();
         // 获取每一个字段的值
         for (String columnName : columnNames) {
-            if (record.get(columnName) == null) {
+            if (ObjectUtil.isNull(record.get(columnName))) {
                 record.set(columnName, "");
             }
         }
@@ -256,5 +284,81 @@ public class ExportRmbService {
         sb.append("\"").append(zzMmName).append("\",");
         sb.append("\"").append(gzdwjzw).append("\",");
     }
+
+    /**
+     * 填充word数据
+     */
+    private void setPerson(Person person, A01 a01, List<A36> a36List) {
+        person.set_XingMing(a01.getA0101());
+        person.set_XingMing_Output(a01.getA0101());
+        person.set_XingBie(xbMap.get(a01.getA0104()));
+        Date a0107 = a01.getA0107();
+        if (a0107 != null) {
+            String birthday = DateUtil.format(a0107, "yyyy.MM");
+            long age = DateUtil.betweenYear(a0107, new Date(), false);
+            person.set_ChuShengNianYue(birthday + "(" + age + ")");
+            person.set_ChuShengNianYue_Output(birthday + "  (" + age + "岁" + ")");
+        }
+        person.set_MinZu(mzMap.get(a01.getA0117()));
+        person.set_JiGuan(a01.getA0111A());
+        person.set_RuDangShiJian(a01.getA0140());
+        person.set_RuDangShiJian_Output(a01.getA0140());
+        person.set_JianKangZhuangKuang(a01.getA0128B());
+        person.set_ChuShengDi(a01.getA0114A());
+        Date a0134 = a01.getA0134();
+        person.set_CanJiaGongZuoShiJian(DateUtil.format(a0134, "yyyy.MM"));
+        person.set_CanJiaGongZuoShiJian_Output(DateUtil.format(a0134, "yyyy.MM"));
+        person.set_ZhuanYeJiShuZhiWu(a01.getA0196());
+        person.set_ShuXiZhuanYeYouHeZhuanChang(a01.getA0187A());
+        // 全日制学历学位
+        person.set_QuanRiZhiJiaoYu_XueLi(a01.getQRZXL());
+        person.set_QuanRiZhiJiaoYu_XueLiXueWei_Output(a01.getQRZXL() + "\n" + a01.getQRZXW());
+        person.set_QuanRiZhiJiaoYu_XueWei(a01.getQRZXW());
+        person.set_QuanRiZhiJiaoYu_XueLi_BiYeYuanXiaoXi(a01.getQRZXLXX());
+        person.set_QuanRiZhiJiaoYu_XueWei_BiYeYuanXiaoXi(a01.getQRZXW());
+        person.set_QuanRiZhiJiaoYu_BiYeYuanXiaoXi_Output(a01.getQRZXLXX());
+        // 在职学历学位
+        person.set_ZaiZhiJiaoYu_XueLi(a01.getZZXL());
+        person.set_ZaiZhiJiaoYu_XueWei(a01.getZZXW());
+        person.set_ZaiZhiZhiJiaoYu_XueLiXueWei_Output(a01.getZZXL() + "\n" + a01.getZZXW());
+        person.set_ZaiZhiJiaoYu_XueLi_BiYeYuanXiaoXi(a01.getZZXLXX());
+        person.set_ZaiZhiJiaoYu_XueWei_BiYeYuanXiaoXi(a01.getZZXW());
+        person.set_ZaiZhiJiaoYu_BiYeYuanXiaoXi_Output(a01.getZZXLXX());
+        person.set_XianRenZhiWu(a01.getA0192());
+        person.set_NiRenZhiWu(a01.getNRZW());
+        person.set_NiMianZhiWu(a01.getNMZW());
+        person.set_JianLi_Output(a01.getA1701().replaceAll("<br/>", "").replaceAll("<br />", ""));
+        person.set_JiangChengQingKuang(a01.getA14Z101());
+        person.set_NianDuKaoHeJieGuo(a01.getA15Z101());
+        person.set_RenMianLiYou(a01.getRMLY());
+        person.set_ChengBaoDanWei(a01.getCBDW());
+        person.set_JiSuanNianLingShiJian(DateUtil.format(new Date(), "yyyyMMdd"));
+        person.set_TianBiaoRen(a01.getTBR());
+        person.set_ShenFenZheng(a01.getA0184());
+        String a0198 = a01.getA0198();
+        if (StrKit.notBlank(a0198)) {
+            person.set_ZhaoPianLuJing(PathKit.getWebRootPath() + a0198);
+        }
+        // 家庭成员
+        List<PersonFamilyMember> familyList = new ArrayList<>();
+        for (A36 a36 : a36List) {
+            PersonFamilyMember family = new PersonFamilyMember();
+            family.set_ChengWei(a36.getA3604A());
+            family.set_XingMing(a36.getA3601());
+            family.set_XingMing_Output(a36.getA3601());
+            family.set_NianLing(String.valueOf(DateUtil.betweenYear(a36.getA3607(), new Date(), false)));
+            String zzMm = zzmmMap.get(a36.getA3627());
+            family.set_ZhengZhiMianMao(StrKit.isBlank(zzMm) ? a36.getA3627() : zzMm);
+            family.set_GongZuoDanWeiJiZhiWu(a36.getA3611());
+            if (StrUtil.isNotEmpty(a36.getA3611()) && StrUtil.containsAny(a36.getA3611(), "已去世")) {
+                family.set_NianLing("");
+            }
+            familyList.add(family);
+        }
+        person.setList_JiaTingChengYuan(familyList);
+        person.set_TianBiaoShiJian_Output("年  月  日");
+        person.set_Version("3.2.1.16");
+    }
+
 
 }
