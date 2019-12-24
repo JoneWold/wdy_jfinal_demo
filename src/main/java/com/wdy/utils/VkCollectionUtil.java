@@ -55,44 +55,44 @@ public class VkCollectionUtil {
     /**
      * 拼接ids
      *
-     * @param ids
-     * @return
+     * @param ids list集合
+     * @return '1','2','3'
      */
     public static String getString(List<String> ids) {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         int i = 0;
         for (String id : ids) {
             if (StrUtil.isNotEmpty(id)) {
                 if (i == 0) {
-                    s += "'" + id + "'";
+                    s.append("'").append(id).append("'");
                 } else {
-                    s += "," + "'" + id + "'";
+                    s.append("," + "'").append(id).append("'");
                 }
                 i++;
             }
         }
-        return s;
+        return s.toString();
     }
 
     /**
      * 拼接ids
      *
-     * @param ids
-     * @return
+     * @param ids 字符串数组
+     * @return '1','2','3'
      */
     public static String getString(String[] ids) {
-        String s = "";
+        StringBuilder sb = new StringBuilder();
         int i = 0;
         for (String id : ids) {
             if (StrUtil.isNotEmpty(id)) {
                 if (i == 0) {
-                    s += "'" + id + "'";
+                    sb.append("'").append(id).append("'");
                 } else {
-                    s += "," + "'" + id + "'";
+                    sb.append(",'").append(id).append("'");
                 }
                 i++;
             }
         }
-        return s;
+        return sb.toString();
     }
 }
