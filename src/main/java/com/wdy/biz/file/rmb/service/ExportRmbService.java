@@ -219,22 +219,21 @@ public class ExportRmbService {
         FileUtil.del(zipFile.getFile());
         // 获取文件列表
         File[] files = dir.listFiles();
-        List<Document> documents = new ArrayList<>();
+        Document nodes = new Document();
         if (files != null) {
+            int index = 0;
             for (File file : files) {
-                documents.add(new Document(file.getPath()));
+                Document document = new Document(file.getPath());
+                document.getFirstSection().getPageSetup().setSectionStart(1);
+                if (index == 0) {
+                    nodes = document;
+                } else {
+                    nodes.appendDocument(document, ImportFormatMode.KEEP_SOURCE_FORMATTING);
+                }
+                index++;
             }
         }
         String toPath = "/upload/任免表人员数据打印文件" + DateUtil.format(new Date(), "yyyyMMddHHmmss") + ".doc";
-        Document nodes = null;
-        for (Document document : documents) {
-            document.getFirstSection().getPageSetup().setSectionStart(1);
-            if (nodes == null) {
-                nodes = document;
-            } else {
-                nodes.appendDocument(document, ImportFormatMode.KEEP_SOURCE_FORMATTING);
-            }
-        }
         nodes.save(PathKit.getWebRootPath() + toPath);
         // 清除压缩后的文件
         FileUtil.del(dir);
