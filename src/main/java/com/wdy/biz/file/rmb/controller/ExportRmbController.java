@@ -50,7 +50,7 @@ public class ExportRmbController extends Controller {
     /**
      * 打印任免表
      */
-    public OutMessage stampWord(InMessage<ExportRmbDto> inMessage) {
+    public OutMessage stampWord(InMessage<ExportRmbDto> inMessage) throws Exception {
         ExportRmbDto data = inMessage.getData();
         return service.stampWord(data.getA0000s());
     }

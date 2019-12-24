@@ -5,6 +5,7 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.aspose.words.Document;
+import com.aspose.words.ImportFormatMode;
 import com.b1809.aspose.rmb.Person;
 import com.b1809.aspose.rmb.PersonFamilyMember;
 import com.b1809.aspose.rmb.ReportRmb;
@@ -22,6 +23,7 @@ import com.wdy.message.OutMessage;
 import com.wdy.message.Status;
 import com.wdy.utils.ImageBase64Util;
 import com.wdy.utils.XmlZipFileUtil;
+import net.lingala.zip4j.core.ZipFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -123,7 +125,7 @@ public class ExportRmbService {
             if (a01List.size() == 1) {
                 toPath = "/upload/" + fileName + POINT_ZIP;
             } else {
-                toPath = "/upload/" + fileName + "等" + a01List.size() + "人任免表信息" + POINT_ZIP;
+                toPath = "/upload/" + fileName + "等" + a01List.size() + "人任免表信息" + DateUtil.format(new Date(), "yyyyMMddHHmmss") + POINT_ZIP;
             }
             XmlZipFileUtil.zipFile(fileList, PathKit.getWebRootPath() + toPath);
             fileList.forEach(FileUtil::del);
@@ -164,7 +166,7 @@ public class ExportRmbService {
         if (fileList.size() > 1) {
             String fileName = fileList.get(0).getName();
             String name = fileName.substring(0, fileName.lastIndexOf("."));
-            toPath = "/upload/" + name + "等" + fileList.size() + "人任免表信息" + POINT_ZIP;
+            toPath = "/upload/" + name + "等" + fileList.size() + "人任免表信息" + DateUtil.format(new Date(), "yyyyMMddHHmmss") + POINT_ZIP;
             XmlZipFileUtil.zipFile(fileList, PathKit.getWebRootPath() + toPath);
             fileList.forEach(FileUtil::del);
         }
@@ -191,7 +193,7 @@ public class ExportRmbService {
         }
         if (fileList.size() > 1) {
             String a0101 = a01List.get(0).getA0101();
-            toPath = "/upload/" + a0101 + "等" + fileList.size() + "人任免表信息" + POINT_ZIP;
+            toPath = "/upload/" + a0101 + "等" + fileList.size() + "人任免表信息" + DateUtil.format(new Date(), "yyyyMMddHHmmss") + POINT_ZIP;
             XmlZipFileUtil.zipFile(fileList, PathKit.getWebRootPath() + toPath);
             fileList.forEach(FileUtil::del);
         }
@@ -199,8 +201,40 @@ public class ExportRmbService {
     }
 
 
-    public OutMessage stampWord(List<String> a0000s) {
-        return null;
+    public OutMessage stampWord(List<String> a0000s) throws Exception {
+        if (a0000s.size() == 1) {
+            return this.exportWord(a0000s);
+        }
+        String zipPath = this.exportWord(a0000s).getData().toString();
+        // 获取zip文件
+        ZipFile zipFile = new ZipFile(PathKit.getWebRootPath() + zipPath);
+        // 解压目录
+        File dir = FileUtil.file(PathKit.getWebRootPath() + "/upload/" + DateUtil.format(new Date(), "yyyyMMddHHmmss"));
+        if (dir.isDirectory() && !dir.exists()) {
+            boolean mkdir = dir.mkdir();
+        }
+        // 解压文件
+        zipFile.extractAll(dir.getPath());
+        // 获取文件列表
+        File[] files = dir.listFiles();
+        List<Document> documents = new ArrayList<>();
+        if (files != null) {
+            for (File file : files) {
+                documents.add(new Document(file.getPath()));
+            }
+        }
+        String toPath = "/upload/任免表人员数据打印文件" + DateUtil.format(new Date(), "yyyyMMddHHmmss") + ".doc";
+        Document nodes = null;
+        for (Document document : documents) {
+            document.getFirstSection().getPageSetup().setSectionStart(1);
+            if (nodes == null) {
+                nodes = document;
+            } else {
+                nodes.appendDocument(document, ImportFormatMode.KEEP_SOURCE_FORMATTING);
+            }
+        }
+        nodes.save(PathKit.getWebRootPath() + toPath);
+        return new OutMessage<>(Status.SUCCESS, toPath);
     }
 
 
