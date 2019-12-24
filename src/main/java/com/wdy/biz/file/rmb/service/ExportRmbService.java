@@ -215,6 +215,7 @@ public class ExportRmbService {
         }
         // 解压文件
         zipFile.extractAll(dir.getPath());
+        // 清除原压缩文件
         FileUtil.del(zipFile.getFile());
         // 获取文件列表
         File[] files = dir.listFiles();
@@ -235,6 +236,8 @@ public class ExportRmbService {
             }
         }
         nodes.save(PathKit.getWebRootPath() + toPath);
+        // 清除压缩后的文件
+        FileUtil.del(dir);
         return new OutMessage<>(Status.SUCCESS, toPath);
     }
 
