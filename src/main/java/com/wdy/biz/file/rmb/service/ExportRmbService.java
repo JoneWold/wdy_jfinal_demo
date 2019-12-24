@@ -215,6 +215,7 @@ public class ExportRmbService {
         }
         // 解压文件
         zipFile.extractAll(dir.getPath());
+        FileUtil.del(zipFile.getFile());
         // 获取文件列表
         File[] files = dir.listFiles();
         List<Document> documents = new ArrayList<>();
