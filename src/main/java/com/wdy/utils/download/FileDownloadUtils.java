@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author wgch
@@ -47,7 +48,7 @@ public class FileDownloadUtils {
             outputStream.close();
         } catch (IOException e) {    // ClientAbortException、EofException 直接或间接继承自 IOException
             String name = e.getClass().getSimpleName();
-            if (name.equals("ClientAbortException") || name.equals("EofException")) {
+            if ("ClientAbortException".equals(name) || "EofException".equals(name)) {
             } else {
                 throw new RenderException(e);
             }
@@ -85,7 +86,7 @@ public class FileDownloadUtils {
 
             // Safari浏览器，只能采用ISO编码的中文输出,Chrome浏览器，只能采用MimeUtility编码或ISO编码的中文输出
             if (userAgent.contains("safari") || userAgent.contains("applewebkit") || userAgent.contains("chrome")) {
-                return "filename=\"" + new String(fileName.getBytes("UTF-8"), "ISO8859-1") + "\"";
+                return "filename=\"" + new String(fileName.getBytes(StandardCharsets.UTF_8), "ISO8859-1") + "\"";
             }
 
             // FireFox浏览器，可以使用MimeUtility或filename*或ISO编码的中文输出
