@@ -28,7 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static com.wdy.constant.CommonConstant.SEPARATOR;
+import static com.wdy.constant.CommonConstant.NEW_PHOTOS_PATH;
 import static com.wdy.constant.DictConstant.*;
 
 /**
@@ -221,7 +221,11 @@ public class ReadRmbService {
         } else {
             a0000 = wdyCache;
         }
-        String toPath = PathKit.getWebRootPath() + "/upload/" + a0000 + ".jpg";
+        File dir = new File(PathKit.getWebRootPath() + NEW_PHOTOS_PATH);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        String toPath = PathKit.getWebRootPath() + NEW_PHOTOS_PATH + a0000 + ".jpg";
         Files.copy(Paths.get(path), Paths.get(toPath), StandardCopyOption.REPLACE_EXISTING);
         File toFile = FileUtil.file(toPath);
         // a57_temp
@@ -322,7 +326,7 @@ public class ReadRmbService {
         String zhaoPian = root.elementText("ZhaoPian");
 
         StringBuilder fileName = new StringBuilder();
-        String toPath = SEPARATOR + "upload" + SEPARATOR + a0000 + ".jpg";
+        String toPath = NEW_PHOTOS_PATH + a0000 + ".jpg";
         // 将base64编码字符串转换为图片，存入图片路径
         String a0198 = ImageBase64Util.base64ToImage(zhaoPian, toPath);
         if (StrKit.notBlank(a0198)) {

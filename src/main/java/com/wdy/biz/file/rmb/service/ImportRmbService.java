@@ -195,7 +195,7 @@ public class ImportRmbService {
                 String a0000 = a01Temp.getA0000();
                 String a0198 = a01Temp.getA0198();
                 if (StrKit.isBlank(a0198) && a57Map.containsKey(a0000)) {
-                    String path = "/upload/" + a57Map.get(a0000);
+                    String path = NEW_PHOTOS_PATH + a57Map.get(a0000);
                     File file = new File(PathKit.getWebRootPath() + path);
                     if (file.exists()) {
                         a01Temp.setA0198(path);

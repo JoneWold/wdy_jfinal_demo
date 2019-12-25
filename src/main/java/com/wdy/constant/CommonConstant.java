@@ -1,5 +1,6 @@
 package com.wdy.constant;
 
+import com.jfinal.kit.PathKit;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -21,6 +22,8 @@ public class CommonConstant {
      * /
      */
     public static final String SEPARATOR = File.separator;
+    public static final String UPLOAD_PATH = PathKit.getWebRootPath() + SEPARATOR + "upload" + SEPARATOR;
+    public static final String NEW_PHOTOS_PATH = SEPARATOR + "upload" + SEPARATOR + "imgRmb" + SEPARATOR;
     /**
      * 零
      */
