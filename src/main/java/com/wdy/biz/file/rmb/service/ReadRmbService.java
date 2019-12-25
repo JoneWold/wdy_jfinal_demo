@@ -362,6 +362,8 @@ public class ReadRmbService {
                 } else if (value.length() == 4) {
                     return DateUtil.parse(value, "yyyy");
                 }
+            } else {
+                return null;
             }
         } catch (Exception e) {
             LogKit.error("时间格式错误:" + value, e);
