@@ -221,13 +221,14 @@ public class ReadRmbService {
         } else {
             a0000 = wdyCache;
         }
-        File dir = new File(PathKit.getWebRootPath() + NEW_PHOTOS_PATH);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
+        // 拷贝照片文件
         String toPath = PathKit.getWebRootPath() + NEW_PHOTOS_PATH + a0000 + ".jpg";
-        Files.copy(Paths.get(path), Paths.get(toPath), StandardCopyOption.REPLACE_EXISTING);
         File toFile = FileUtil.file(toPath);
+        File parentFile = toFile.getParentFile();
+        if (!parentFile.exists()) {
+            parentFile.mkdirs();
+        }
+        Files.copy(Paths.get(path), Paths.get(toPath), StandardCopyOption.REPLACE_EXISTING);
         // a57_temp
         A57Temp a57Temp = new A57Temp();
         a57Temp.setImpId(impId);

@@ -90,6 +90,11 @@ public class ImageBase64Util {
                     b[i] += 256;
                 }
             }
+            File file = new File(PathKit.getWebRootPath() + imagePath);
+            File parentFile = file.getParentFile();
+            if (!parentFile.exists()) {
+                boolean mkdirs = parentFile.mkdirs();
+            }
             OutputStream out = new FileOutputStream(PathKit.getWebRootPath() + imagePath);
             out.write(b);
             out.flush();
