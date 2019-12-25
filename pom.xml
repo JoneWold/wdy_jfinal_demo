@@ -40,6 +40,7 @@
         <swagger.jaxrs2.version>2.0.8</swagger.jaxrs2.version>
         <dom4j.version>2.1.1</dom4j.version>
         <redission.version>3.10.6</redission.version>
+        <rmb.version>1.0</rmb.version>
     </properties>
 
     <!-- 使用阿里 maven 库 -->
