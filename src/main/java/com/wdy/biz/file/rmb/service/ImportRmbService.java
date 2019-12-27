@@ -49,7 +49,7 @@ public class ImportRmbService {
     private ImportRmbDao dao = Aop.get(ImportRmbDao.class);
     private MemService memService = Aop.get(MemService.class);
     private ReadRmbService readRmbService = Aop.get(ReadRmbService.class);
-    private Prop p = PropKit.use("undertow.txt");
+    private Prop p = PropKit.use("jfinal.properties");
 
     @Before(Tx.class)
     public OutMessage uploadRmb(List<UploadFile> files, String impId) throws Exception {
@@ -173,6 +173,10 @@ public class ImportRmbService {
             if (ObjectUtil.isNull(record)) {
                 return new OutMessage(Status.SUCCESS);
             }
+            // 清除该文件附带的照片
+            String a0000 = record.getStr("A0000");
+            FileUtil.del(PathKit.getWebRootPath() + NEW_PHOTOS_PATH + a0000 + ".jpg");
+            // 清除列表关联数据
             boolean delete = Db.use(DB_PGSQL).delete("a01_temp", "A0000,impId", record);
             return delete ? new OutMessage(Status.SUCCESS) : new OutMessage(Status.FAIL);
         } else {
