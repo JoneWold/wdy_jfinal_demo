@@ -6,6 +6,8 @@ import com.jfinal.aop.Aop;
 import com.jfinal.kit.LogKit;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.StrKit;
+import com.jfinal.plugin.activerecord.Model;
+import com.jfinal.plugin.activerecord.TableMapping;
 import com.jfinal.plugin.ehcache.CacheKit;
 import com.wdy.biz.file.rmb.dao.ImportRmbDao;
 import com.wdy.generator.postgreSQL.model.A01Temp;
@@ -23,10 +25,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.wdy.constant.CommonConstant.NEW_PHOTOS_PATH;
 import static com.wdy.constant.DictConstant.*;
@@ -343,11 +342,29 @@ public class ReadRmbService {
         a57Temp.setPHOTODATA(zhaoPian);
         a57Temp.setPHOTONAME(fileName.toString());
         a57Temp.setPHOTSTYPE("jpg");
+        // 清除空值
+        this.setEmptyValue(a01Temp);
         // 返回结果
         a01TempList.add(a01Temp);
         a57TempList.add(a57Temp);
     }
 
+    /**
+     * 设置字符串空值
+     */
+    private void setEmptyValue(Model model) {
+        Set<String> columnNameSet = TableMapping.me().getTable(model.getClass()).getColumnNameSet();
+        Map<String, Class<?>> typeMap = TableMapping.me().getTable(model.getClass()).getColumnTypeMap();
+        columnNameSet.forEach(column -> {
+            Class<?> aClass = typeMap.get(column);
+            if (aClass.equals(String.class)) {
+                Object o = model.get(column);
+                if (StrKit.isBlank(o.toString())) {
+                    model.set(column, null);
+                }
+            }
+        });
+    }
 
     /**
      * 时间日期格式化
