@@ -6,10 +6,7 @@ import com.jfinal.upload.UploadFile;
 import com.wdy.annotation.NotNull;
 import com.wdy.biz.file.rmb.service.ImportRmbService;
 import com.wdy.message.OutMessage;
-import com.wdy.message.Status;
-import com.wdy.utils.XmlZipFileUtil;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -67,13 +64,6 @@ public class ImportRmbController extends Controller {
     @NotNull(paras = {"impId", "fileName"}, world = "")
     public OutMessage deleteFile(String impId, String fileName) {
         return service.deleteFile(impId, fileName);
-    }
-
-
-    public OutMessage file() {
-        UploadFile uploadFile = this.getFile();
-        File file = XmlZipFileUtil.getUploadFile(uploadFile);
-        return new OutMessage<>(Status.SUCCESS, file.getName());
     }
 
 }

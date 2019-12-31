@@ -27,6 +27,7 @@ import com.wdy.generator.postgreSQL.model.base.BaseA57Temp;
 import com.wdy.generator.postgreSQL.model.base.BaseYoungCadre;
 import com.wdy.message.OutMessage;
 import com.wdy.message.Status;
+import com.wdy.utils.XmlZipFileUtil;
 import com.wdy.vo.RmbA01TempVo;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -67,7 +68,7 @@ public class ImportRmbService {
         List<A57Temp> a57TempList = new ArrayList<>();
         // 1 读取文件数据
         for (UploadFile uploadFile : files) {
-            File file = uploadFile.getFile();
+            File file = XmlZipFileUtil.getUploadFile(uploadFile);
             String fileName = file.getName();
             String suffix = fileName.substring(fileName.lastIndexOf("."));
             switch (suffix) {

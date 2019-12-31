@@ -1,6 +1,5 @@
 package com.wdy.utils;
 
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.jfinal.kit.LogKit;
@@ -491,7 +490,10 @@ public class XmlZipFileUtil {
         }
         // 上传文件路径
         String uploadPath = uploadFile.getUploadPath();
-        File toFile = FileUtil.file(uploadPath + SEPARATOR + DateUtil.format(new Date(), "yyyyMMddHHmmssSSS") + toFileName);
+        File toFile = FileUtil.file(uploadPath + SEPARATOR + toFileName);
+        if (toFile.exists()) {
+            toFile.delete();
+        }
         file.renameTo(toFile);
         return toFile;
     }
