@@ -8,6 +8,7 @@ import com.wdy.biz.file.rmb.service.ImportRmbService;
 import com.wdy.message.OutMessage;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author wgch
@@ -64,6 +65,16 @@ public class ImportRmbController extends Controller {
     @NotNull(paras = {"impId", "fileName"}, world = "")
     public OutMessage deleteFile(String impId, String fileName) {
         return service.deleteFile(impId, fileName);
+    }
+
+
+    /**
+     * 获取操作系统属性
+     */
+    public static void main(String[] args) {
+        String oS = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
+        boolean win = oS.contains("win");
+        System.out.println(win);
     }
 
 }

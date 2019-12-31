@@ -28,6 +28,8 @@ import com.wdy.generator.postgreSQL.model.base.BaseYoungCadre;
 import com.wdy.message.OutMessage;
 import com.wdy.message.Status;
 import com.wdy.vo.RmbA01TempVo;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.util.*;
@@ -50,6 +52,7 @@ public class ImportRmbService {
     private MemService memService = Aop.get(MemService.class);
     private ReadRmbService readRmbService = Aop.get(ReadRmbService.class);
     private Prop p = PropKit.use("jfinal.properties");
+    private static Logger logger = LogManager.getLogger(LogKit.class);
 
     @Before(Tx.class)
     public OutMessage uploadRmb(List<UploadFile> files, String impId) throws Exception {
@@ -64,6 +67,7 @@ public class ImportRmbService {
         List<A57Temp> a57TempList = new ArrayList<>();
         // 1 读取文件数据
         for (UploadFile uploadFile : files) {
+            // TODO 2019年12月31日 文件上传到服务器 如果文件名包含空格，该文件可能无法访问，所以操作文件之前需要去掉文件名中的空格
             File file = uploadFile.getFile();
             String fileName = file.getName();
             String suffix = fileName.substring(fileName.lastIndexOf("."));
@@ -97,10 +101,10 @@ public class ImportRmbService {
         int[] a01s = Db.use(DB_PGSQL).batchSave(a01TempNewList, 100);
         int[] a36s = Db.use(DB_PGSQL).batchSave(a36TempList, 100);
         int[] a57s = Db.use(DB_PGSQL).batchSave(a57TempList, 100);
-        LogKit.info("---------数据写入成功---------");
-        LogKit.info("a01_temp -->" + a01s.length);
-        LogKit.info("a36_temp -->" + a36s.length);
-        LogKit.info("a57_temp -->" + a57s.length);
+        logger.error("---------数据写入成功---------");
+        LogKit.error("a01_temp -->" + a01s.length);
+        LogKit.error("a36_temp -->" + a36s.length);
+        LogKit.error("a57_temp -->" + a57s.length);
         return new OutMessage<>(Status.SUCCESS);
     }
 
