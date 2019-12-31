@@ -1,8 +1,11 @@
 package com.wdy.utils;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.jfinal.kit.LogKit;
 import com.jfinal.plugin.activerecord.Record;
+import com.jfinal.upload.UploadFile;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.util.Zip4jConstants;
@@ -463,9 +466,34 @@ public class XmlZipFileUtil {
         }
     }
 
+
+    /**
+     * 获取当前操作系统
+     */
     private static boolean checkPlatformIsWindows() {
         String oS = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
         return oS.contains("win");
+    }
+
+    /**
+     * 获取jFinal上传文件
+     *
+     * @param uploadFile 上传文件对象
+     * @return file 原文件 或 重命名的文件(文件名含有空格)
+     */
+    public static File getUploadFile(UploadFile uploadFile) {
+        File file = uploadFile.getFile();
+        String fileName = file.getName();
+        String toFileName = fileName.replaceAll(" ", "");
+        // 文件上传到服务器 如果文件名包含空格，该文件可能无法访问，所以操作文件之前需要去掉文件名中的空格
+        if (fileName.equals(toFileName)) {
+            return file;
+        }
+        // 上传文件路径
+        String uploadPath = uploadFile.getUploadPath();
+        File toFile = FileUtil.file(uploadPath + SEPARATOR + DateUtil.format(new Date(), "yyyyMMddHHmmssSSS") + toFileName);
+        file.renameTo(toFile);
+        return toFile;
     }
 
 }

@@ -67,7 +67,6 @@ public class ImportRmbService {
         List<A57Temp> a57TempList = new ArrayList<>();
         // 1 读取文件数据
         for (UploadFile uploadFile : files) {
-            // TODO 2019年12月31日 文件上传到服务器 如果文件名包含空格，该文件可能无法访问，所以操作文件之前需要去掉文件名中的空格
             File file = uploadFile.getFile();
             String fileName = file.getName();
             String suffix = fileName.substring(fileName.lastIndexOf("."));

@@ -6,9 +6,11 @@ import com.jfinal.upload.UploadFile;
 import com.wdy.annotation.NotNull;
 import com.wdy.biz.file.rmb.service.ImportRmbService;
 import com.wdy.message.OutMessage;
+import com.wdy.message.Status;
+import com.wdy.utils.XmlZipFileUtil;
 
+import java.io.File;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author wgch
@@ -68,13 +70,10 @@ public class ImportRmbController extends Controller {
     }
 
 
-    /**
-     * 获取操作系统属性
-     */
-    public static void main(String[] args) {
-        String oS = System.getProperty("os.name", "generic").toLowerCase(Locale.ENGLISH);
-        boolean win = oS.contains("win");
-        System.out.println(win);
+    public OutMessage file() {
+        UploadFile uploadFile = this.getFile();
+        File file = XmlZipFileUtil.getUploadFile(uploadFile);
+        return new OutMessage<>(Status.SUCCESS, file.getName());
     }
 
 }
