@@ -438,14 +438,19 @@
     <table class="list" border="">
         <tbody>
         <tr>
-            <th width="4%">id</th>
+            <th width="3%">id</th>
             <th width="20%">标题</th>
+            <th width="7%">操作</th>
         </tr>
 
         #for(x : blogList)
         <tr>
             <td style="text-align:center;">#(x.id)</td>
             <td style="text-align:center;">#(x.title)</td>
+            <td style="text-align:center;">
+                &nbsp;&nbsp;<a href="http://www.jfinal.com">删除</a>
+                &nbsp;&nbsp;<a href="http://www.jfinal.com">修改</a>
+            </td>
         </tr>
         #end
         </tbody>
