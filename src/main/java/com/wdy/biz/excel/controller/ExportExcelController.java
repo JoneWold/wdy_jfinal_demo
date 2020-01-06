@@ -4,6 +4,7 @@ import com.jfinal.aop.Inject;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
 import com.wdy.biz.excel.service.ExportExcelService;
+import com.wdy.biz.excel.service.ExportMemUnitService;
 import com.wdy.message.OutMessage;
 import com.wdy.message.Status;
 
@@ -17,21 +18,33 @@ import java.io.IOException;
 public class ExportExcelController extends Controller {
 
     @Inject
-    public ExportExcelService excelService;
+    private ExportExcelService service;
+    @Inject
+    private ExportMemUnitService memUnitService;
 
     /**
      * 年龄统计导出
      *
-     * @param orgCode
-     * @param a0165
-     * @param a0221
+     * @param orgCode 机构层级码
+     * @param a0165   管理类别
+     * @param a0221   职务层次
      * @return
      */
     public OutMessage exportAge(String orgCode, String a0165, String a0221) throws IOException {
         if (StrKit.isBlank(orgCode) || StrKit.isBlank(a0221)) {
             return new OutMessage(Status.PARA_ERROR);
         }
-        return excelService.exportAge(orgCode, a0165, a0221);
+        return service.exportAge(orgCode, a0165, a0221);
+    }
+
+    /**
+     * 事业单位领导人员信息表导出
+     *
+     * @param orgId   事业单位id
+     * @param orgCode 事业单位编码
+     */
+    public OutMessage exportMemUnit(Long orgId, String orgCode) {
+        return memUnitService.exportMemUnit(orgId, orgCode);
     }
 
 
