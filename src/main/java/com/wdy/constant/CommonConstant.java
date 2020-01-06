@@ -66,6 +66,14 @@ public class CommonConstant {
      */
     public static final int THREE_INT = 3;
     /**
+     * Long 0
+     */
+    public static final Long ZERO_LONG = 0L;
+    /**
+     * long -1
+     */
+    public static final Long FU_ONE_LONG = -1L;
+    /**
      * 01
      */
     public static final String ZERO_ONE = "01";
