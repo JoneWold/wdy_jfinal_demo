@@ -57,7 +57,7 @@ public class ExportExcelService {
 
 
         // 读取模板文件
-        File file = new File(PathKit.getWebRootPath() + "/src/main/resources/template/AgeTemplate.xls");
+        File file = new File(PathKit.getWebRootPath() + "/src/main/resources/template/base/AgeTemplate.xls");
         POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(file));
         // 读取excel模板
         HSSFWorkbook workBook = new HSSFWorkbook(fs);

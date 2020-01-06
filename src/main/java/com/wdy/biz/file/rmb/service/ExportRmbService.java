@@ -149,7 +149,7 @@ public class ExportRmbService {
             engine.setBaseTemplatePath("template");
             // 设置引擎从 class path 以及 jar 包中加载模板文件 rmbLrmx.xml
             engine.setToClassPathSourceFactory();
-            engine.addSharedFunction("rmbLrmx.xml");
+            engine.addSharedFunction("/rmb/rmbLrmx.xml");
             engine.addSharedObject("a01", a01);
             engine.addSharedObject("a36List", a36List);
             engine.addSharedObject("xbMap", xbMap);
@@ -160,7 +160,7 @@ public class ExportRmbService {
             // 渲染到 .lrmx 文件中去
             toPath = "/upload/" + a01.getA0101() + POINT_LRMX;
             File file = FileUtil.file(PathKit.getWebRootPath() + toPath);
-            engine.getTemplate("rmbLrmx.xml").render(null, file);
+            engine.getTemplate("/rmb/rmbLrmx.xml").render(null, file);
             fileList.add(file);
         }
         if (fileList.size() > 1) {

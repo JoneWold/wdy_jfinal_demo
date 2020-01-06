@@ -2,6 +2,7 @@ package com.wdy.utils;
 
 import cn.hutool.core.io.IoUtil;
 import com.jfinal.kit.Base64Kit;
+import com.jfinal.kit.LogKit;
 import com.jfinal.kit.PathKit;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -40,7 +41,7 @@ public class ImageBase64Util {
         try {
             inputStream = Files.newInputStream(Paths.get(path), StandardOpenOption.READ);
         } catch (IOException e) {
-            e.printStackTrace();
+            LogKit.error("图片文件路径错误或该文件不存在！");
             return null;
         }
         byte[] bytes = IoUtil.readBytes(inputStream);
