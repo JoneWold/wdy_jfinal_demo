@@ -18,7 +18,9 @@ import java.util.List;
  * Created by wgch on 2019/3/5.
  */
 public class HelloController extends Controller {
-    // 此处会注入依赖对象
+    /**
+     * 此处会注入依赖对象
+     */
     @Inject
     HelloService service;
 
@@ -28,13 +30,13 @@ public class HelloController extends Controller {
      * 无@ActionKey注解，访问方式：域名 + 端口号 + controllerkey + 方法名
      * 2、在Action中注入参数：可以代替 getPara、getBean、getModel 系列方法获取参数
      */
-
-    @ActionKey("/123")
+    @ActionKey("/")
     public void index(String id) {
         System.out.println("controller in......" + id);
         // 调用被注入对象的方法
         List<Blog> list = service.getBlogList();
-        renderJson(list);
+        setAttr("blogList", list);
+        render("/index.html");
     }
 
     @Clear
@@ -42,6 +44,7 @@ public class HelloController extends Controller {
         set("wdy", "微电影").renderJson();
     }
 
+    @ActionKey("/123")
     public void getUserPage() {
         Page<SysUser> page = service.getUserPage(1, 10);
         renderJson(page);
