@@ -1,10 +1,12 @@
 package com.wdy.bizz.excel;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.jfinal.aop.Aop;
 import com.jfinal.plugin.activerecord.Record;
 import com.wdy.biz.dictionary.service.DictionaryService;
 import com.wdy.biz.excel.dao.ExportExcelDao;
 import com.wdy.biz.excel.service.ExportExcelService;
+import com.wdy.biz.excel.service.ExportMemUnitService;
 import com.wdy.bizz.TestBeforeWdyConfig;
 import com.wdy.message.OutMessage;
 import org.junit.Test;
@@ -18,17 +20,29 @@ import static com.wdy.constant.CommonConstant.ONE;
 
 /**
  * @author wgch
- * @Description
+ * @Description 测试Excel导出
  * @date 2019/4/30 10:44
  */
 public class TestExportExcelService extends TestBeforeWdyConfig {
+    private ExportExcelService excelService = Aop.get(ExportExcelService.class);
+    private ExportMemUnitService memUnitService = Aop.get(ExportMemUnitService.class);
+
+
+    /**
+     * 测试事业单位领导人员信息表导出
+     */
+    @Test
+    public void testMemUnit() throws Exception {
+        OutMessage message = memUnitService.exportMemUnit(-1L, "E09.F09");
+        System.out.println(message);
+
+    }
 
     /**
      * 测试年龄统计导出
      */
     @Test
     public void testExportAge() throws IOException {
-        ExportExcelService excelService = new ExportExcelService();
         OutMessage message = excelService.exportAge("001.001", "01,02,03,04,09", "all");
         System.out.println(message);
     }

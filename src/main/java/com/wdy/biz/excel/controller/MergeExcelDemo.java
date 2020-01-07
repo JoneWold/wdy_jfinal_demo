@@ -3,6 +3,8 @@ package com.wdy.biz.excel.controller;
 import cn.hutool.core.date.DateUtil;
 import com.jfinal.kit.PathKit;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import java.io.File;
@@ -23,8 +25,8 @@ public class MergeExcelDemo {
         HSSFWorkbook workbook = new HSSFWorkbook();
 
         HSSFCellStyle style = workbook.createCellStyle();
-        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+        style.setAlignment(HorizontalAlignment.CENTER);
+        style.setVerticalAlignment(VerticalAlignment.CENTER);
 
         HSSFSheet sheet = workbook.createSheet("sheet");
 

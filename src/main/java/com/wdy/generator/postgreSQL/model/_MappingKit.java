@@ -87,6 +87,8 @@ public class _MappingKit {
         arp.addMapping("youngFouMust", "id", YoungFouMust.class);
         arp.addMapping("selectCadre", "id", SelectCadre.class);
         arp.addMapping("selectUniversity", "id", SelectUniversity.class);
+        arp.addMapping("mem_unit_institution", "id", MemUnitInstitution.class);
+        arp.addMapping("unit_institution", "id", UnitInstitution.class);
     }
 }
 

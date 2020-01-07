@@ -31,8 +31,8 @@
         <fastjson.version>1.2.56</fastjson.version>
         <lombok.version>1.16.20</lombok.version>
         <javax.ws.rs.api.version>2.1.1</javax.ws.rs.api.version>
-        <poi.version>3.9</poi.version>
-        <poi-ooxml.version>3.9</poi-ooxml.version>
+        <poi.version>4.1.0</poi.version>
+        <poi-ooxml.version>4.1.0</poi-ooxml.version>
         <commons-lang.version>2.6</commons-lang.version>
         <joda-time.version>2.10.1</joda-time.version>
         <javax.websocket-api.version>1.1</javax.websocket-api.version>
@@ -173,6 +173,7 @@
             <artifactId>poi-ooxml</artifactId>
             <version>${poi-ooxml.version}</version>
         </dependency>
+
         <!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
         <dependency>
             <groupId>commons-lang</groupId>

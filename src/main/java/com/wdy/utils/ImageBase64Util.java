@@ -63,7 +63,8 @@ public class ImageBase64Util {
             int read = inputStream.read(data);
             inputStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            StringWriter str = new StringWriter();
+            e.printStackTrace(new PrintWriter(str));
             return null;
         }
         // 加密

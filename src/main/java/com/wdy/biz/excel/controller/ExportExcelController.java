@@ -43,7 +43,7 @@ public class ExportExcelController extends Controller {
      * @param orgId   事业单位id
      * @param orgCode 事业单位编码
      */
-    public OutMessage exportMemUnit(Long orgId, String orgCode) {
+    public OutMessage exportMemUnit(Long orgId, String orgCode) throws Exception {
         return memUnitService.exportMemUnit(orgId, orgCode);
     }
 

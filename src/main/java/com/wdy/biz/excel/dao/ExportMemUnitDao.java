@@ -10,6 +10,7 @@ import org.jooq.Record;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectOnConditionStep;
 
+import java.util.HashSet;
 import java.util.List;
 
 import static com.wdy.constant.CommonConstant.*;
@@ -30,7 +31,7 @@ public class ExportMemUnitDao {
      * 事业单位人员列表
      */
     public List<MemUnitInstitution> findUnitMemList(Long orgId, String orgCode) {
-        SelectOnConditionStep select = DSL_CONTEXT.select(field(name("m.*"))).from(table(name("mem_unit_institution")).as("m"))
+        SelectOnConditionStep select = DSL_CONTEXT.select(field("\"m\".*")).from(table(name("mem_unit_institution")).as("m"))
                 .innerJoin(table(name("unit_institution")).as("u")).on(field(name("m", "career_unit_id")).eq(field(name("u", "id"))));
         Condition condition = this.setMemCondition(noCondition(), orgId, null, orgCode);
         select.where(condition).orderBy(field(name("id")).desc());
@@ -40,7 +41,7 @@ public class ExportMemUnitDao {
     /**
      * 事业单位集合
      */
-    public List<UnitInstitution> findUnitList(List<Long> unitIdList) {
+    public List<UnitInstitution> findUnitList(HashSet<Long> unitIdList) {
         SelectConditionStep<Record> sqlStr = DSL_CONTEXT.select()
                 .from(table(name("unit_institution")))
                 .where(field(name("id"), Long.class).in(unitIdList));
