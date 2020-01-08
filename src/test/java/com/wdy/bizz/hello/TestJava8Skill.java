@@ -215,13 +215,22 @@ public class TestJava8Skill extends TestBeforeWdyConfig {
     }
 
     /**
-     * Function
+     * Function<T, R>
      */
     @Test
     public void testFunction() {
-        Function<Integer, Integer> fun = i -> i + 1;
-        Integer apply = fun.apply(3);
-        System.out.println(apply);
+        System.out.print("运行步骤\t1-->");
+        // y = f(x); 函数传入类型Integer，结果类型List<>
+        Function<Integer, List<Integer>> fun = i -> {
+            System.out.print("3-->");
+            return new ArrayList<Integer>() {{
+                add(i + 1);
+            }};
+        };
+        System.out.print("2-->");
+        List<Integer> list = fun.apply(3);
+        System.out.println("4");
+        System.out.println(list);
     }
 
 }
