@@ -146,6 +146,30 @@ public class ExportMemUnitService {
      */
     private void setUnitBHQKMemInfo(XSSFWorkbook wb, List<MemUnitInstitution> memList) {
         XSSFSheet sheet = wb.getSheetAt(3);
+        this.setCellValueFunc(sheet, memList, mem -> {
+            List<String> list = new ArrayList<>();
+            list.add(mem.getName());
+            list.add(mem.getIdNum());
+            list.add(mem.getCurJob());
+            list.add(mem.getJobTypeName());
+            Integer changeStatus = mem.getChangeStatus();
+            list.add(changeStatus != null ? (Objects.equals(changeStatus, 1) ? "增加" : "减少") : "");
+            if (changeStatus == 2) {
+                // 减少人员
+                list.add(null);
+            } else {
+                list.add(mem.getSourceJobName());
+            }
+            list.add(this.getChineseStr(mem.getIsPromoted()));
+            list.add(this.getChineseStr(mem.getIsLeapfrogPromoted()));
+            if (changeStatus == 2) {
+                list.add(mem.getReduceMemTypeName());
+                list.add(mem.getReduceJobGrowingName());
+                list.add(mem.getReduceDeposeName());
+                list.add(mem.getReduceResignName());
+            }
+            return list;
+        });
 
     }
 
@@ -153,8 +177,21 @@ public class ExportMemUnitService {
      * 处分情况
      */
     private void setUnitCFQKemInfo(XSSFWorkbook wb, List<MemUnitInstitution> memList) {
+        List<MemUnitInstitution> collect = memList.stream()
+                .filter(memUnitInstitution -> memUnitInstitution.getSelectPunish() != null && memUnitInstitution.getSelectPunish() == 1)
+                .collect(Collectors.toList());
         XSSFSheet sheet = wb.getSheetAt(4);
-
+        this.setCellValueFunc(sheet, collect, mem -> {
+            List<String> list = new ArrayList<>();
+            list.add(mem.getName());
+            list.add(mem.getIdNum());
+            list.add(mem.getPunishJob());
+            list.add(this.getPunishJobTypeStr(mem.getPunishJobType()));
+            list.add(mem.getPunishCpcDisciplineName());
+            list.add(mem.getPunishPoliticsDisciplineName());
+            list.add(mem.getPunishPenalDisciplineName());
+            return list;
+        });
     }
 
 
@@ -205,7 +242,18 @@ public class ExportMemUnitService {
      * @param function 传入事业单位人员数据，获取每一行所有列的值
      */
     private void setCellValueFunc(XSSFSheet sheet, List<MemUnitInstitution> memList, Function<MemUnitInstitution, List<String>> function) {
-
+        int rowIndex = 2;
+        for (MemUnitInstitution mem : memList) {
+            Row row = this.getRow(sheet, rowIndex);
+            // 执行这个函数
+            List<String> apply = function.apply(mem);
+            int cellIndex = 0;
+            for (String value : apply) {
+                this.setCell(row, cellIndex, value);
+                cellIndex++;
+            }
+            rowIndex++;
+        }
     }
 
 
@@ -254,5 +302,21 @@ public class ExportMemUnitService {
         return "否";
     }
 
-
+    /**
+     * 事业单位处分时职务类型
+     */
+    private String getPunishJobTypeStr(String punishJobType) {
+        if (punishJobType == null) {
+            return null;
+        } else if ("1".equals(punishJobType)) {
+            return "正职";
+        } else if ("2".equals(punishJobType)) {
+            return "副职";
+        } else if ("3".equals(punishJobType)) {
+            return "其他";
+        } else {
+            return null;
+        }
+    }
+    
 }
