@@ -154,7 +154,7 @@ public class ExportMemUnitService {
             list.add(mem.getJobTypeName());
             Integer changeStatus = mem.getChangeStatus();
             list.add(changeStatus != null ? (Objects.equals(changeStatus, 1) ? "增加" : "减少") : "");
-            if (changeStatus == 2) {
+            if (changeStatus == null) {
                 // 减少人员
                 list.add(null);
             } else {
@@ -162,7 +162,7 @@ public class ExportMemUnitService {
             }
             list.add(this.getChineseStr(mem.getIsPromoted()));
             list.add(this.getChineseStr(mem.getIsLeapfrogPromoted()));
-            if (changeStatus == 2) {
+            if (changeStatus != null && changeStatus == 2) {
                 list.add(mem.getReduceMemTypeName());
                 list.add(mem.getReduceJobGrowingName());
                 list.add(mem.getReduceDeposeName());
@@ -221,7 +221,7 @@ public class ExportMemUnitService {
         }
 
         Workbook workbook = row.getSheet().getWorkbook();
-        // Excel 样式
+        // Excel 单元格格式
         CellStyle cellStyle = workbook.createCellStyle();
         cellStyle.setBorderLeft(BorderStyle.THIN);
         cellStyle.setBorderRight(BorderStyle.THIN);
