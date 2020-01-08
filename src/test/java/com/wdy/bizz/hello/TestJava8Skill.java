@@ -225,6 +225,8 @@ public class TestJava8Skill extends TestBeforeWdyConfig {
             System.out.print("3-->");
             return new ArrayList<Integer>() {{
                 add(i + 1);
+                add(i + 2);
+                add(i + 3);
             }};
         };
         System.out.print("2-->");
