@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.text.Collator;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -211,6 +212,16 @@ public class TestJava8Skill extends TestBeforeWdyConfig {
             Record record = min2.get();
             System.out.println(record.getStr("B0111"));
         }
+    }
+
+    /**
+     * Function
+     */
+    @Test
+    public void testFunction() {
+        Function<Integer, Integer> fun = i -> i + 1;
+        Integer apply = fun.apply(3);
+        System.out.println(apply);
     }
 
 }

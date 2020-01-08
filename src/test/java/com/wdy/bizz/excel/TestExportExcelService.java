@@ -32,7 +32,7 @@ public class TestExportExcelService extends TestBeforeWdyConfig {
      * 测试事业单位领导人员信息表导出
      */
     @Test
-    public void testMemUnit() throws Exception {
+    public void testExpMemUnit() throws Exception {
         OutMessage message = memUnitService.exportMemUnit(-1L, "E09.F09");
         System.out.println(message);
 

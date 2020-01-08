@@ -2,6 +2,7 @@ package com.wdy.biz.excel.service;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import com.jfinal.aop.Aop;
 import com.jfinal.kit.PathKit;
 import com.wdy.biz.excel.dao.ExportMemUnitDao;
@@ -19,10 +20,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -32,11 +31,6 @@ import java.util.stream.Collectors;
  */
 public class ExportMemUnitService {
 
-    /**
-     * Excel 样式
-     */
-    private static CellStyle cellStyle;
-    private static Workbook workbook;
     private ExportMemUnitDao memUnitDao = Aop.get(ExportMemUnitDao.class);
 
     public OutMessage exportMemUnit(Long orgId, String orgCode) throws Exception {
@@ -114,17 +108,17 @@ public class ExportMemUnitService {
     private void setUnitList(XSSFWorkbook wb, UnitInstitution unit) {
         XSSFSheet sheet = wb.getSheetAt(1);
         Row row = this.getRow(sheet, 2);
-        setCell(row, 0, unit.getName());
-        setCell(row, 1, unit.getTermInstitutionName());
-        setCell(row, 2, unit.getTermTargetInstitutionName());
-        setCell(row, 3, unit.getPreYearAssessName());
-        setCell(row, 4, unit.getInYearAssessName());
-        setCell(row, 5, String.valueOf(unit.getPreMainLeader()));
-        setCell(row, 6, String.valueOf(unit.getPreMinorLeader()));
-        setCell(row, 7, String.valueOf(unit.getPreOtherLeader()));
-        setCell(row, 8, String.valueOf(unit.getMainLeader()));
-        setCell(row, 9, String.valueOf(unit.getMinorLeader()));
-        setCell(row, 10, String.valueOf(unit.getOtherLeader()));
+        this.setCell(row, 0, unit.getName());
+        this.setCell(row, 1, unit.getTermInstitutionName());
+        this.setCell(row, 2, unit.getTermTargetInstitutionName());
+        this.setCell(row, 3, unit.getPreYearAssessName());
+        this.setCell(row, 4, unit.getInYearAssessName());
+        this.setCell(row, 5, String.valueOf(unit.getPreMainLeader()));
+        this.setCell(row, 6, String.valueOf(unit.getPreMinorLeader()));
+        this.setCell(row, 7, String.valueOf(unit.getPreOtherLeader()));
+        this.setCell(row, 8, String.valueOf(unit.getMainLeader()));
+        this.setCell(row, 9, String.valueOf(unit.getMinorLeader()));
+        this.setCell(row, 10, String.valueOf(unit.getOtherLeader()));
 
     }
 
@@ -133,6 +127,17 @@ public class ExportMemUnitService {
      */
     private void setUnitLDRYQKMemInfo(XSSFWorkbook wb, List<MemUnitInstitution> memList) {
         XSSFSheet sheet = wb.getSheetAt(2);
+        int rowIndex = 2;
+        for (MemUnitInstitution mem : memList) {
+            Row row = this.getRow(sheet, rowIndex);
+            List<String> cellValueList = this.getLDRYQKCellValueList(mem);
+            int cellIndex = 0;
+            for (String value : cellValueList) {
+                this.setCell(row, cellIndex, value);
+                cellIndex++;
+            }
+            rowIndex++;
+        }
 
     }
 
@@ -166,35 +171,87 @@ public class ExportMemUnitService {
         return row;
     }
 
-    /**
+    /***
      * 设置单元格值
-     *
      * @param row   行
      * @param index 列号
      * @param value 数据
      */
-    private synchronized static void setCell(Row row, Integer index, String value) {
+    private synchronized void setCell(Row row, Integer index, String value) {
         Cell cell = row.getCell(index);
         if (cell == null) {
             cell = row.getCell(index, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
         }
 
-        if (workbook == null || !workbook.equals(row.getSheet().getWorkbook())) {
-            workbook = row.getSheet().getWorkbook();
-            cellStyle = null;
-        }
-        if (cellStyle == null) {
-            CellStyle cellStyle = workbook.createCellStyle();
-            cellStyle.setBorderLeft(BorderStyle.THIN);
-            cellStyle.setBorderRight(BorderStyle.THIN);
-            cellStyle.setBorderBottom(BorderStyle.THIN);
-            cellStyle.setBorderTop(BorderStyle.THIN);
-            DataFormat dataFormat = workbook.createDataFormat();
-            cellStyle.setDataFormat(dataFormat.getFormat("@"));
-        }
+        Workbook workbook = row.getSheet().getWorkbook();
+        // Excel 样式
+        CellStyle cellStyle = workbook.createCellStyle();
+        cellStyle.setBorderLeft(BorderStyle.THIN);
+        cellStyle.setBorderRight(BorderStyle.THIN);
+        cellStyle.setBorderBottom(BorderStyle.THIN);
+        cellStyle.setBorderTop(BorderStyle.THIN);
+        DataFormat dataFormat = workbook.createDataFormat();
+        cellStyle.setDataFormat(dataFormat.getFormat("@"));
 
         cell.setCellStyle(cellStyle);
         cell.setCellValue(value);
+    }
+
+    /**
+     * 数据填充 函数
+     *
+     * @param sheet    Excel工作表对象
+     * @param memList  事业单位人员数据
+     * @param function 传入事业单位人员数据，获取每一行所有列的值
+     */
+    private void setCellValueFunc(XSSFSheet sheet, List<MemUnitInstitution> memList, Function<MemUnitInstitution, List<String>> function) {
+
+    }
+
+
+    /***
+     * 获取领导人员情况每一行所有列的值
+     * @param mem 事业单位人员数据
+     * @return list 每一行所有列的值
+     */
+    private List<String> getLDRYQKCellValueList(MemUnitInstitution mem) {
+        List<String> list = new ArrayList<>();
+        list.add(mem.getName());
+        list.add(mem.getIdNum());
+        list.add(mem.getSex() != null ? (Objects.equals(String.valueOf(mem.getSex()), "1") ? "男" : "女") : null);
+        list.add(mem.getEthnic() != null ? (StrUtil.equalsAny(mem.getEthnic(), "01") ? "汉族" : "少数民族") : null);
+        list.add(mem.getBirthdate() == null ? "" : DateUtil.format(mem.getBirthdate(), "yyyyMMdd"));
+        list.add(mem.getPoliticCountenance());
+        list.add(mem.getEducationFullTimeName());
+        list.add(mem.getEducationName());
+        list.add(mem.getEducationDegreeName());
+        list.add(mem.getCurJob());
+        list.add(mem.getJobTypeName());
+        list.add(mem.getManagerJobLevelName());
+        list.add(mem.getSpecialtyJobLevelName());
+        list.add(mem.getSourceJobName());
+        list.add(mem.getSelectTypeName());
+        list.add(mem.getAppointTypeName());
+        list.add(this.getChineseStr(mem.getIsPromoted()));
+        list.add(this.getChineseStr(mem.getIsLeapfrogPromoted()));
+        list.add(mem.getTermTargetInstitutionName());
+        list.add(mem.getPreYearAssessName());
+        list.add(mem.getInYearAssessYear());
+        return list;
+    }
+
+    /**
+     * 获取是否的中文
+     */
+    private String getChineseStr(Integer flag) {
+        if (flag == null) {
+            return "否";
+        } else if (Integer.valueOf(1).equals(flag)) {
+            return "是";
+        } else if (Integer.valueOf(0).equals(flag)) {
+            return "否";
+        }
+        return "否";
     }
 
 
