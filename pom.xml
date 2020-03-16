@@ -43,6 +43,35 @@
         <rmb.version>1.0</rmb.version>
     </properties>
 
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <active.conf>dev</active.conf>
+                <log.fileName>logback.xml</log.fileName>
+                <exclude.log.file>logback-deploy.xml</exclude.log.file>
+                <java.opt.file>dev.conf</java.opt.file>
+                <http.port>8080</http.port>
+                <nginx.enable>true</nginx.enable>
+                <jdbc.class>org.postgresql.Driver</jdbc.class>
+                <jdbc.url>jdbc:postgresql://139.9.233.106:9095/devdb</jdbc.url>
+                <jdbc.user>postgres</jdbc.user>
+                <jdbc.password>20191809</jdbc.password>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+
+        <profile>
+            <id>pro</id>
+            <properties>
+
+            </properties>
+        </profile>
+    </profiles>
+
     <!-- 使用阿里 maven 库 -->
     <repositories>
         <repository>
