@@ -25,6 +25,11 @@ public class CommonConstant {
     public static final String UPLOAD_PATH = PathKit.getWebRootPath() + SEPARATOR + "upload" + SEPARATOR;
     public static final String NEW_PHOTOS_PATH = SEPARATOR + "upload" + SEPARATOR + "imgRmb" + SEPARATOR;
     /**
+     * download
+     */
+    public static final String PATH_DOWNLOAD = PathKit.getWebRootPath() + SEPARATOR + "download" + SEPARATOR;
+
+    /**
      * 零
      */
     public static final String ZERO = "0";
