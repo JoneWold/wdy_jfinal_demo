@@ -27,9 +27,9 @@ public class WordController {
         String filePath = PATH_DOWNLOAD + "ftl" + SEPARATOR + "wordFtl.doc";
         // 填充数据
         Map<String, String> map = new HashMap<>(1);
-        map.put("date", "2019年××月××日 （星期××）\n" +
-                "\t09:30  谈话调研推荐\n" +
-                "\t11:30  召开部务会，确定会议推荐参考人选\n" +
+        map.put("date", "2019年××月××日 （星期××）" + (char) 11 +
+                "\t09:30  谈话调研推荐" + (char) 11 +
+                "\t11:30  召开部务会，确定会议推荐参考人选" + (char) 11 +
                 "\t17:00  召开部务会，确定。。。");
         map.put("address", "市委组织部机关");
 
