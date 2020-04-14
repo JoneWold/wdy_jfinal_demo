@@ -1,5 +1,6 @@
 package com.wdy.biz.file.controller;
 
+import cn.hutool.core.date.DateUtil;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.model.FieldsDocumentPart;
 import org.apache.poi.hwpf.usermodel.Field;
@@ -7,6 +8,7 @@ import org.apache.poi.hwpf.usermodel.Fields;
 import org.apache.poi.hwpf.usermodel.Range;
 
 import java.io.*;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +26,7 @@ public class WordController {
         // 模板路径
         String filePath = PATH_DOWNLOAD + "ftl" + SEPARATOR + "wordFtl.doc";
         // 填充数据
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>(1);
         map.put("date", "2019年××月××日 （星期××）\n" +
                 "\t09:30  谈话调研推荐\n" +
                 "\t11:30  召开部务会，确定会议推荐参考人选\n" +
@@ -65,10 +67,10 @@ public class WordController {
         System.out.println(range.text());
         //替换文本内容
         for (Map.Entry<String, String> entry : map.entrySet()) {
-            range.replaceText("$" + entry.getKey() + "$", entry.getValue());
+            range.replaceText("${" + entry.getKey() + "}", entry.getValue());
         }
         ByteArrayOutputStream ostream = new ByteArrayOutputStream();
-        String toFileName = System.currentTimeMillis() + ".doc";
+        String toFileName = DateUtil.format(new Date(), "yyyyMMddHHmmsss") + ".doc";
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(PATH_DOWNLOAD + toFileName, true);

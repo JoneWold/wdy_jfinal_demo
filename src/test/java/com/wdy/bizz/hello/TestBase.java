@@ -18,7 +18,6 @@ public class TestBase {
     public void test() {
 
 
-
     }
 
 
@@ -44,6 +43,9 @@ public class TestBase {
         // 通过 setScale方法设置保留几位小数以及保留规则
         BigDecimal pai = new BigDecimal("3.141592653589793");
         System.out.println(pai.setScale(5, BigDecimal.ROUND_HALF_DOWN));
+        // TODO 取两位小数，如 95/98
+        double v = new BigDecimal(((float) 95 / 98) * 100).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        System.out.println(v);
 
         // TODO 基本数据类型与包装数据类型的使用标准
         //Reference:《阿里巴巴Java开发手册》
