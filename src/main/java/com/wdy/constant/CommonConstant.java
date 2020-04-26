@@ -28,6 +28,10 @@ public class CommonConstant {
      * download
      */
     public static final String PATH_DOWNLOAD = PathKit.getWebRootPath() + SEPARATOR + "download" + SEPARATOR;
+    /**
+     * D:\wdy\wdy_jfinal_demo\target
+     */
+    public static final String PATH_TARGET = PathKit.getWebRootPath() + SEPARATOR + "target" + SEPARATOR;
 
     /**
      * 零
