@@ -1,10 +1,10 @@
 package com.wdy.biz.file.poi;
 
+import cn.hutool.core.lang.Assert;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.*;
 import org.apache.xmlbeans.XmlCursor;
-import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,6 +74,7 @@ public class DynWordUtils {
 
     /**
      * 生成动态的word
+     *
      * @param templatePath
      * @param outPath
      */
@@ -250,9 +251,10 @@ public class DynWordUtils {
 
     /**
      * 判断并且是否是动态行，并且处理表格占位符
-     * @param table 表格对象
+     *
+     * @param table    表格对象
      * @param paramMap 参数map
-     * @param row 当前行
+     * @param row      当前行
      * @return
      * @throws Exception
      */
@@ -298,8 +300,9 @@ public class DynWordUtils {
 
     /**
      * 处理占位符
+     *
      * @param runs 当前段的runs
-     * @param sb 当前段的内容
+     * @param sb   当前段的内容
      * @throws Exception
      */
     private void placeholder(XWPFParagraph currentPar, List<XWPFRun> runs, StringBuilder sb) throws Exception {
@@ -323,7 +326,8 @@ public class DynWordUtils {
 
     /**
      * 添加图片
-     * @param currRun 当前run
+     *
+     * @param currRun     当前run
      * @param imageEntity 图片对象
      * @throws InvalidFormatException
      * @throws FileNotFoundException
@@ -373,6 +377,7 @@ public class DynWordUtils {
 
     /**
      * 添加重复多行 动态行  每一行都是新创建的
+     *
      * @param table
      * @param flagRow
      * @param paramMap
@@ -385,7 +390,7 @@ public class DynWordUtils {
         String text = flagCell.getText();
         List<List<String>> dataList = (List<List<String>>) PoiWordUtils.getValueByPlaceholder(paramMap, text);
         String tbRepeatMatrix = PoiWordUtils.getTbRepeatMatrix(text);
-        Assert.assertNotNull("模板矩阵不能为空", tbRepeatMatrix);
+        Assert.notBlank("模板矩阵不能为空", tbRepeatMatrix);
 
         // 新添加的行
         List<XWPFTableRow> newRows = new ArrayList<>(dataList.size());
@@ -441,11 +446,12 @@ public class DynWordUtils {
 
     /**
      * 根据模板cell  添加重复行
-     * @param startCell 模板列的开始位置
-     * @param endCell 模板列的结束位置
-     * @param currentRow 创建的新行
+     *
+     * @param startCell     模板列的开始位置
+     * @param endCell       模板列的结束位置
+     * @param currentRow    创建的新行
      * @param repeatFlagRow 模板列所在的行
-     * @param rowDataList 每行的数据
+     * @param rowDataList   每行的数据
      */
     private void addRowRepeat(int startCell, int endCell, XWPFTableRow currentRow, XWPFTableRow repeatFlagRow, List<String> rowDataList) {
         int cellSize = repeatFlagRow.getTableCells().size();
