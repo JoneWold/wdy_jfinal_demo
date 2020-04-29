@@ -30,8 +30,8 @@ public class WordController {
         wordtoHtml();
 
         // 模板路径
-        String filePath = PATH_DOWNLOAD + "wordFtl" + SEPARATOR + "wordFtl.doc";
-        // 填充数据
+        String filePath = PATH_DOWNLOAD + "ftl/wordFtl" + SEPARATOR + "wordFtl.doc";
+        // 填充数据 (char) 11 换行
         Map<String, String> map = new HashMap<>(1);
         map.put("date", "2019年××月××日 （星期××）" + (char) 11 +
                 "\t09:30  谈话调研推荐" + (char) 11 +
@@ -46,7 +46,7 @@ public class WordController {
      * word html 互转
      */
     private static void wordtoHtml() {
-        String ftlPath = "D:\\wdy\\wdy_jfinal_demo\\download\\wordFtl\\MzIntroduceFtl.doc";
+        String ftlPath = "D:\\wdy\\wdy_jfinal_demo\\download\\ftl\\wordFtl\\MzIntroduceFtl.doc";
         try {
             String html = WordToHtmlUtil.Word2003ToHtml(ftlPath);
             System.out.println(html);
