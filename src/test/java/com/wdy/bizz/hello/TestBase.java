@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author wgch
@@ -57,6 +59,16 @@ public class TestBase {
         //正例 : 数据库的查询结果可能是 null，因为自动拆箱，用基本数据类型接收有 NPE 风险。
         //反例 : 比如显示成交总额涨跌情况，即正负 x%，x 为基本数据类型，调用的 RPC 服务，调用不成功时，返回的是默认值，页面显示为 0%，这是不合理的，应该显示成中划线。所以包装数据类型的 null 值，能够表示额外的信息，如:远程调用失败，异常退出。
 
+    }
+
+    @Test
+    public void testNumFromStr() {
+        String string = "少时0诵诗书12凄凄切切群群345层次6";
+        String regEx = "[^0-9]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(string);
+        String trim = m.replaceAll("").trim();
+        System.out.println(trim);
     }
 
     @Test
