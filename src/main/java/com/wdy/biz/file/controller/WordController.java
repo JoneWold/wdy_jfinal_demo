@@ -67,9 +67,11 @@ public class WordController {
         Document document = Jsoup.parse(htmlStr);
         String html = StringEscapeUtils.unescapeHtml(htmlStr);
         String word = htmlStr.replaceAll("\\&[a-zA-Z]{1,10};", "").replaceAll("<[^>]*>", "").replaceAll("[(/>)<]", "");
-//        System.out.println(word);
-//
-        Matcher matcher = Pattern.compile("（一）推荐职位(.)*（二）任职条件").matcher(word);
+        System.out.println(word);
+
+        String regex = "（一）推荐职位(.)*（二）任职条件";
+        Pattern p = Pattern.compile(regex);
+        Matcher matcher = p.matcher(word);
         if (matcher.find()) {
             System.out.println(matcher.group(0));
         }
