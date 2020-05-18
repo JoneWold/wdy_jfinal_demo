@@ -222,10 +222,10 @@ public class ImportRmbService {
                 if (memInfoDtos.size() == 0) {
                     a01Temp.setResult("系统无此人");
                 } else if (memInfoDtos.size() == 1) {
-                    a01Temp.setOldDataArray(JSONArray.parseArray(JSON.toJSONString(memInfoDtos)));
-                    a01Temp.setToA0000(memInfoDtos.get(0).A0000);
                     a01Temp.setResult("与系统一致");
+                    a01Temp.setToA0000(memInfoDtos.get(0).A0000);
                 }
+                a01Temp.setOldDataArray(JSONArray.parseArray(JSON.toJSONString(memInfoDtos)));
                 a01Temp.setType("1");
             });
         }

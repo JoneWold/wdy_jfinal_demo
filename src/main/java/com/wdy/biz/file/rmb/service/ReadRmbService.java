@@ -359,7 +359,7 @@ public class ReadRmbService {
             Class<?> aClass = typeMap.get(column);
             if (aClass.equals(String.class)) {
                 Object o = model.get(column);
-                if (StrKit.isBlank(o.toString())) {
+                if (o != null && StrKit.isBlank(o.toString())) {
                     model.set(column, null);
                 }
             }
