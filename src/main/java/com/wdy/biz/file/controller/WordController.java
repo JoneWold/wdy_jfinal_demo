@@ -1,6 +1,11 @@
 package com.wdy.biz.file.controller;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
+import com.aspose.words.License;
+import com.deepoove.poi.XWPFTemplate;
+import com.deepoove.poi.data.HyperLinkTextRenderData;
+import com.jfinal.plugin.activerecord.Record;
 import com.wdy.utils.WordToHtmlUtil;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.poi.hwpf.HWPFDocument;
@@ -8,15 +13,17 @@ import org.apache.poi.hwpf.model.FieldsDocumentPart;
 import org.apache.poi.hwpf.usermodel.Field;
 import org.apache.poi.hwpf.usermodel.Fields;
 import org.apache.poi.hwpf.usermodel.Range;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.*;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static com.wdy.constant.CommonConstant.*;
 
@@ -26,22 +33,21 @@ import static com.wdy.constant.CommonConstant.*;
  * @date 2020/4/10 17:23
  */
 public class WordController {
+    static {
+        License license = new License();
+        try {
+            license.setLicense(new ByteArrayInputStream(new byte[0]));
+        } catch (Exception var2) {
+            var2.printStackTrace();
+            throw new RuntimeException(var2);
+        }
+    }
 
-    public static void main(String[] args) {
-        readHtml();
-        wordtoHtml();
-
-        // 模板路径
-        String filePath = PATH_DOWNLOAD + "ftl/wordFtl" + SEPARATOR + "wordFtl.doc";
-        // 填充数据 (char) 11 换行
-        Map<String, String> map = new HashMap<>(1);
-        map.put("date", "2019年××月××日 （星期××）" + (char) 11 +
-                "\t09:30  谈话调研推荐" + (char) 11 +
-                "\t11:30  召开部务会，确定会议推荐参考人选" + (char) 11 +
-                "\t17:00  召开部务会，确定。。。");
-        map.put("address", "市委组织部机关");
-
-        readwriteWord(filePath, map);
+    public static void main(String[] args) throws Exception {
+//        readHtml();
+//        wordtoHtml();
+//        readwriteWord();
+        addLinks2Pdf();
     }
 
     /**
@@ -84,24 +90,21 @@ public class WordController {
 
     /**
      * 实现对word读取和修改操作
-     *
-     * @param filePath word模板路径和名称
-     * @param map      待填充的数据，从数据库读取
      */
-    public static void readwriteWord(String filePath, Map<String, String> map) {
+    private static void readwriteWord() throws Exception {
+        // word模板路径和名称
+        String filePath = PATH_DOWNLOAD + "ftl/wordFtl" + SEPARATOR + "wordFtl.doc";
+        // 填充数据 (char) 11 换行
+        Map<String, String> map = new HashMap<>(1);
+        map.put("date", "2019年××月××日 （星期××）" + (char) 11 +
+                "\t09:30  谈话调研推荐" + (char) 11 +
+                "\t11:30  召开部务会，确定会议推荐参考人选" + (char) 11 +
+                "\t17:00  召开部务会，确定。。。");
+        map.put("address", "市委组织部机关");
+
         //读取word模板
-        FileInputStream in = null;
-        try {
-            in = new FileInputStream(new File(filePath));
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        }
-        HWPFDocument hdt = null;
-        try {
-            hdt = new HWPFDocument(in);
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
+        FileInputStream in = new FileInputStream(new File(filePath));
+        HWPFDocument hdt = new HWPFDocument(in);
         Fields fields = hdt.getFields();
         for (Field field : fields.getFields(FieldsDocumentPart.MAIN)) {
             System.out.println(field.getType());
@@ -114,35 +117,68 @@ public class WordController {
         for (Map.Entry<String, String> entry : map.entrySet()) {
             range.replaceText("${" + entry.getKey() + "}", entry.getValue());
         }
-        ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         String toFileName = DateUtil.format(new Date(), "yyyyMMddHHmmsss") + ".doc";
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(PATH_TARGET + toFileName, true);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            hdt.write(ostream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FileOutputStream out = new FileOutputStream(PATH_TARGET + toFileName, true);
+
+        hdt.write(outputStream);
         //输出字节流
-        try {
-            out.write(ostream.toByteArray());
-        } catch (IOException e) {
-            e.printStackTrace();
+        out.write(outputStream.toByteArray());
+        out.close();
+        outputStream.close();
+    }
+
+
+    /**
+     * 超链接
+     */
+    private static void addLinks2Pdf() throws Exception {
+        List<Record> a01List = new ArrayList<>();
+        a01List.add(new Record().set("A0000", "11111").set("name", "张三"));
+        a01List.add(new Record().set("A0000", "22222").set("name", "李四"));
+        a01List.add(new Record().set("A0000", "33333").set("name", "王五"));
+
+        String filePath = PATH_DOWNLOAD + "ftl/wordFtl" + SEPARATOR + "wordFtl.doc";
+        File file = new File(filePath);
+        if (!file.getName().contains("docx")) {
+            FileInputStream in = new FileInputStream(file);
+            com.aspose.words.Document document = new com.aspose.words.Document(in);
+            File toFile = new File("D:\\wdy\\wdy_jfinal_demo\\target\\aaa.docx");
+            document.save(toFile.getPath());
+            in.close();
+            file = toFile;
         }
-        try {
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        FileInputStream inputStream = new FileInputStream(file);
+        XWPFDocument document = new XWPFDocument(inputStream);
+        List<String> names = a01List.stream().map(e -> e.getStr("name")).collect(Collectors.toList());
+        for (XWPFParagraph paragraph : document.getParagraphs()) {
+            List<XWPFRun> runs = paragraph.getRuns();
+            for (XWPFRun run : runs) {
+                String oneparaString = run.getText(run.getTextPosition());
+                if (StrUtil.isBlank(oneparaString)) {
+                    continue;
+                }
+                for (String name : names) {
+                    oneparaString = oneparaString.replace(name, "{{" + name + "}}");
+                }
+                run.setText(oneparaString, 0);
+            }
         }
-        try {
-            ostream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        String destPath = "D:\\wdy\\wdy_jfinal_demo\\target\\1.docx";
+        ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+        FileOutputStream out = new FileOutputStream(new File(destPath));
+        document.write(out);
+        out.write(ostream.toByteArray());
+        out.flush();
+        // 添加超链接
+        XWPFTemplate template = XWPFTemplate.compile(destPath);
+        Map<String, Object> map = new HashMap<>();
+        for (Record record : a01List) {
+            String name = record.getStr("name");
+            map.put(name, new HyperLinkTextRenderData(name, "http://deepoove.com"));
         }
+        template.render(map);
+        template.writeToFile("D:\\wdy\\wdy_jfinal_demo\\target\\2.docx");
     }
 
 

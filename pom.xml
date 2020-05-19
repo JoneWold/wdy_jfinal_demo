@@ -89,7 +89,13 @@
                 <checksumPolicy>fail</checksumPolicy>
             </snapshots>
         </repository>
+        <!-- Spire 系列 库 -->
+        <repository>
+            <id>com.e-iceblue</id>
+            <url>http://repo.e-iceblue.cn/repository/maven-public/</url>
+        </repository>
     </repositories>
+
 
     <dependencies>
         <dependency>
@@ -292,7 +298,7 @@
             <version>1.12.1</version>
         </dependency>
 
-        <!---->
+        <!-- redisson -->
         <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
@@ -307,6 +313,23 @@
                     <groupId>com.fasterxml.jackson.core</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <!--Spire-pdf-->
+        <dependency>
+            <groupId>e-iceblue</groupId>
+            <artifactId>spire.pdf.free</artifactId>
+            <version>2.6.3</version>
+        </dependency>
+        <dependency>
+            <groupId>e-iceblue</groupId>
+            <artifactId>spire.pdf</artifactId>
+            <version>3.4.2</version>
+        </dependency>
+        <!-- poi-tl -->
+        <dependency>
+            <groupId>com.deepoove</groupId>
+            <artifactId>poi-tl</artifactId>
+            <version>1.7.3</version>
         </dependency>
 
         <dependency>
