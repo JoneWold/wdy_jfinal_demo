@@ -145,7 +145,7 @@ public class WordController {
         if ((".doc").equals(suffix)) {
             FileInputStream in = new FileInputStream(file);
             com.aspose.words.Document document = new com.aspose.words.Document(in);
-            File toFile = new File("D:\\wdy\\wdy_jfinal_demo\\target\\aaa.docx");
+            File toFile = new File(PATH_TARGET + "aaa.docx");
             document.save(toFile.getPath());
             in.close();
             file = toFile;
@@ -168,7 +168,7 @@ public class WordController {
             }
         }
         // 生成带有标签的word文档
-        String destPath = "D:\\wdy\\wdy_jfinal_demo\\target\\1.docx";
+        String destPath = PATH_TARGET + "1.docx";
         ByteArrayOutputStream ostream = new ByteArrayOutputStream();
         FileOutputStream out = new FileOutputStream(new File(destPath));
         document.write(out);
@@ -182,7 +182,7 @@ public class WordController {
             map.put(name, new HyperLinkTextRenderData(name, "http://deepoove.com"));
         }
         template.render(map);
-        template.writeToFile("D:\\wdy\\wdy_jfinal_demo\\target\\2.docx");
+        template.writeToFile(PATH_TARGET + "2.docx");
     }
 
 
