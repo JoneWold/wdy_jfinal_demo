@@ -137,10 +137,12 @@ public class WordController {
         a01List.add(new Record().set("A0000", "11111").set("name", "张三"));
         a01List.add(new Record().set("A0000", "22222").set("name", "李四"));
         a01List.add(new Record().set("A0000", "33333").set("name", "王五"));
-
+        // 源文件
         String filePath = PATH_DOWNLOAD + "ftl/wordFtl" + SEPARATOR + "wordFtl.doc";
         File file = new File(filePath);
-        if (!file.getName().contains("docx")) {
+        String suffix = file.getName().substring(file.getName().lastIndexOf("."));
+        // doc 转为 docx
+        if ((".doc").equals(suffix)) {
             FileInputStream in = new FileInputStream(file);
             com.aspose.words.Document document = new com.aspose.words.Document(in);
             File toFile = new File("D:\\wdy\\wdy_jfinal_demo\\target\\aaa.docx");
@@ -148,6 +150,7 @@ public class WordController {
             in.close();
             file = toFile;
         }
+        // word指定字段填充标签
         FileInputStream inputStream = new FileInputStream(file);
         XWPFDocument document = new XWPFDocument(inputStream);
         List<String> names = a01List.stream().map(e -> e.getStr("name")).collect(Collectors.toList());
@@ -164,13 +167,14 @@ public class WordController {
                 run.setText(oneparaString, 0);
             }
         }
+        // 生成带有标签的word文档
         String destPath = "D:\\wdy\\wdy_jfinal_demo\\target\\1.docx";
         ByteArrayOutputStream ostream = new ByteArrayOutputStream();
         FileOutputStream out = new FileOutputStream(new File(destPath));
         document.write(out);
         out.write(ostream.toByteArray());
         out.flush();
-        // 添加超链接
+        // poi-tl 超链接
         XWPFTemplate template = XWPFTemplate.compile(destPath);
         Map<String, Object> map = new HashMap<>();
         for (Record record : a01List) {
