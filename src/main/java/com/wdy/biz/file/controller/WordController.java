@@ -162,13 +162,16 @@ public class WordController {
                     continue;
                 }
                 for (String name : names) {
+                    if (oneparaString.contains("{{" + name + "}}")) {
+                        continue;
+                    }
                     oneparaString = oneparaString.replace(name, "{{" + name + "}}");
                 }
                 run.setText(oneparaString, 0);
             }
         }
         // 生成带有标签的word文档
-        String destPath = PATH_TARGET + "1.docx";
+        String destPath = PATH_TARGET + "b.docx";
         ByteArrayOutputStream ostream = new ByteArrayOutputStream();
         FileOutputStream out = new FileOutputStream(new File(destPath));
         document.write(out);
@@ -183,6 +186,7 @@ public class WordController {
         }
         template.render(map);
         template.writeToFile(PATH_TARGET + "2.docx");
+        template.close();
     }
 
 
