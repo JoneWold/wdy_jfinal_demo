@@ -364,7 +364,8 @@ public class ExportRmbService {
         person.set_XianRenZhiWu(a01.getA0192());
         person.set_NiRenZhiWu(a01.getNRZW());
         person.set_NiMianZhiWu(a01.getNMZW());
-        person.set_JianLi_Output(a01.getA1701().replaceAll("<br/>", "").replaceAll("<br />", ""));
+        String a1701 = StrUtil.isEmpty(a01.getA1701()) ? "" : a01.getA1701().replaceAll("<br/>", "").replaceAll("<br />", "");
+        person.set_JianLi_Output(this.setA1701Value(a1701));
         person.set_JiangChengQingKuang(a01.getA14Z101());
         person.set_NianDuKaoHeJieGuo(a01.getA15Z101());
         person.set_RenMianLiYou(a01.getRMLY());
@@ -397,5 +398,32 @@ public class ExportRmbService {
         person.set_Version("3.2.1.16");
     }
 
+    /**
+     * 设置简历格式
+     * 将word文档中不必要的换行符去掉
+     */
+    private String setA1701Value(String value) {
+        if (StrUtil.isNotEmpty(value)) {
+            char[] chars = value.toCharArray();
+            if (chars.length > 3) {
+                for (int i = 1; i < chars.length - 4; i++) {
+                    char aChar0 = chars[i - 1];
+                    char aChar = chars[i];
+                    char aChar1 = chars[i + 1];
+                    char aChar2 = chars[i + 2];
+                    char aChar3 = chars[i + 3];
+                    // 换行 \n 10
+                    if (aChar0 == 10) {
+                        if (!(aChar >= 48 && aChar <= 57 && aChar1 >= 48 && aChar1 <= 57 && aChar2 >= 48 && aChar2 <= 57 && aChar3 >= 48 && aChar3 <= 57)) {
+                            // 回车 归位键 13
+                            chars[i - 1] = 13;
+                        }
+                    }
+                }
+            }
+            value = String.valueOf(chars);
+        }
+        return value;
+    }
 
 }
