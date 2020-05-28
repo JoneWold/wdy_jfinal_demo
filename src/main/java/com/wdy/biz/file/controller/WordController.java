@@ -13,13 +13,13 @@ import org.apache.poi.hwpf.model.FieldsDocumentPart;
 import org.apache.poi.hwpf.usermodel.Field;
 import org.apache.poi.hwpf.usermodel.Fields;
 import org.apache.poi.hwpf.usermodel.Range;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.*;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,7 +47,8 @@ public class WordController {
 //        readHtml();
 //        wordtoHtml();
 //        readwriteWord();
-        addLinks2Pdf();
+//        addHyperLink();
+        addHyperLink2();
     }
 
     /**
@@ -130,9 +131,9 @@ public class WordController {
 
 
     /**
-     * 超链接
+     * 超链接 poi-tl
      */
-    private static void addLinks2Pdf() throws Exception {
+    private static void addHyperLink() throws Exception {
         List<Record> a01List = new ArrayList<>();
         a01List.add(new Record().set("A0000", "11111").set("name", "张三"));
         a01List.add(new Record().set("A0000", "22222").set("name", "李四"));
@@ -177,6 +178,8 @@ public class WordController {
         document.write(out);
         out.write(ostream.toByteArray());
         out.flush();
+        document.close();
+        inputStream.close();
         // poi-tl 超链接
         XWPFTemplate template = XWPFTemplate.compile(destPath);
         Map<String, Object> map = new HashMap<>();
@@ -185,8 +188,62 @@ public class WordController {
             map.put(name, new HyperLinkTextRenderData(name, "http://deepoove.com"));
         }
         template.render(map);
-        template.writeToFile(PATH_TARGET + "2.docx");
+        template.writeToFile(PATH_TARGET + "addHyperLink.docx");
         template.close();
+    }
+
+    /**
+     * 超链接 poi
+     */
+    private static void addHyperLink2() throws Exception {
+        String url = "www.baidu.com";
+        String text = "测试超链接HyperLink";
+        XWPFDocument document = new XWPFDocument();
+        XWPFParagraph paragraph = document.createParagraph();
+        // Add the link as External relationship
+        String id = paragraph
+                .getDocument()
+                .getPackagePart()
+                .addExternalRelationship(url,
+                        XWPFRelation.HYPERLINK.getRelation()).getId();
+        // Append the link and bind it to the relationship
+        CTHyperlink cLink = paragraph.getCTP().addNewHyperlink();
+        cLink.setId(id);
+
+        // Create the linked text
+        CTText ctText = CTText.Factory.newInstance();
+        ctText.setStringValue(text);
+        CTR ctr = CTR.Factory.newInstance();
+        CTRPr rpr = ctr.addNewRPr();
+
+        //设置超链接样式
+        CTColor color = CTColor.Factory.newInstance();
+        color.setVal("0000FF");
+        rpr.setColor(color);
+        rpr.addNewU().setVal(STUnderline.SINGLE);
+
+        //设置字体
+        CTFonts fonts = rpr.isSetRFonts() ? rpr.getRFonts() : rpr.addNewRFonts();
+        fonts.setAscii("微软雅黑");
+        fonts.setEastAsia("微软雅黑");
+        fonts.setHAnsi("微软雅黑");
+
+        //设置字体大小
+        CTHpsMeasure sz = rpr.isSetSz() ? rpr.getSz() : rpr.addNewSz();
+        sz.setVal(new BigInteger("24"));
+
+        ctr.setTArray(new CTText[]{ctText});
+        // Insert the linked text into the link
+        cLink.setRArray(new CTR[]{ctr});
+
+        //设置段落居中
+        paragraph.setAlignment(ParagraphAlignment.CENTER);
+        paragraph.setVerticalAlignment(TextAlignment.CENTER);
+
+        FileOutputStream outputStream = new FileOutputStream(PATH_TARGET + "addHyperLink2.docx");
+        document.write(outputStream);
+        document.close();
+        outputStream.close();
     }
 
 

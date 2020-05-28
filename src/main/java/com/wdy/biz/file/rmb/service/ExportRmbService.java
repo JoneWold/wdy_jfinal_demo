@@ -421,7 +421,7 @@ public class ExportRmbService {
                     }
                 }
             }
-            value = String.valueOf(chars);
+            return String.valueOf(chars);
         }
         return value;
     }
