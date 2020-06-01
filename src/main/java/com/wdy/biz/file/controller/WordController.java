@@ -6,6 +6,7 @@ import com.aspose.words.License;
 import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.data.HyperLinkTextRenderData;
 import com.jfinal.plugin.activerecord.Record;
+import com.wdy.biz.file.aspose.WordHyperLink;
 import com.wdy.utils.WordToHtmlUtil;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.poi.hwpf.HWPFDocument;
@@ -48,6 +49,7 @@ public class WordController {
 //        wordtoHtml();
 //        readwriteWord();
 //        addHyperLink();
+//        addHyperLink2Demo();
         addHyperLink2();
     }
 
@@ -157,8 +159,17 @@ public class WordController {
         List<String> names = a01List.stream().map(e -> e.getStr("name")).collect(Collectors.toList());
         for (XWPFParagraph paragraph : document.getParagraphs()) {
             List<XWPFRun> runs = paragraph.getRuns();
+            // 一个XWPFRun代表具有相同属性的一个区域：一段文本
             for (XWPFRun run : runs) {
                 String oneparaString = run.getText(run.getTextPosition());
+                // 清除超链接
+//                if (run instanceof XWPFHyperlinkRun) {
+//                    XWPFHyperlinkRun rr = (XWPFHyperlinkRun) run;
+//                    XWPFHyperlink hyperlink = rr.getHyperlink(document);
+//                    if (ObjectUtil.isNotNull(hyperlink)) {
+//                        paragraph.removeRun(0);
+//                    }
+//                }
                 if (StrUtil.isBlank(oneparaString)) {
                     continue;
                 }
@@ -193,24 +204,62 @@ public class WordController {
     }
 
     /**
-     * 超链接 poi
+     * 超链接 aspose
      */
     private static void addHyperLink2() throws Exception {
-        String url = "www.baidu.com";
+        List<Record> a01List = new ArrayList<>();
+        a01List.add(new Record().set("A0000", "11111").set("name", "张三"));
+        String filePath = PATH_DOWNLOAD + "ftl/wordFtl" + SEPARATOR + "wordFtl.doc";
+        File file = new File(filePath);
+        IdentityHashMap<String, String> identityMap = new IdentityHashMap<>();
+        for (Record record : a01List) {
+            String a0000 = record.getStr("A0000");
+            String keyWord = record.getStr("name");
+            keyWord = keyWord.replaceAll(" ", "");
+            boolean flag = keyWord.length() != 2;
+            if (flag) {
+                identityMap.put(keyWord, a0000);
+            } else {
+                StringBuffer buffer = new StringBuffer(keyWord);
+                identityMap.put(keyWord, a0000);
+                identityMap.put(buffer.insert(1, " ").toString(), a0000);
+                buffer = new StringBuffer(keyWord);
+                identityMap.put(buffer.insert(1, "  ").toString(), a0000);
+                buffer = new StringBuffer(keyWord);
+                identityMap.put(buffer.insert(1, "\u3000").toString(), a0000);
+                buffer = new StringBuffer(keyWord);
+                identityMap.put(buffer.insert(1, "\u00a0").toString(), a0000);
+            }
+        }
+
+        com.aspose.words.Document document = new com.aspose.words.Document(new FileInputStream(file));
+        for (Map.Entry<String, String> entry : identityMap.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            document.getRange().replace(Pattern.compile(key), new WordHyperLink(document, key, value), false);
+        }
+        document.save(PATH_TARGET + "addHyperLink2.docx");
+    }
+
+
+    /**
+     * 超链接 poi
+     */
+    private static void addHyperLinkDemo() throws Exception {
         String text = "测试超链接HyperLink";
         XWPFDocument document = new XWPFDocument();
         XWPFParagraph paragraph = document.createParagraph();
-        // Add the link as External relationship
+        // 添加链接作为外部关系
         String id = paragraph
                 .getDocument()
                 .getPackagePart()
-                .addExternalRelationship(url,
+                .addExternalRelationship("www.baidu.com",
                         XWPFRelation.HYPERLINK.getRelation()).getId();
-        // Append the link and bind it to the relationship
+        // 附加链接并将其绑定到关系
         CTHyperlink cLink = paragraph.getCTP().addNewHyperlink();
         cLink.setId(id);
 
-        // Create the linked text
+        // 创建链接文本
         CTText ctText = CTText.Factory.newInstance();
         ctText.setStringValue(text);
         CTR ctr = CTR.Factory.newInstance();
@@ -233,14 +282,14 @@ public class WordController {
         sz.setVal(new BigInteger("24"));
 
         ctr.setTArray(new CTText[]{ctText});
-        // Insert the linked text into the link
+        // 将链接的文本插入到链接中
         cLink.setRArray(new CTR[]{ctr});
 
         //设置段落居中
         paragraph.setAlignment(ParagraphAlignment.CENTER);
         paragraph.setVerticalAlignment(TextAlignment.CENTER);
 
-        FileOutputStream outputStream = new FileOutputStream(PATH_TARGET + "addHyperLink2.docx");
+        FileOutputStream outputStream = new FileOutputStream(PATH_TARGET + "addHyperLinkDemo.docx");
         document.write(outputStream);
         document.close();
         outputStream.close();
