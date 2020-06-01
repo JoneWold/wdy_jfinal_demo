@@ -1,11 +1,11 @@
 package com.wdy.biz.file.rmb.service;
 
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import com.aspose.words.Document;
-import com.aspose.words.ImportFormatMode;
+import com.aspose.words.*;
 import com.b1809.aspose.rmb.Person;
 import com.b1809.aspose.rmb.PersonFamilyMember;
 import com.b1809.aspose.rmb.ReportRmb;
@@ -23,9 +23,12 @@ import com.wdy.message.OutMessage;
 import com.wdy.message.Status;
 import com.wdy.utils.ImageBase64Util;
 import com.wdy.utils.XmlZipFileUtil;
+import com.wdy.vo.A01Vo;
+import com.wdy.vo.A36Vo;
 import net.lingala.zip4j.core.ZipFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.file.Files;
@@ -37,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.wdy.constant.CommonConstant.*;
 import static com.wdy.constant.DictConstant.*;
@@ -58,9 +62,11 @@ public class ExportRmbService {
         String toPath = "";
         // 获取人员数据
         List<A01> a01List = dao.findA01List(a0000s);
+        List<A36> a36s = dao.findA36ByA0000s(a0000s);
+        Map<String, List<A36>> a36Map = a36s.stream().collect(Collectors.groupingBy(A36::getA0000));
         for (A01 a01 : a01List) {
             this.setEmptyField(a01.toRecord());
-            List<A36> a36List = dao.findA36List(a01.getA0000());
+            List<A36> a36List = a36Map.get(a01.getA0000());
             // 组装结果字符串
             StringBuilder sb = new StringBuilder();
             sb.append("\"").append(a01.getA0101()).append("\",");
@@ -139,9 +145,11 @@ public class ExportRmbService {
         String toPath = "";
         // 获取人员数据
         List<A01> a01List = dao.findA01List(a0000s);
+        List<A36> a36s = dao.findA36ByA0000s(a0000s);
+        Map<String, List<A36>> a36Map = a36s.stream().collect(Collectors.groupingBy(A36::getA0000));
         for (A01 a01 : a01List) {
             // 家庭成员
-            List<A36> a36List = dao.findA36List(a01.getA0000());
+            List<A36> a36List = a36Map.get(a01.getA0000());
             // 照片
             String img = ImageBase64Util.imgToB64(PathKit.getWebRootPath() + a01.getA0198());
             // 使用模板引擎
@@ -178,8 +186,10 @@ public class ExportRmbService {
         List<File> fileList = new ArrayList<>();
         String toPath = "";
         List<A01> a01List = dao.findA01List(a0000s);
+        List<A36> a36s = dao.findA36ByA0000s(a0000s);
+        Map<String, List<A36>> a36Map = a36s.stream().collect(Collectors.groupingBy(A36::getA0000));
         for (A01 a01 : a01List) {
-            List<A36> a36List = dao.findA36List(a01.getA0000());
+            List<A36> a36List = a36Map.get(a01.getA0000());
             Person person = new Person();
             // 数据填充
             this.setPerson(person, a01, a36List);
@@ -298,7 +308,7 @@ public class ExportRmbService {
         StringBuilder gzdwjzw = new StringBuilder();
         for (int i = 0; i < 12; i++) {
             // 获取家庭成员数据
-            if (i <= a36List.size() - 1) {
+            if (a36List != null && i <= a36List.size() - 1) {
                 A36 a36 = a36List.get(i);
                 chengWei.append(a36.getA3604A()).append("@");
                 xingMing.append(a36.getA3601()).append("@");
@@ -379,23 +389,84 @@ public class ExportRmbService {
         }
         // 家庭成员
         List<PersonFamilyMember> familyList = new ArrayList<>();
-        for (A36 a36 : a36List) {
-            PersonFamilyMember family = new PersonFamilyMember();
-            family.set_ChengWei(a36.getA3604A());
-            family.set_XingMing(a36.getA3601());
-            family.set_XingMing_Output(a36.getA3601());
-            family.set_NianLing(String.valueOf(DateUtil.betweenYear(a36.getA3607(), new Date(), false)));
-            String zzMm = zzmmMap.get(a36.getA3627());
-            family.set_ZhengZhiMianMao(StrKit.isBlank(zzMm) ? a36.getA3627() : zzMm);
-            family.set_GongZuoDanWeiJiZhiWu(a36.getA3611());
-            if (StrUtil.isNotEmpty(a36.getA3611()) && StrUtil.containsAny(a36.getA3611(), "已去世")) {
-                family.set_NianLing("");
+        if (a36List != null) {
+            for (A36 a36 : a36List) {
+                PersonFamilyMember family = new PersonFamilyMember();
+                family.set_ChengWei(a36.getA3604A());
+                family.set_XingMing(a36.getA3601());
+                family.set_XingMing_Output(a36.getA3601());
+                family.set_NianLing(String.valueOf(DateUtil.betweenYear(a36.getA3607(), new Date(), false)));
+                String zzMm = zzmmMap.get(a36.getA3627());
+                family.set_ZhengZhiMianMao(StrKit.isBlank(zzMm) ? a36.getA3627() : zzMm);
+                family.set_GongZuoDanWeiJiZhiWu(a36.getA3611());
+                if (StrUtil.isNotEmpty(a36.getA3611()) && StrUtil.containsAny(a36.getA3611(), "已去世")) {
+                    family.set_NianLing("");
+                }
+                familyList.add(family);
             }
-            familyList.add(family);
         }
         person.setList_JiaTingChengYuan(familyList);
-        person.set_TianBiaoShiJian_Output("年  月  日");
+        person.set_TianBiaoShiJian_Output(DateUtil.format(new Date(), "yyyy年MM月dd日"));
         person.set_Version("3.2.1.16");
+    }
+
+
+    /**
+     * 设置呈报单位，任免表审批机关意见，行政机关任免意见
+     */
+    public static File setFileWordValue(File file, A01Vo a01Vo, List<A36Vo> a36List) throws Exception {
+        int index = 0;
+        if (CollectionUtil.isNotEmpty(a36List)) {
+            if (a36List.size() > 7) {
+                index = a36List.size() - 7;
+            }
+        }
+        FileInputStream inputStream = new FileInputStream(file);
+        com.aspose.words.Document document = new com.aspose.words.Document(inputStream);
+        com.aspose.words.Table child2 = (com.aspose.words.Table) document.getChild(5, 2, true);
+        if (ObjectUtil.isNull(child2)) {
+            return file;
+        }
+        Row row1 = child2.getRows().get(11 + index);
+        if (ObjectUtil.isNotEmpty(row1)) {
+            CellCollection cells = row1.getCells();
+            if (ObjectUtil.isNotEmpty(cells)) {
+                Cell cell = cells.get(1);
+                if (ObjectUtil.isNotEmpty(cell)) {
+                    Paragraph paragraph = cell.getFirstParagraph();
+                    Run run = new Run(document, StrUtil.isEmpty(a01Vo.getCBDW()) ? "" : a01Vo.getCBDW());
+                    Paragraph paragraph1 = new Paragraph(document);
+                    paragraph1.appendChild(run);
+                    cell.insertBefore(paragraph1, paragraph);
+                }
+            }
+        }
+        Row row = child2.getRows().get(13 + index);
+        if (ObjectUtil.isNotEmpty(row)) {
+            CellCollection cells = row.getCells();
+            for (int i = 0; i < cells.toArray().length; i++) {
+                Cell cell = cells.get(i);
+                if (ObjectUtil.isNotEmpty(cell)) {
+                    if (i == 1 || i == 3) {
+                        String text = i == 1 ? a01Vo.getApprovalIdea() : a01Vo.getExecutiveIdea();
+                        text = StrUtil.isEmpty(text) ? "" : text;
+                        Paragraph paragraph = cell.getFirstParagraph();
+                        Run run = new Run(document, text + "\r");
+                        Paragraph paragraph1 = new Paragraph(document);
+                        paragraph1.appendChild(run);
+                        cell.insertBefore(paragraph1, paragraph);
+                        Paragraph lastParagraph = cell.getLastParagraph();
+                        Run run1 = new Run(document, "        " + DateUtil.format(new Date(), "yyyy年MM月dd日"));
+                        lastParagraph.removeChild(lastParagraph.getFirstChild());
+                        lastParagraph.appendChild(run1);
+                    }
+                }
+            }
+        }
+
+        document.save(file.getPath());
+        inputStream.close();
+        return file;
     }
 
     /**

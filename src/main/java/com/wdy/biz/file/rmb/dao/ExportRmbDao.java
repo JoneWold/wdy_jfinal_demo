@@ -40,4 +40,12 @@ public class ExportRmbDao {
     }
 
 
+    public List<A36> findA36ByA0000s(List<String> scA01s) {
+        SelectSeekStep1 records = DSL_CONTEXT.select().from(table(name("a36")))
+                .where(field(name("A0000")).in(scA01s))
+                .orderBy(field(name("SORTID")).asc());
+        return a36.find(records.getSQL(), records.getBindValues().toArray());
+    }
+
+
 }
