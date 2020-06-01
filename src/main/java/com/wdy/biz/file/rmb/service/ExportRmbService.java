@@ -402,7 +402,7 @@ public class ExportRmbService {
      * 设置简历格式
      * 将word文档中不必要的换行符去掉
      */
-    private String setA1701Value(String value) {
+    public String setA1701Value(String value) {
         if (StrUtil.isNotEmpty(value)) {
             char[] chars = value.toCharArray();
             if (chars.length > 5) {
@@ -422,9 +422,9 @@ public class ExportRmbService {
                             chars[i - 1] = 13;
                         } else {
                             // 如果某一行末尾是换行符，且前一位是（  ， ： ； 等，则去掉该换行符
-                            // 中文标点符号编码 '（' 65288   '，' 65292   '：' 65306   '；' 65307
+                            // 中文标点符号编码 '（' 65288   '，' 65292   '：' 65306   '；' 65307  "、" 12289
                             // asc码 括号（->40  逗号，->44  冒号：->58  分号；->59
-                            if (aChar4 == 65288 || aChar4 == 65292 || aChar4 == 65306 || aChar4 == 65307) {
+                            if (aChar4 == 65288 || aChar4 == 65292 || aChar4 == 65306 || aChar4 == 65307 || aChar4 == 12289) {
                                 chars[i - 1] = 13;
                             }
                         }
@@ -434,23 +434,6 @@ public class ExportRmbService {
             return String.valueOf(chars).replaceAll("\r", "");
         }
         return value;
-    }
-
-
-    public static void main(String[] args) {
-        String v = "1982.09--1985.07  四川省石柱师范学校中专学习\n" +
-                "1985.07--1985.08  待分配\n" +
-                "1985.08--1991.08  四川省石柱自治县下路中学教师（其间：\n" +
-                "1988.08--1990.07四川省教育学院历史系历史专业大专学习）\n" +
-                "1993.10--1996.12  四川省石柱自治县委办公室主办干事（1993.05--1995.12四川省委第二党校经济管理专业大学学习；\n" +
-                "1995.12--1996.12挂职任大歇乡党委委员）\n" +
-                "1998.01--2001.09  重庆市石柱自治县委办公室副主任，\n" +
-                "2000.07正科级\n" +
-                "2007.02--2012.02  重庆市石柱自治县委常委、办公室主任\n" +
-                "（2004.09--2007.06重庆市委党校政治学理论专业研究生学习）\n" +
-                "2016.11--         重庆市忠县县委常委、政法委书记";
-        String a1701Value = new ExportRmbService().setA1701Value(v);
-        System.out.println(a1701Value);
     }
 
 }
