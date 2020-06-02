@@ -49,8 +49,8 @@ public class WordController {
 //        wordtoHtml();
 //        readwriteWord();
 //        addHyperLink();
-//        addHyperLink2();
 //        addHyperLinkDemo();
+        addHyperLink2();
     }
 
     /**
@@ -209,7 +209,8 @@ public class WordController {
      */
     private static void addHyperLink2() throws Exception {
         List<Record> a01List = new ArrayList<>();
-        a01List.add(new Record().set("A0000", "11111").set("name", "张三"));
+        a01List.add(new Record().set("A0000", "https://www.baidu.com/").set("name", "张三"));
+        a01List.add(new Record().set("A0000", "https://www.baidu.com/").set("name", "谢黎黎"));
         String filePath = PATH_DOWNLOAD + "ftl/wordFtl" + SEPARATOR + "wordFtl.doc";
         File file = new File(filePath);
         IdentityHashMap<String, String> identityMap = new IdentityHashMap<>();
@@ -254,7 +255,7 @@ public class WordController {
         String id = paragraph
                 .getDocument()
                 .getPackagePart()
-                .addExternalRelationship("www.baidu.com",
+                .addExternalRelationship("https://www.baidu.com/",
                         XWPFRelation.HYPERLINK.getRelation()).getId();
         // 附加链接并将其绑定到关系
         CTHyperlink cLink = paragraph.getCTP().addNewHyperlink();
