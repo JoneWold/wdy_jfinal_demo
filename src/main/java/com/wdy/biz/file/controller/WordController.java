@@ -45,12 +45,12 @@ public class WordController {
     }
 
     public static void main(String[] args) throws Exception {
-//        readHtml();
+        readHtml();
 //        wordtoHtml();
 //        readwriteWord();
 //        addHyperLink();
-//        addHyperLink2Demo();
-        addHyperLink2();
+//        addHyperLink2();
+//        addHyperLinkDemo();
     }
 
     /**
@@ -78,7 +78,8 @@ public class WordController {
         String word = htmlStr.replaceAll("\\&[a-zA-Z]{1,10};", "").replaceAll("<[^>]*>", "").replaceAll("[(/>)<]", "");
         System.out.println(word);
 
-        String regex = "（一）推荐职位(.)*（二）任职条件";
+        // [\s\S]*是完全通配的意思
+        String regex = "（一）推荐职位([\\s\\S]*)（二）任职条件";
         Pattern p = Pattern.compile(regex);
         Matcher matcher = p.matcher(word);
         if (matcher.find()) {
