@@ -498,6 +498,11 @@ public class ExportRmbService {
                             if (aChar4 == 65288 || aChar4 == 65292 || aChar4 == 65306 || aChar4 == 65307 || aChar4 == 12289) {
                                 chars[i - 1] = 13;
                             }
+                            // 或者直接比较字符串
+                            String valueOf = String.valueOf(aChar4);
+                            if (StrUtil.equalsAny(valueOf, "（", "，", "：", "；", "、")) {
+                                System.out.println(i + " ----->>>>> " + valueOf + "==" + aChar4);
+                            }
                         }
                     }
                 }
