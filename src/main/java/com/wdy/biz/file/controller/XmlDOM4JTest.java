@@ -1,17 +1,15 @@
 package com.wdy.biz.file.controller;
 
-import com.jfinal.kit.PathKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Record;
 import com.wdy.dto.Book;
-import org.dom4j.*;
-import org.dom4j.io.OutputFormat;
+import org.dom4j.Attribute;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -23,38 +21,17 @@ import java.util.List;
  */
 public class XmlDOM4JTest {
     private static ArrayList<Book> bookList = new ArrayList<>();
-    private static final String QUXIAN_STR = "区县";
-    private static final String SJBM_STR = "市级部门";
-    private static final String LXCS_STR = "联系处室";
-    private static final String GDYX_STR = "高等院校";
 
     public static void main(String[] args) {
         String bookPath = "D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\book\\book.xml";
         String a01Path = "D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\book\\A01.xml";
-//        ArrayList<Book> xmlData = getXmlData(bookPath);
+//        ArrayList<Book> xmlData = getXmlDataDemo(bookPath);
 //        System.out.println(xmlData);
-        testJL();
         List<Record> a01XmlData = getA01XmlData(a01Path);
         System.out.println(a01XmlData);
-//        testDoc();
-//        testCharAt();
-        getOrgXzConfig();
+        testJL();
     }
 
-    public static void testDoc() {
-        try {
-            String text = "<root value=\"123\n321\"></root>";
-            Document document = DocumentHelper.parseText(text);
-            System.out.println(document.valueOf("//root/@value"));
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void testCharAt() {
-        char s = "\n".charAt(0);
-        System.out.println(s);
-    }
 
     /**
      * DOM4J解析xml
@@ -62,7 +39,7 @@ public class XmlDOM4JTest {
      * @param filePath
      * @return
      */
-    public static ArrayList<Book> getXmlData(String filePath) {
+    public static ArrayList<Book> getXmlDataDemo(String filePath) {
         // 解析books.xml文件
         // 创建SAXReader的对象reader
         SAXReader reader = new SAXReader();
@@ -143,7 +120,7 @@ public class XmlDOM4JTest {
      * @param filePath
      * @return
      */
-    public static List<Record> getA01XmlData(String filePath) {
+    private static List<Record> getA01XmlData(String filePath) {
         List<Record> data = new ArrayList<>();
         SAXReader saxReader = new SAXReader();
         File file = new File(filePath);
@@ -185,23 +162,8 @@ public class XmlDOM4JTest {
         return data;
     }
 
-    /**
-     * 生成xml文件
-     *
-     * @param document
-     * @throws IOException
-     */
-    public static void writer(Document document) throws IOException {
-        // 设置XML文档输出格式
-        OutputFormat format = OutputFormat.createPrettyPrint();
-        format.setEncoding("GB2312");
-        XMLWriter xmlWriter = new XMLWriter(new FileOutputStream(new File(PathKit.getWebRootPath() + "/download/book2.xml")), format);
-        xmlWriter.write(document);
-        xmlWriter.close();
-    }
 
-
-    public static void testJL() {
+    private static void testJL() {
         String value = "2005.09--2009.07  重庆邮电大学\n" +
                 "2009.07--2010.09  四川省成都市成都昊晟好利来食品厂\n" +
                 "2010.09--2015.01  四川省广安市武胜县新型农村合作医疗管理中心（其间：2011.03--2014.07福建师范大学在职本科财务管理专业学习）\n" +
@@ -225,7 +187,7 @@ public class XmlDOM4JTest {
     /**
      * 格式化简历
      */
-    public static String setFormatA1701(String name, String value) {
+    private static String setFormatA1701(String name, String value) {
         if ("A1701".equals(name) && StrKit.notBlank(value)) {
             char[] chars = value.toCharArray();
             StringBuilder builder = new StringBuilder();
@@ -306,50 +268,4 @@ public class XmlDOM4JTest {
     }
 
 
-    /**
-     * 获取分析查询筛选项
-     */
-    public static void getOrgXzConfig() {
-        SAXReader saxReader = new SAXReader();
-        File file = new File("D:\\wdy\\wdy_jfinal_demo\\src\\main\\webapp\\WEB-INF\\view\\config\\OrgXzConfig.xml");
-        Document document = null;
-        try {
-            document = saxReader.read(file);
-        } catch (DocumentException e) {
-            e.printStackTrace();
-        }
-        Element xmlElement = document.getRootElement();
-        Iterator<Element> iterator = xmlElement.elementIterator();
-        List<Record> county = new ArrayList<>();
-        List<Record> cityDepart = new ArrayList<>();
-        List<Record> lxcs = new ArrayList<>();
-        List<Record> colleges = new ArrayList<>();
-        while (iterator.hasNext()) {
-            Element next = iterator.next();
-            List<Attribute> attributes = next.attributes();
-            String orgXz = attributes.get(0).getValue();
-            Iterator<Element> xz = next.elementIterator();
-            while (xz.hasNext()) {
-                Element nextChild = xz.next();
-                List<Attribute> attributesChild = nextChild.attributes();
-                Record record = new Record();
-                for (Attribute attr : attributesChild) {
-                    record.set(attr.getName(), attr.getValue());
-                }
-                if (QUXIAN_STR.equals(orgXz)) {
-                    county.add(record);
-                } else if (SJBM_STR.equals(orgXz)) {
-                    cityDepart.add(record);
-                } else if (LXCS_STR.equals(orgXz)) {
-                    lxcs.add(record);
-                } else if (GDYX_STR.equals(orgXz)) {
-                    colleges.add(record);
-                }
-            }
-        }
-        System.out.println(county);
-        System.out.println(cityDepart);
-        System.out.println(lxcs);
-        System.out.println(colleges);
-    }
 }

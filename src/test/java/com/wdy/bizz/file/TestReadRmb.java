@@ -69,6 +69,8 @@ public class TestReadRmb extends TestBeforeWdyConfig {
         System.out.println(c.codePointAt(0) + " --->>>>  ： ");
         System.out.println(d.codePointAt(0) + " --->>>>  ； ");
         System.out.println(e.codePointAt(0) + " --->>>>  、 ");
+        char charAt = "\n".charAt(0);
+        System.out.println(charAt);
     }
 
 
