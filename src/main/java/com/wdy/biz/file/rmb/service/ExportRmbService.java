@@ -359,18 +359,26 @@ public class ExportRmbService {
         person.set_ShuXiZhuanYeYouHeZhuanChang(a01.getA0187A());
         // 全日制学历学位
         person.set_QuanRiZhiJiaoYu_XueLi(a01.getQRZXL());
-        person.set_QuanRiZhiJiaoYu_XueLiXueWei_Output(a01.getQRZXL() + "\n" + a01.getQRZXW());
+        String qrzxl = StrUtil.isEmpty(a01.getQRZXL()) ? "" : a01.getQRZXL();
+        String qrzxw = StrUtil.isEmpty(a01.getQRZXW()) ? "" : a01.getQRZXW();
+        person.set_QuanRiZhiJiaoYu_XueLiXueWei_Output(qrzxl + "\n" + qrzxw);
         person.set_QuanRiZhiJiaoYu_XueWei(a01.getQRZXW());
         person.set_QuanRiZhiJiaoYu_XueLi_BiYeYuanXiaoXi(a01.getQRZXLXX());
-        person.set_QuanRiZhiJiaoYu_XueWei_BiYeYuanXiaoXi(a01.getQRZXW());
-        person.set_QuanRiZhiJiaoYu_BiYeYuanXiaoXi_Output(a01.getQRZXLXX());
+        person.set_QuanRiZhiJiaoYu_XueWei_BiYeYuanXiaoXi(a01.getQRZXWXX());
+        String qrzxlxx = StrUtil.isEmpty(a01.getQRZXLXX()) ? "" : a01.getQRZXLXX();
+        String qrzxwxx = StrUtil.isEmpty(a01.getQRZXWXX()) ? "" : a01.getQRZXWXX();
+        person.set_QuanRiZhiJiaoYu_BiYeYuanXiaoXi_Output(qrzxlxx + "\n" + qrzxwxx);
         // 在职学历学位
         person.set_ZaiZhiJiaoYu_XueLi(a01.getZZXL());
         person.set_ZaiZhiJiaoYu_XueWei(a01.getZZXW());
-        person.set_ZaiZhiZhiJiaoYu_XueLiXueWei_Output(a01.getZZXL() + "\n" + a01.getZZXW());
+        String zzxl = StrUtil.isEmpty(a01.getZZXL()) ? "" : a01.getZZXL();
+        String zzxw = StrUtil.isEmpty(a01.getZZXW()) ? "" : a01.getZZXW();
+        person.set_ZaiZhiZhiJiaoYu_XueLiXueWei_Output(zzxl + "\n" + zzxw);
         person.set_ZaiZhiJiaoYu_XueLi_BiYeYuanXiaoXi(a01.getZZXLXX());
-        person.set_ZaiZhiJiaoYu_XueWei_BiYeYuanXiaoXi(a01.getZZXW());
-        person.set_ZaiZhiJiaoYu_BiYeYuanXiaoXi_Output(a01.getZZXLXX());
+        person.set_ZaiZhiJiaoYu_XueWei_BiYeYuanXiaoXi(a01.getZZXWXX());
+        String zzxlxx = StrUtil.isEmpty(a01.getZZXLXX()) ? "" : a01.getZZXLXX();
+        String zzxwxx = StrUtil.isEmpty(a01.getZZXWXX()) ? "" : a01.getZZXWXX();
+        person.set_ZaiZhiJiaoYu_BiYeYuanXiaoXi_Output(zzxlxx + "\n" + zzxwxx);
         person.set_XianRenZhiWu(a01.getA0192());
         person.set_NiRenZhiWu(a01.getNRZW());
         person.set_NiMianZhiWu(a01.getNMZW());
