@@ -132,14 +132,6 @@ public class TestHelloController extends TestBeforeWdyConfig {
         return list;
     }
 
-    /**
-     * Unicode 汉字内码表 '淘' 28120
-     */
-    @Test
-    public void testTheClock() {
-        char c = "淘".charAt(0);
-        System.out.println(c);
-    }
 
     /**
      * String 转换 List<String>
@@ -201,6 +193,7 @@ public class TestHelloController extends TestBeforeWdyConfig {
             put("六", "6");
         }};
 
+        // 将map中的value作为新的HashSet集合存入set里面
         boolean b = set.addAll(map.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toCollection(HashSet::new)));
         System.out.println(set);
     }

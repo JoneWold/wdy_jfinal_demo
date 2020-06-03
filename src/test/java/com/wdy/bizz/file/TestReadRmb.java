@@ -52,6 +52,15 @@ public class TestReadRmb extends TestBeforeWdyConfig {
         System.out.println(listMap);
     }
 
+    /**
+     * Unicode 汉字内码表 '淘' 28120
+     */
+    @Test
+    public void testTheClock() {
+        char c = "淘".charAt(0);
+        System.out.println(c);
+    }
+
 
     @Test
     public void testRegex() {
@@ -64,11 +73,13 @@ public class TestReadRmb extends TestBeforeWdyConfig {
         String c = "：";
         String d = "；";
         String e = "、";
+        String f = "淘";
         System.out.println(a.codePointAt(0) + " --->>>>  （ ");
         System.out.println(b.codePointAt(0) + " --->>>>  ， ");
         System.out.println(c.codePointAt(0) + " --->>>>  ： ");
         System.out.println(d.codePointAt(0) + " --->>>>  ； ");
         System.out.println(e.codePointAt(0) + " --->>>>  、 ");
+        System.out.println(f.codePointAt(0) + " --->>>>  淘 ");
         char charAt = "\n".charAt(0);
         System.out.println(charAt);
     }
