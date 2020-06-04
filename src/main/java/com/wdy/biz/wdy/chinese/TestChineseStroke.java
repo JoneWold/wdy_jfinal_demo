@@ -8,7 +8,7 @@ import java.util.List;
  * @Description 汉字笔画排序
  * @date 2020/6/1
  */
-public class ChineseStrokeTest {
+public class TestChineseStroke {
 
 
     public static void main(String[] args) {
