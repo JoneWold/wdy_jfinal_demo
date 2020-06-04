@@ -15,9 +15,9 @@ public class ChineseStrokeTest {
         List<String> list = new ArrayList<>();
         list.add("李四");
         list.add("张三44");
-        list.add("张二");
+        list.add("一二");
         list.add("张刘");
-        list.add("张五");
+        list.add("二五");
         list.add("赵明");
         list.add("王东西");
         list.sort(new ObjectStrokeComparator(String.class, ""));
