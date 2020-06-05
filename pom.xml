@@ -339,6 +339,13 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/rmb-0.1.1.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>com.chinese.stroke</groupId>
+            <artifactId>stroke</artifactId>
+            <version>${rmb.version}</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/ChineseStrokeSorting.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>

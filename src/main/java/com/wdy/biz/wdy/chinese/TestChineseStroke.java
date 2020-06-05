@@ -14,13 +14,15 @@ public class TestChineseStroke {
     public static void main(String[] args) {
         List<String> list = new ArrayList<>();
         list.add("李四");
-        list.add("张三44");
+        list.add("三张");
         list.add("一二");
         list.add("张刘");
         list.add("二五");
         list.add("赵明");
         list.add("王东西");
-        list.sort(new ObjectStrokeComparator(String.class, ""));
+        list.sort(new com.junfeng.strokesort.comparator.ObjectStrokeComparator(String.class, ""));
+//        list.sort(new StringStrokeComparator());
+
         for (String string : list) {
             System.out.println(string);
         }
