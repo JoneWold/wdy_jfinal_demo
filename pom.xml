@@ -20,7 +20,7 @@
         <cos.version>26Dec2008</cos.version>
         <jooq.version>3.11.10</jooq.version>
         <druid.version>1.1.10</druid.version>
-        <mysql-connector-java.version>5.1.47</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.16</mysql-connector-java.version>
         <jfinal-swagger.version>1.0.0</jfinal-swagger.version>
         <log4j.version>1.2.17</log4j.version>
         <slf4j-nop.version>1.7.25</slf4j-nop.version>
