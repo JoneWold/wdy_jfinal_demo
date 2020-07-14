@@ -1,6 +1,7 @@
 package com.wdy.biz.file.rmb.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -154,8 +155,8 @@ public class ImportRmbService {
         int[] a57s = Db.use(DB_PGSQL).batchSave("a57", a57List, 100);
         // 处理优秀年轻干部主表
         this.updateYoungCadre(a01TempNewList.stream().map(BaseA01Temp::getA0000).collect(Collectors.toList()), system, b01);
-        // TODO 添加a08学历学位，补全a01学历学位相关字段
-        a01TempNewList.forEach(this::saveA08Data);
+        // TODO 2020年7月13日 添加a08学历学位，补全a01学历学位相关字段
+        a01TempNewList.forEach(this::updateA08Data);
 
         LogKit.info("---------数据导入成功---------");
         LogKit.info("a01 update -->" + a01update.length);
@@ -514,6 +515,187 @@ public class ImportRmbService {
             }
         }
     }
+
+
+    /**
+     * 更新学历信息
+     * TODO 2020年7月13 编辑功能 学历信息
+     *
+     * @param a01Temp 中间数据
+     */
+    private void updateA08Data(A01Temp a01Temp) {
+        String toA0000 = a01Temp.getToA0000();
+        Map<String, String> zy = dao.getDictNameToCode(ZYDM_TYPE);
+        Map<String, String> xldm = dao.getDictNameToCode(XLDM_TYPE);
+        Map<String, String> xwdm = dao.getDictNameToCode(XWDM_TYPE);
+        if (StrUtil.isNotEmpty(toA0000)) {
+            A01 a01 = memDao.findA01ById(toA0000);
+            List<A08> a08s = dao.findA08s(toA0000);
+            // 原库有数据
+            if (CollectionUtil.isNotEmpty(a08s)) {
+                List<A08> qrzList = a08s.stream().filter(e -> StrUtil.isNotEmpty(e.getA0837()) && StrUtil.equalsAny(e.getA0837(), "1")).collect(Collectors.toList());
+                if (CollectionUtil.isNotEmpty(qrzList)) {
+                    // 全日制信息 有一个对上 直接替换 原数据库第一条记录 其他的输出标识设为0
+                    if (StrUtil.equalsAny(a01Temp.getQRZXL(), a01.getQRZXL()) || StrUtil.equalsAny(a01Temp.getQRZXW(), a01.getQRZXW())
+                            || StrUtil.equalsAny(a01Temp.getQRZXLXX(), a01.getQRZXLXX()) || StrUtil.equalsAny(a01Temp.getQRZXWXX(), a01.getQRZXWXX())) {
+                        for (int i = 0; i < qrzList.size(); i++) {
+                            A08 a08 = qrzList.get(i);
+                            if (i == 0) {
+                                this.dealWithQRZ(a01Temp, a08, xldm, xwdm, zy);
+                            } else {
+                                a08.setA0898("0");
+                            }
+                        }
+                        // 全日制信息 一个没对上 输出标识设为0
+                    } else if (!(StrUtil.equalsAny(a01Temp.getQRZXL(), a01.getQRZXL()) && StrUtil.equalsAny(a01Temp.getQRZXW(), a01.getQRZXW())
+                            && StrUtil.equalsAny(a01Temp.getQRZXLXX(), a01.getQRZXLXX()) && StrUtil.equalsAny(a01Temp.getQRZXWXX(), a01.getQRZXWXX()))) {
+                        qrzList.forEach(e -> e.setA0898("0"));
+                    }
+                    Db.use(DB_PGSQL).batchUpdate(qrzList, 100);
+                } else {
+                    this.saveA08QRZ(a01Temp, xldm, xwdm, zy);
+                }
+                // 在职信息
+                List<A08> zzList = a08s.stream().filter(e -> StrUtil.isNotEmpty(e.getA0837()) && StrUtil.equalsAny(e.getA0837(), "0")).collect(Collectors.toList());
+                if (CollectionUtil.isNotEmpty(zzList)) {
+                    if (StrUtil.equalsAny(a01Temp.getZZXL(), a01.getZZXL()) || StrUtil.equalsAny(a01Temp.getZZXW(), a01.getZZXW())
+                            || StrUtil.equalsAny(a01Temp.getZZXLXX(), a01.getZZXLXX()) || StrUtil.equalsAny(a01Temp.getZZXWXX(), a01.getZZXWXX())) {
+                        for (int i = 0; i < zzList.size(); i++) {
+                            A08 a08 = zzList.get(i);
+                            if (i == 0) {
+                                this.dealWithZZ(a01Temp, a08, xldm, xwdm, zy);
+                            } else {
+                                a08.setA0898("0");
+                            }
+                        }
+                    } else if (!(StrUtil.equalsAny(a01Temp.getZZXL(), a01.getZZXL()) && StrUtil.equalsAny(a01Temp.getZZXW(), a01.getZZXW())
+                            && StrUtil.equalsAny(a01Temp.getZZXLXX(), a01.getZZXLXX()) && StrUtil.equalsAny(a01Temp.getZZXWXX(), a01.getZZXWXX()))) {
+                        zzList.forEach(e -> e.setA0898("0"));
+                    }
+                    Db.use(DB_PGSQL).batchUpdate(zzList, 100);
+                } else {
+                    this.saveA08ZZ(a01Temp, xldm, xwdm, zy);
+                }
+                // 原库没有数据
+            } else {
+                this.saveA08QRZ(a01Temp, xldm, xwdm, zy);
+                this.saveA08ZZ(a01Temp, xldm, xwdm, zy);
+            }
+        } else {
+            this.saveA08QRZ(a01Temp, xldm, xwdm, zy);
+            this.saveA08ZZ(a01Temp, xldm, xwdm, zy);
+        }
+        String a01Id = StrKit.notBlank(toA0000) ? toA0000 : a01Temp.getA0000();
+        List<A08> a08s = dao.findA08s(a01Id);
+        if (CollectionUtil.isNotEmpty(a08s)) {
+            //处理最高全日制 等等 6个标识
+            memService.updateA0834Many(a08s.stream()
+                    .filter(var -> StrUtil.isNotEmpty(var.getStr("A0000")))
+                    .map(var -> var.getStr("A0000")).collect(Collectors.toList()));
+        }
+        Map<String, A08MergeDegreeDto> info = memService.mergeDegreeInfo(Collections.singletonList(toA0000), "");
+        A01 a01 = memDao.findA01ById(a01Id);
+        if (a01 != null && info != null) {
+            A08MergeDegreeDto merge = info.get(a01.getA0000());
+            if (merge != null) {
+                a01.setZZZS(merge.getZZZS());
+                a01.setQRZZS(merge.getQRZZS());
+                a01.setQRZXL(merge.getQRZXL());
+                a01.setQRZXLXX(merge.getQRZXLXX());
+                a01.setQRZXW(merge.getQRZXW());
+                a01.setQRZXWXX(merge.getQRZXWXX());
+                a01.setZZXL(merge.getZZXL());
+                a01.setZZXLXX(merge.getZZXLXX());
+                a01.setZZXW(merge.getZZXW());
+                a01.setZZXWXX(merge.getZZXWXX());
+            }
+            a01.update();
+        }
+    }
+
+
+    private void saveA08QRZ(A01Temp a01Temp, Map<String, String> xldm, Map<String, String> xwdm, Map<String, String> zy) {
+        A08 a08 = this.dealWithQRZ(a01Temp, null, xldm, xwdm, zy);
+        if (a08 != null) {
+            a08.save();
+        }
+    }
+
+    private void saveA08ZZ(A01Temp a01Temp, Map<String, String> xldm, Map<String, String> xwdm, Map<String, String> zy) {
+        A08 a08 = this.dealWithZZ(a01Temp, null, xldm, xwdm, zy);
+        if (a08 != null) {
+            a08.save();
+        }
+    }
+
+    /**
+     * 操作全日制信息
+     */
+    private A08 dealWithQRZ(A01Temp a01Temp, A08 a08, Map<String, String> xldm, Map<String, String> xwdm, Map<String, String> zy) {
+        if (ObjectUtil.isNull(a08)) {
+            String toA0000 = a01Temp.getToA0000();
+            if (StrKit.notBlank(a01Temp.getQRZXL()) || StrKit.notBlank(a01Temp.getQRZXW()) || StrKit.notBlank(a01Temp.getQRZXLXX()) || StrKit.notBlank(a01Temp.getQRZXWXX())) {
+                a08 = new A08();
+                a08.setA0800(StrKit.getRandomUUID());
+                a08.setA0000(StrKit.isBlank(toA0000) ? a01Temp.getA0000() : toA0000);
+            } else {
+                return null;
+            }
+        }
+        if (StrKit.notBlank(a01Temp.getQRZXL())) {
+            a08.setA0801A(a01Temp.getQRZXL());
+        } else {
+            a08.setA0801A(null);
+        }
+        a08.setA0801B(xldm.get(a01Temp.getQRZXL()) == null ? "" : xldm.get(a01Temp.getQRZXL()));
+        if (StrKit.notBlank(a01Temp.getQRZXW())) {
+            a08.setA0901A(a01Temp.getQRZXW());
+        } else {
+            a08.setA0901A(null);
+        }
+        a08.setA0901B(xwdm.get(a01Temp.getQRZXW()) == null ? "" : xwdm.get(a01Temp.getQRZXW()));
+        a08.setA0814(a01Temp.getQRZXLXX());
+        a08.setA0824(a01Temp.getQRZXWXX());
+        a08.setA0827(zy.get(a01Temp.getQRZXWXX()) == null ? "" : zy.get(a01Temp.getQRZXWXX()));
+        a08.setA0837("1");
+        a08.setA0898("1");
+        return a08;
+    }
+
+    /**
+     * 操作在职信息
+     */
+    private A08 dealWithZZ(A01Temp a01Temp, A08 a08, Map<String, String> xldm, Map<String, String> xwdm, Map<String, String> zy) {
+        if (ObjectUtil.isNull(a08)) {
+            String toA0000 = a01Temp.getToA0000();
+            if (StrKit.notBlank(a01Temp.getZZXL()) || StrKit.notBlank(a01Temp.getZZXW()) || StrKit.notBlank(a01Temp.getZZXLXX()) || StrKit.notBlank(a01Temp.getZZXWXX())) {
+                a08 = new A08();
+                a08.setA0800(StrKit.getRandomUUID());
+                a08.setA0000(toA0000);
+            } else {
+                return null;
+            }
+        }
+        if (StrKit.notBlank(a01Temp.getZZXL())) {
+            a08.setA0801A(a01Temp.getZZXL());
+        } else {
+            a08.setA0801A(null);
+        }
+        a08.setA0801B(xldm.get(a01Temp.getZZXL()) == null ? "" : xldm.get(a01Temp.getZZXL()));
+        if (StrKit.notBlank(a01Temp.getZZXW())) {
+            a08.setA0901A(a01Temp.getZZXW());
+        } else {
+            a08.setA0901A(null);
+        }
+        a08.setA0901B(xwdm.get(a01Temp.getZZXW()) == null ? "" : xwdm.get(a01Temp.getZZXW()));
+        a08.setA0814(a01Temp.getZZXLXX());
+        a08.setA0824(a01Temp.getZZXWXX());
+        a08.setA0827(zy.get(a01Temp.getZZXWXX()) == null ? "" : zy.get(a01Temp.getZZXWXX()));
+        a08.setA0837("0");
+        a08.setA0898("1");
+        return a08;
+    }
+
 
     /**
      * 添加学历信息

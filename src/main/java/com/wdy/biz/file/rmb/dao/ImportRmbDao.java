@@ -9,6 +9,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.wdy.dto.RmbOldMemInfoDto;
 import com.wdy.generator.postgreSQL.model.A01Temp;
+import com.wdy.generator.postgreSQL.model.A08;
 import com.wdy.generator.postgreSQL.model.YoungCadre;
 import org.jooq.DeleteConditionStep;
 import org.jooq.Record1;
@@ -29,6 +30,7 @@ import static org.jooq.impl.DSL.*;
 public class ImportRmbDao {
     private A01Temp a01Temp = Aop.get(A01Temp.class);
     private YoungCadre youngCadre = Aop.get(YoungCadre.class);
+    private A08 a08 = Aop.get(A08.class);
 
     public Map<String, String> getDictNameToCode(String type) {
         SelectConditionStep records = DSL_CONTEXT.select()
@@ -239,6 +241,12 @@ public class ImportRmbDao {
         SelectConditionStep records = DSL_CONTEXT.select().from(table(name("a08")))
                 .where(field(name("A0000")).eq(toA0000));
         return Db.use(DB_PGSQL).find(records.getSQL(), records.getBindValues().toArray());
+    }
+
+    public List<A08> findA08s(String toA0000) {
+        SelectConditionStep records = DSL_CONTEXT.select().from(table(name("a08")))
+                .where(field(name("A0000")).eq(toA0000));
+        return a08.find(records.getSQL(), records.getBindValues().toArray());
     }
 
     /***
