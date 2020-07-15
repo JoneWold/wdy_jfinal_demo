@@ -5,6 +5,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.wdy.bizz.TestBeforeWdyConfig;
+import com.wdy.dto.LOL;
 import org.junit.Test;
 
 import java.text.Collator;
@@ -234,5 +235,16 @@ public class TestJava8Skill extends TestBeforeWdyConfig {
         System.out.println("4");
         System.out.println(list);
     }
+
+    @Test
+    public void testGetElement() {
+        List<LOL> lols = new ArrayList<>();
+        lols.add(new LOL("LPL", "IG", Arrays.asList("TheShy", "JK", "Rk", "BaoLan", "Ning")));
+        lols.add(new LOL("LPL", "FPX", Arrays.asList("Doinb", "GimGoon", "Tian", "Lwx", "Crisp")));
+        lols.add(new LOL("LCK", "SKT", Arrays.asList("faker", "khan", "child", "teddy", "mata")));
+        LOL lol = lols.stream().findFirst().orElse(null);
+        System.out.println(lol);
+    }
+
 
 }
