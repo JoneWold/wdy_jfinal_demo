@@ -237,7 +237,7 @@ public class TestJava8Skill extends TestBeforeWdyConfig {
     }
 
     @Test
-    public void testGetElement() {
+    public void testFindFirst() {
         List<LOL> lols = new ArrayList<>();
         lols.add(new LOL("LPL", "IG", Arrays.asList("TheShy", "JK", "Rk", "BaoLan", "Ning")));
         lols.add(new LOL("LPL", "FPX", Arrays.asList("Doinb", "GimGoon", "Tian", "Lwx", "Crisp")));

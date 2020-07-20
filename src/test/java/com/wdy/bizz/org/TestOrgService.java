@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import static com.wdy.biz.wdy.WdyMain.USER_CONTEXT;
 import static com.wdy.constant.DBConstant.DB_PGSQL;
 
 /**
@@ -71,6 +72,16 @@ public class TestOrgService extends TestBeforeWdyConfig {
                 newRecord.set(e, null);
             }
         });
+    }
+
+
+    /**
+     * InheritableThreadLocal
+     */
+    @Test
+    public void testUserContext() {
+        USER_CONTEXT.set("wdy");
+        System.out.println(USER_CONTEXT.get());
     }
 
 

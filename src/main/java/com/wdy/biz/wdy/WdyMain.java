@@ -6,9 +6,11 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 /**
- * Created by wgch on 2019/3/14.
+ * @author Created by wgch on 2019/3/14.
  */
 public class WdyMain {
+
+    public static final InheritableThreadLocal<String> USER_CONTEXT = new InheritableThreadLocal<>();
 
     public static void main(String[] args) {
         WdyMain wdy = new WdyMain();
@@ -21,7 +23,9 @@ public class WdyMain {
         wdy.progressBar();
     }
 
-    // 回调函数
+    /**
+     * 回调函数
+     */
     private static int Fribonacci(int n) {
         if (n <= 2) {
             return 1;
@@ -30,7 +34,9 @@ public class WdyMain {
         }
     }
 
-    // 生成组织层级码
+    /**
+     * 生成组织层级码
+     */
     private void wdyOrgCode() {
         String orgCode = "001.001.002.046.007";
         // 截取字符串后三位
@@ -47,7 +53,9 @@ public class WdyMain {
         System.out.println("少时诵诗书所所".substring(0, 1));
     }
 
-    // 获取层级码
+    /**
+     * 获取层级码
+     */
     private void getNodeCode() {
         for (int i = 1; i <= 10; i++) {
             String node = "000" + i;
@@ -57,7 +65,9 @@ public class WdyMain {
     }
 
 
-    // 分割字符串SQL语句
+    /**
+     * 分割字符串SQL语句
+     */
     private void getSQL() {
         String str = "select a01.\"A0000\",a01.\"A0101\",a01.\"A0192\" as \"A0215A\" ,(select string_agg(a02.\"A0215B\",'、') from \"a02\" where \"A0000\" = a01.\"A0000\" group by \"A0000\") as \"A0215B\",(select string_agg ( to_char ( a02.\"A0243\", 'YYYY.MM' ), '、' ) from \"a02\" where \"A0000\" =a01.\"A0000\" group by \"A0000\") AS \"A0243\",a01.\"A0192C\",a01.\"A0104\",a01.\"A0117\",to_char(a01.\"A0107\",'YYYY.MM') as \"A0107\",a01.\"A0111A\",a01.\"QRZZS\",a01.\"ZZZS\",a01.\"A0196\",to_char(a01.\"A0134\",'YYYY.MM') as \"A0134\",to_char(a01.\"A0144\",'YYYY.MM') as \"A0140\",string_agg(a02.\"mark\",'、') as \"mark\",concat(a01.\"XGR\",to_char(a01.\"XGSJ\",'YYYY.MM')) as \"XGRANDXGSJ\",a01.\"A0198\"\tfrom \"a01\" left join \"a02\" on a01.\"A0000\" = a02.\"A0000\" left join \"b01\" on a02.\"A0201B\" = b01.\"id\" left join \"a08\" on a08.\"A0000\" = a01.\"A0000\" where  b01.\"B0111\" like 'null%' group by a01.\"A0000\"";
         String sql = str.substring(0, str.lastIndexOf("from"));
@@ -67,7 +77,9 @@ public class WdyMain {
         System.out.println(from);
     }
 
-    // StringBuffer相等判断
+    /**
+     * StringBuffer相等判断
+     */
     private void wdyStringBuffer() {
         StringBuffer b1 = new StringBuffer();
         StringBuffer b2 = new StringBuffer();
@@ -87,22 +99,25 @@ public class WdyMain {
      * String  适用于少量的字符串操作的情况
      * StringBuilder 适用于单线程下在字符缓冲区进行大量操作的情况 (线程不安全)
      * StringBuffer  适用于多线程下在字符缓冲区进行大量操作的情况 (线程安全)
+     * 从性能、速度方面：StringBuilder > StringBuffer > String
      */
-    // 从性能、速度方面：StringBuilder > StringBuffer > String
     private void testStr() {
         System.out.println("=======================");
-        Long start1 = System.currentTimeMillis();//获取开始时间
-        for (int i = 0; i < 100000; i++)//重复10万次进行String变量加操作
-        {
+        //获取开始时间
+        Long start1 = System.currentTimeMillis();
+        //重复10万次进行String变量加操作
+        for (int i = 0; i < 100000; i++) {
             String str = "a";
             str += "b";
         }
-        Long end1 = System.currentTimeMillis();//获取结束时间
-        System.out.println("String花费时间：" + (end1 - start1));//打印出花费的时间
+        //获取结束时间
+        Long end1 = System.currentTimeMillis();
+        //打印出花费的时间
+        System.out.println("String花费时间：" + (end1 - start1));
 
         Long start2 = System.currentTimeMillis();
-        for (int i = 0; i < 100000; i++)//重复10万次进行StringBuilder变量加操作
-        {
+        //重复10万次进行StringBuilder变量加操作
+        for (int i = 0; i < 100000; i++) {
             StringBuilder str2 = new StringBuilder("a");
             str2.append("b");
         }
@@ -110,8 +125,8 @@ public class WdyMain {
         System.out.println("StringBuilder花费时间：" + (end2 - start2));
 
         Long start3 = System.currentTimeMillis();
-        for (int i = 0; i < 100000; i++)//重复10万次进行StringBuffer变量加操作
-        {
+        //重复10万次进行StringBuffer变量加操作
+        for (int i = 0; i < 100000; i++) {
             StringBuffer str2 = new StringBuffer("a");
             str2.append("b");
         }
