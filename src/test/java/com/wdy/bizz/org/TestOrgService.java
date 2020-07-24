@@ -82,6 +82,11 @@ public class TestOrgService extends TestBeforeWdyConfig {
     public void testUserContext() {
         USER_CONTEXT.set("wdy");
         System.out.println(USER_CONTEXT.get());
+
+        ThreadLocal<String> localName = new ThreadLocal<>();
+        localName.set("name1");
+        String name = localName.get();
+        System.out.println(name);
     }
 
 
