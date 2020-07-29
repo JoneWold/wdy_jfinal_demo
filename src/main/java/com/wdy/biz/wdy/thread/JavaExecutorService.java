@@ -12,7 +12,9 @@ import java.util.concurrent.*;
  * @date 2019/11/3
  */
 public class JavaExecutorService {
-    // 使用工厂方法创建一个可以容纳10个线程任务的线程池
+    /**
+     * 使用工厂方法创建一个可以容纳10个线程任务的线程池
+     */
     static ExecutorService javaService = Executors.newFixedThreadPool(10);
     static ExecutorService htService = ThreadUtil.newExecutor();
 
