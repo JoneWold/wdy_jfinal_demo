@@ -74,12 +74,17 @@ public class TestOrgService extends TestBeforeWdyConfig {
         });
     }
 
+    // java对象的引用包括 ： 强引用，软引用，弱引用，虚引用 。
 
     /**
-     * InheritableThreadLocal
+     * ThreadLocalMap：
+     * 弱引用也是用来描述非必需对象的，当JVM进行垃圾回收时，无论内存是否充足，该对象仅仅被弱引用关联，那么就会被回收。当仅仅只有ThreadLocalMap中的Entry的key指向ThreadLocal的时候，ThreadLocal会进行回收的！！！
+     * ThreadLocal被垃圾回收后，在ThreadLocalMap里对应的Entry的键值会变成null，但是Entry是强引用，那么Entry里面存储的Object，并没有办法进行回收，所以ThreadLocalMap 存在内存泄露的风险。
+     * 所以最佳实践，应该在我们不使用的时候，主动调用remove方法进行清理。
      */
     @Test
     public void testUserContext() {
+        // InheritableThreadLocal
         USER_CONTEXT.set("wdy");
         System.out.println(USER_CONTEXT.get());
 
@@ -87,6 +92,8 @@ public class TestOrgService extends TestBeforeWdyConfig {
         localName.set("name1");
         String name = localName.get();
         System.out.println(name);
+        //每个Thread对象内部都有一个ThreadLoacalMap的成员变量，这个变量类似一个Map类型，其中key为我们定义的ThreadLocal变量的this引用，value则为我们使用set方法设置的值；
+        //如果线程不消亡，在ThreadLocalMap中存放的ThreadLocal实例对象可能一直不会清除，所以当我们不需要在使用ThreadLocal的值时，就应该手动调用remove方法清除该值。
     }
 
 
