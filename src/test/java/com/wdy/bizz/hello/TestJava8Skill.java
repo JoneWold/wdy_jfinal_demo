@@ -247,4 +247,30 @@ public class TestJava8Skill extends TestBeforeWdyConfig {
     }
 
 
+    @Test
+    public void testPeek() {
+        Stream<String> stream = Stream.of("one", "two", "three", "four");
+        stream.peek(System.err::println);
+
+        List<String> collect = Stream.of("one", "two", "three", "four")
+                .filter(e -> e.length() > 3)
+                .peek(e -> System.out.println("Filtered value: " + e))
+                .map(String::toUpperCase)
+                .peek(e -> System.out.println("Mapped value: " + e))
+                .collect(Collectors.toList());
+
+        // peek：Stream<T> peek(Consumer<? super T> action);
+        // map：<R> Stream<R> map(Function<? super T, ? extends R> mapper);
+
+        // peek接收一个Consumer，而map接收一个Function。
+        // Consumer是没有返回值的，它只是对Stream中的元素进行某些操作，但是操作之后的数据并不返回到Stream中，所以Stream中的元素还是原来的元素。
+        // 而Function是有返回值的，这意味着对于Stream的元素的所有操作都会作为新的结果返回到Stream中。
+
+        // 注意：Consumer<T> 是一个函数接口。
+        // 一个抽象方法 void accept(T t) 意为接受一个 T 类型的参数并将其消费掉。其实消费给我的感觉就是 “用掉” ，自然返回的就是 void 。 通常“用掉” T 的方式为两种：
+        // T 本身的 void 方法 比较典型的就是 setter 。
+        // 把 T 交给其它接口（类）的 void 方法进行处理 比如我们经常用的打印一个对象 System.out.println(T)。
+    }
+
+
 }
