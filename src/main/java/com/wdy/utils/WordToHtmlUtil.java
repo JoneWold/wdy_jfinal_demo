@@ -29,7 +29,7 @@ public class WordToHtmlUtil {
      * @return
      * @throws Exception
      */
-    public static String Word2003ToHtml(String filePath) throws Exception {
+    public static String word2003ToHtml(String filePath) throws Exception {
         InputStream input = new FileInputStream(filePath);
         HWPFDocument wordDocument = new HWPFDocument(input);
         WordToHtmlConverter wordToHtmlConverter = new WordToHtmlConverter(

@@ -31,7 +31,7 @@ public class HtmlTest {
     private static void wordToHtml() {
         String ftlPath = "D:\\wdy\\wdy_jfinal_demo\\download\\ftl\\wordFtl\\MzIntroduceFtl.doc";
         try {
-            String html = WordToHtmlUtil.Word2003ToHtml(ftlPath);
+            String html = WordToHtmlUtil.word2003ToHtml(ftlPath);
             System.out.println(html);
 
             String toPath = PATH_TARGET + DateUtil.format(new Date(), "yyyyMMdd") + ".html";
