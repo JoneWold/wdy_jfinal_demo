@@ -1,5 +1,6 @@
 package com.wdy.biz.file.controller;
 
+import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.aspose.words.License;
@@ -7,6 +8,7 @@ import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.data.HyperLinkTextRenderData;
 import com.jfinal.plugin.activerecord.Record;
 import com.wdy.biz.file.aspose.WordHyperLink;
+import com.wdy.utils.WordToPdfUtil;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.model.FieldsDocumentPart;
 import org.apache.poi.hwpf.usermodel.Field;
@@ -43,12 +45,23 @@ public class WordController {
     }
 
     public static void main(String[] args) throws Exception {
+        wordToPdf();
 //        testDoc();
 //        readwriteWord();
 //        addHyperLink();
 //        addHyperLinkDemo();
         addHyperLink2();
     }
+
+    /**
+     * word -> pdf
+     */
+    private static void wordToPdf() {
+        String inPath = PATH_DOWNLOAD + "ftl/wordFtl" + SEPARATOR + "wordFtl.doc";
+        String outPath = PATH_TARGET + DateUtil.format(new Date(), DatePattern.PURE_DATETIME_MS_PATTERN) + ".pdf";
+        WordToPdfUtil.doc2Pdf(inPath, outPath);
+    }
+
 
     public static void testDoc() {
         try {
@@ -90,7 +103,7 @@ public class WordController {
             range.replaceText("${" + entry.getKey() + "}", entry.getValue());
         }
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        String toFileName = DateUtil.format(new Date(), "yyyyMMddHHmmsss") + ".doc";
+        String toFileName = DateUtil.format(new Date(), "yyyyMMddHHmmssSSS") + ".doc";
         FileOutputStream out = new FileOutputStream(PATH_TARGET + toFileName, true);
 
         hdt.write(outputStream);

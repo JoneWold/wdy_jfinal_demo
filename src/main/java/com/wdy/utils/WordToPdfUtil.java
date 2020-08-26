@@ -36,7 +36,7 @@ public class WordToPdfUtil {
 
             // Address是将要被转化的word文档
             Document doc = new Document(inPath);
-            FontSettings.getDefaultInstance().setFontsFolder(WordToPdfUtil.class.getClassLoader().getResource("./fonts").toURI().getPath(), true);
+//            FontSettings.getDefaultInstance().setFontsFolder(WordToPdfUtil.class.getClassLoader().getResource("./fonts").toURI().getPath(), true);
             doc.save(os, SaveFormat.PDF);
         } catch (Exception e) {
             e.printStackTrace();
