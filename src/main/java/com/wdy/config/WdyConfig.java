@@ -3,6 +3,7 @@ package com.wdy.config;
 import com.jfinal.config.*;
 import com.jfinal.core.Const;
 import com.jfinal.core.paragetter.ParaProcessorBuilder;
+import com.jfinal.ext.handler.UrlSkipHandler;
 import com.jfinal.json.FastJsonFactory;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.Prop;
@@ -22,6 +23,7 @@ import com.wdy.biz.file.rmb.controller.ImportRmbController;
 import com.wdy.biz.progress.jfinal.MobSdController;
 import com.wdy.biz.progress.websocket.AlarmThreadController;
 import com.wdy.biz.progress.websocket.WebSocketController;
+import com.wdy.biz.progress.websocket.WebSocketHandler;
 import com.wdy.biz.wdy.JaxRsController;
 import com.wdy.generator.mysql.model._MappingKit;
 import com.wdy.interceptor.ParameterInterceptor;
@@ -53,7 +55,7 @@ public class WdyConfig extends JFinalConfig {
      * 先加载开发环境配置，然后尝试加载生产环境配置，生产环境配置不存在时不会抛异常
      * 在生产环境部署时后动创建 demo-config-pro.txt，添加的配置项可以覆盖掉demo-config-dev.txt 中的配置项
      */
-    static void loadConfig() {
+    private static void loadConfig() {
         if (p == null) {
             p = PropKit.use("jfinal.properties").appendIfExists("demo-config-pro.txt");
         }
@@ -207,10 +209,13 @@ public class WdyConfig extends JFinalConfig {
 //        me.add(new TxByActionKeys("/tx/save", "/tx/update"));
     }
 
+    /**
+     * 配置管理web请求
+     */
     @Override
     public void configHandler(Handlers handlers) {
-//        handlers.add(new WebSocketHandler());
-//        handlers.add(new UrlSkipHandler("/ws/socket.ws", false));
+        handlers.add(new WebSocketHandler());
+        handlers.add(new UrlSkipHandler("/ws/socket.ws", false));
     }
 
     @Override
