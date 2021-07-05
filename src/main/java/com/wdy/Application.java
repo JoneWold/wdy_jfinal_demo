@@ -17,11 +17,20 @@ public class Application {
 //        System.out.println("host--->>" + undertowServer.getUndertowConfig().getHost());
 //        System.out.println("port--->>" + undertowServer.getUndertowConfig().getPort());
 
-        UndertowServer.create(WdyConfig.class, "jfinal.properties")
-                .configWeb(builder -> {
-                    // 配置 WebSocket，MyWebSocket 需使用 ServerEndpoint 注解
-                    builder.addWebSocketEndpoint("com.wdy.biz.progress.websocket.WebSocket");
-                }).start();
+//        UndertowServer.create(WdyConfig.class, "jfinal.properties")
+//                .configWeb(builder -> {
+//                    // 配置 WebSocket，MyWebSocket 需使用 ServerEndpoint 注解
+//                    builder.addWebSocketEndpoint("com.wdy.biz.progress.websocket.WebSocket");
+//                }).start();
+        UndertowServer.create(WdyConfig.class).configWeb(webBuilder -> {
+            webBuilder.addServlet("DruidStatView", "com.alibaba.druid.support.http.StatViewServlet");
+            webBuilder.addServletInitParam("DruidStatView", "resetEnable", "true");
+            webBuilder.addServletInitParam("DruidStatView", "loginUsername", "admin");
+            webBuilder.addServletInitParam("DruidStatView", "loginPassword", "1809");
+            //  webBuilder.addServletInitParam("DruidStatView", "allow", "192.168.3.1/24,127.0.0.1");
+            webBuilder.addServletInitParam("DruidStatView", "resetEnable", "true");
+            webBuilder.addServletMapping("DruidStatView", "/druid/*");
+        }).start();
 
     }
 }
