@@ -71,6 +71,7 @@
                 <jdbc.url>jdbc:postgresql://127.0.0.1:5432/dev?characterEncoding=utf8&amp;useSSL=false&amp;zeroDateTimeBehavior=convertToNull</jdbc.url>
                 <jdbc.user>postgres</jdbc.user>
                 <jdbc.password>1809</jdbc.password>
+                <nginx.enable>false</nginx.enable>
             </properties>
         </profile>
     </profiles>
