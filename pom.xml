@@ -52,7 +52,7 @@
                 <log.fileName>logback.xml</log.fileName>
                 <exclude.log.file>logback-deploy.xml</exclude.log.file>
                 <java.opt.file>dev.conf</java.opt.file>
-                <http.port>8080</http.port>
+                <http.port>666</http.port>
                 <nginx.enable>true</nginx.enable>
                 <jdbc.class>org.postgresql.Driver</jdbc.class>
                 <jdbc.url>jdbc:postgresql://139.9.233.106:9095/devdb</jdbc.url>
@@ -72,6 +72,7 @@
                 <jdbc.user>postgres</jdbc.user>
                 <jdbc.password>1809</jdbc.password>
                 <nginx.enable>false</nginx.enable>
+                <http.port>666</http.port>
             </properties>
         </profile>
     </profiles>
