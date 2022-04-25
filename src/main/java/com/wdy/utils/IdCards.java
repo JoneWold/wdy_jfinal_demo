@@ -20,6 +20,38 @@ public class IdCards {
         System.out.println(birAgeSex.getBirthday());
     }
 
+
+    /**
+     * 生成第18位身份证号
+     *
+     * @param str17 身份证信息
+     * @return 身份证校验码的计算方法
+     * 将前面的身份证号码17位数分别乘以不同的系数。从第一位到第十七位的系数分别为：7－9－10－5－8－4－2－1－6－3－7－9－10－5－8－4－2。
+     * 将这17位数字和系数相乘的结果相加。
+     * 用加出来和除以11，看余数是多少？
+     * 余数只可能有0－1－2－3－4－5－6－7－8－9－10这11个数字。
+     * 其分别对应的最后一位身份证的号码为1－0－X －9－8－7－6－5－4－3－2。
+     */
+    public static String verificationCode(String str17) {
+        char[] chars = str17.toCharArray();
+        if (chars.length < 17) {
+            return " ";
+        }
+        // 前十七位分别对应的系数
+        int[] coefficient = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
+        // 最后应该取得的第十八位的验证码
+        char[] resultChar = {'1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'};
+        int[] numberArr = new int[17];
+        int result = 0;
+        for (int i = 0; i < numberArr.length; i++) {
+            numberArr[i] = Integer.parseInt(chars[i] + "");
+        }
+        for (int i = 0; i < numberArr.length; i++) {
+            result += coefficient[i] * numberArr[i];
+        }
+        return String.valueOf(resultChar[result % 11]);
+    }
+
     /***
      * 通过身份证号码获取出生日期、性别、年龄
      * @param idCards
