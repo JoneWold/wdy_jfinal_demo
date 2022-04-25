@@ -66,6 +66,11 @@ public class TestHelloController extends TestBeforeWdyConfig {
         // 计算两个日期相差年数
         long betweenYear = DateUtil.betweenYear(DateUtil.parse("2012.06", "yyyy.MM"), new Date(), false);
         System.out.println(betweenYear);
+
+        // 当前时间 往后三个月
+        System.out.println(DateUtil.date(new Date()));
+        DateTime dateTime = DateUtil.offsetMonth(new Date(), 3);
+        System.out.println(dateTime);
     }
 
     @Test

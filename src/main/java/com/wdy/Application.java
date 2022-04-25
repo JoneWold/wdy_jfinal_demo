@@ -23,15 +23,16 @@ public class Application {
 //                    builder.addWebSocketEndpoint("com.wdy.biz.progress.websocket.WebSocket");
 //                }).start();
 
-        UndertowServer.create(WdyConfig.class).configWeb(webBuilder -> {
-            webBuilder.addServlet("DruidStatView", "com.alibaba.druid.support.http.StatViewServlet");
-            webBuilder.addServletInitParam("DruidStatView", "resetEnable", "true");
-            webBuilder.addServletInitParam("DruidStatView", "loginUsername", "admin");
-            webBuilder.addServletInitParam("DruidStatView", "loginPassword", "1809");
-            //  webBuilder.addServletInitParam("DruidStatView", "allow", "192.168.3.1/24,127.0.0.1");
-            webBuilder.addServletInitParam("DruidStatView", "resetEnable", "true");
-            webBuilder.addServletMapping("DruidStatView", "/druid/*");
-        }).start();
+        UndertowServer.create(WdyConfig.class, "jfinal.properties")
+                .configWeb(webBuilder -> {
+                    webBuilder.addServlet("DruidStatView", "com.alibaba.druid.support.http.StatViewServlet");
+                    webBuilder.addServletInitParam("DruidStatView", "resetEnable", "true");
+                    webBuilder.addServletInitParam("DruidStatView", "loginUsername", "admin");
+                    webBuilder.addServletInitParam("DruidStatView", "loginPassword", "1809");
+                    //  webBuilder.addServletInitParam("DruidStatView", "allow", "192.168.3.1/24,127.0.0.1");
+                    webBuilder.addServletInitParam("DruidStatView", "resetEnable", "true");
+                    webBuilder.addServletMapping("DruidStatView", "/druid/*");
+                }).start();
 
     }
 }

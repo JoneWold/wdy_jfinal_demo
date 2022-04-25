@@ -1,42 +1,18 @@
 
-2021-03-05 17:07:39
-[ERROR]-[Thread: XNIO-1 I/O-3]-[org.xnio.ChannelListeners.invokeChannelListener()]: XNIO001007: A channel event listener threw an exception
-java.util.concurrent.RejectedExecutionException: XNIO007007: Thread is terminating
-	at org.xnio.nio.WorkerThread.execute(WorkerThread.java:590)
-	at io.undertow.websockets.jsr.UndertowSession$3.handleEvent(UndertowSession.java:396)
-	at io.undertow.websockets.jsr.UndertowSession$3.handleEvent(UndertowSession.java:388)
-	at org.xnio.ChannelListeners.invokeChannelListener(ChannelListeners.java:92)
-	at io.undertow.server.protocol.framed.AbstractFramedChannel$FrameCloseListener.handleEvent(AbstractFramedChannel.java:1061)
-	at io.undertow.server.protocol.framed.AbstractFramedChannel$FrameCloseListener.handleEvent(AbstractFramedChannel.java:975)
-	at org.xnio.ChannelListeners.invokeChannelListener(ChannelListeners.java:92)
-	at org.xnio.conduits.WriteReadyHandler$ChannelListenerHandler.terminated(WriteReadyHandler.java:70)
-	at org.xnio.nio.NioSocketConduit.writeTerminated(NioSocketConduit.java:234)
-	at org.xnio.nio.NioSocketConduit.terminateWrites(NioSocketConduit.java:223)
-	at org.xnio.nio.NioSocketConduit.truncateWrites(NioSocketConduit.java:228)
-	at io.undertow.conduits.IdleTimeoutConduit.truncateWrites(IdleTimeoutConduit.java:387)
-	at org.xnio.conduits.ConduitStreamSinkChannel.close(ConduitStreamSinkChannel.java:186)
-	at org.xnio.IoUtils.safeClose(IoUtils.java:134)
-	at org.xnio.conduits.WriteReadyHandler$ChannelListenerHandler.forceTermination(WriteReadyHandler.java:57)
-	at org.xnio.nio.NioSocketConduit.forceTermination(NioSocketConduit.java:107)
-	at org.xnio.nio.WorkerThread.run(WorkerThread.java:494)
+2021-07-05 11:31:47
+[WARN]-[Thread: XNIO-1 task-5]-[com.jfinal.core.ActionHandler.handle()]: 404 Action Not Found: /druid/login
 
-2021-03-05 17:20:22
-[ERROR]-[Thread: XNIO-1 I/O-1]-[org.xnio.ChannelListeners.invokeChannelListener()]: XNIO001007: A channel event listener threw an exception
-java.util.concurrent.RejectedExecutionException: XNIO007007: Thread is terminating
-	at org.xnio.nio.WorkerThread.execute(WorkerThread.java:590)
-	at io.undertow.websockets.jsr.UndertowSession$3.handleEvent(UndertowSession.java:396)
-	at io.undertow.websockets.jsr.UndertowSession$3.handleEvent(UndertowSession.java:388)
-	at org.xnio.ChannelListeners.invokeChannelListener(ChannelListeners.java:92)
-	at io.undertow.server.protocol.framed.AbstractFramedChannel$FrameCloseListener.handleEvent(AbstractFramedChannel.java:1061)
-	at io.undertow.server.protocol.framed.AbstractFramedChannel$FrameCloseListener.handleEvent(AbstractFramedChannel.java:975)
-	at org.xnio.ChannelListeners.invokeChannelListener(ChannelListeners.java:92)
-	at org.xnio.conduits.WriteReadyHandler$ChannelListenerHandler.terminated(WriteReadyHandler.java:70)
-	at org.xnio.nio.NioSocketConduit.writeTerminated(NioSocketConduit.java:234)
-	at org.xnio.nio.NioSocketConduit.terminateWrites(NioSocketConduit.java:223)
-	at org.xnio.nio.NioSocketConduit.truncateWrites(NioSocketConduit.java:228)
-	at io.undertow.conduits.IdleTimeoutConduit.truncateWrites(IdleTimeoutConduit.java:387)
-	at org.xnio.conduits.ConduitStreamSinkChannel.close(ConduitStreamSinkChannel.java:186)
-	at org.xnio.IoUtils.safeClose(IoUtils.java:134)
-	at org.xnio.conduits.WriteReadyHandler$ChannelListenerHandler.forceTermination(WriteReadyHandler.java:57)
-	at org.xnio.nio.NioSocketConduit.forceTermination(NioSocketConduit.java:107)
-	at org.xnio.nio.WorkerThread.run(WorkerThread.java:494)
+2021-07-05 11:32:13
+[WARN]-[Thread: XNIO-1 task-10]-[com.jfinal.core.ActionHandler.handle()]: 404 Action Not Found: /druid/submitLogin
+
+2021-07-05 11:32:17
+[WARN]-[Thread: XNIO-1 task-11]-[com.jfinal.core.ActionHandler.handle()]: 404 Action Not Found: /druid/submitLogin
+
+2021-07-05 11:32:18
+[WARN]-[Thread: XNIO-1 task-12]-[com.jfinal.core.ActionHandler.handle()]: 404 Action Not Found: /druid/submitLogin
+
+2021-07-05 11:32:40
+[WARN]-[Thread: XNIO-1 task-14]-[com.jfinal.core.ActionHandler.handle()]: 404 Action Not Found: /druid/submitLogin
+
+2021-07-05 11:33:22
+[WARN]-[Thread: XNIO-1 task-15]-[com.jfinal.core.ActionHandler.handle()]: 404 Action Not Found: /druid/submitLogin
