@@ -1,17 +1,21 @@
 package com.wdy.biz.hello.controller;
 
+import cn.hutool.core.io.FileUtil;
 import com.jfinal.aop.Clear;
 import com.jfinal.aop.Inject;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.ehcache.CacheKit;
+import com.jfinal.upload.UploadFile;
 import com.wdy.biz.hello.service.HelloService;
 import com.wdy.constant.CacheConstant;
 import com.wdy.generator.mysql.model.Blog;
 import com.wdy.generator.mysql.model.SysUser;
 import com.wdy.message.OutMessage;
+import com.wdy.utils.FileUtils;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -51,6 +55,17 @@ public class HelloController extends Controller {
     }
 
     /**
+     * 文件上传
+     */
+    public void upload() {
+        UploadFile uploadFile = this.getFile();
+        File rename = FileUtils.rename(uploadFile.getFile());
+        FileUtil.del(uploadFile.getFile());
+        renderJson(rename.getPath());
+    }
+
+
+    /**
      * CacheKit 工具类
      */
     public void cacheKit() {
@@ -70,7 +85,7 @@ public class HelloController extends Controller {
         renderJson(list);
     }
 
-    public OutMessage getPostgreSQLList() {
+    public OutMessage<?> getPostgreSQLList() {
         return service.getPostgreSQLList();
     }
 
