@@ -28,7 +28,7 @@
         <postgresql.version>42.2.5</postgresql.version>
         <mockito-core.version>2.25.0</mockito-core.version>
         <hutool.all.version>5.0.6</hutool.all.version>
-        <fastjson.version>1.2.56</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <lombok.version>1.16.20</lombok.version>
         <javax.ws.rs.api.version>2.1.1</javax.ws.rs.api.version>
         <poi.version>4.1.0</poi.version>
