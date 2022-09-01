@@ -223,7 +223,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.12.1</version>
+            <version>1.15.3</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
@@ -297,7 +297,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.12.1</version>
+            <version>1.15.3</version>
         </dependency>
 
         <!-- redisson -->
