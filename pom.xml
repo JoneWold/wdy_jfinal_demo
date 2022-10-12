@@ -333,6 +333,13 @@
             <artifactId>poi-tl</artifactId>
             <version>1.7.3</version>
         </dependency>
+        <!--引入Bouncy Castle库 用于加密解密-->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.64</version>
+        </dependency>
+
 
         <dependency>
             <groupId>com.word.rmb</groupId>

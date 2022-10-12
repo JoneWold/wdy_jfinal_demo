@@ -1,5 +1,9 @@
 package com.wdy.utils;
 
+import cn.hutool.core.codec.Base64Decoder;
+import cn.hutool.core.codec.Base64Encoder;
+import cn.hutool.core.io.FileUtil;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -52,5 +56,32 @@ public class FileUtils {
         }
     }
 
+    /**
+     * 文件 转 base64
+     */
+    public static String fileToBase64(File file) {
+        String encode = Base64Encoder.encode(FileUtil.readBytes(file));
+        return encode;
+    }
+
+    /**
+     * base64 转 文件
+     */
+    public static File base64ToFile(String base64Str, String toPath) {
+        byte[] decode = Base64Decoder.decode(base64Str);
+        FileUtil.writeBytes(decode, toPath);
+        return FileUtil.file(toPath);
+    }
+
+
+    public static void main(String[] args) {
+        // 获取base64
+        String fileToBase64 = fileToBase64(FileUtil.file("D:\\MyWorks\\IdeaProjects\\JoneWold\\wdy_jfinal_demo\\src\\test\\java\\w1.wps"));
+        System.out.println("src ：" + fileToBase64);
+
+        //获取文件
+        File file = base64ToFile(fileToBase64, "D:\\MyWorks\\IdeaProjects\\JoneWold\\wdy_jfinal_demo\\src\\test\\java\\w22.doc");
+
+    }
 
 }

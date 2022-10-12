@@ -18,6 +18,7 @@ import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import com.google.zxing.common.BitMatrix;
 import com.jfinal.kit.PathKit;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -26,6 +27,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.Security;
 import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 
@@ -81,16 +83,24 @@ public class TestHuTool {
      */
     @Test
     public void pwd() {
+        //No such provider: BC
+        if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
+            Security.addProvider(new BouncyCastleProvider());
+        }
         String beforeStr = "123456";
-        //md5加密(摘要加密)
-        Assert.assertEquals("e10adc3949ba59abbe56e057f20f883e", SecureUtil.md5(beforeStr));
 
         //AES加密(对称加密)
         byte[] key = SecureUtil.generateKey(SymmetricAlgorithm.AES.getValue()).getEncoded();
+//        SymmetricCrypto aes = new SymmetricCrypto(SymmetricAlgorithm.AES, key);
         AES aes = SecureUtil.aes(key);
+        //加密为16进制表示
         String encryptStr = aes.encryptHex(beforeStr);
+        //解密为字符串
         String decryptStr = aes.decryptStr(encryptStr, CharsetUtil.CHARSET_UTF_8);
         Assert.assertEquals(beforeStr, decryptStr);
+        System.out.println("加密：" + encryptStr);
+        System.out.println("解密：" + decryptStr);
+
 
         //RSA加密（非对称加密）
         RSA rsa = SecureUtil.rsa();
@@ -102,6 +112,9 @@ public class TestHuTool {
         byte[] encrypt2 = rsa.encrypt(StrUtil.bytes(beforeStr, CharsetUtil.CHARSET_UTF_8), KeyType.PrivateKey);
         byte[] decrypt2 = rsa.decrypt(encrypt2, KeyType.PublicKey);
         Assert.assertEquals(beforeStr, StrUtil.str(decrypt2, CharsetUtil.CHARSET_UTF_8));
+
+        //md5加密(摘要加密)
+        Assert.assertEquals("e10adc3949ba59abbe56e057f20f883e", SecureUtil.md5(beforeStr));
     }
 
     /**
